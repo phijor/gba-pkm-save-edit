@@ -16,7 +16,7 @@ RCOMPILE_FLAGS = -D NDEBUG
 # Additional debug-specific flags
 DCOMPILE_FLAGS = -D DEBUG
 # Add additional include paths
-INCLUDES = -I $(SRC_PATH)/
+INCLUDES = -I include/ -I $(SRC_PATH)/
 # General linker settings
 LINK_FLAGS = 
 # Additional release-specific linker settings
