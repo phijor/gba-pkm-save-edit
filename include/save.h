@@ -4,10 +4,13 @@
 #include <stddef.h>
 #include <inttypes.h>
 
-#include "save_trainer_info.h"
+#include "save_ruby_sapphire.h"
+#include "save_emerald.h"
+#include "save_firered_leafgreen.h"
 
-#define W(s) "Warning: "#s"\n"
-#define E(s) "Error: "#s"\n"
+#define I(s) "Info: "    s "\n"
+#define W(s) "Warning: " s "\n"
+#define E(s) "Error: "   s "\n"
 
 /* A save file contains 2 blocks, each on a represents a full game state. */
 #define SAVE_BLOCKS_PER_FILE 2
@@ -20,13 +23,18 @@
  * (see `save_section_signature) */
 #define SAVE_DATA_BYTES_PER_SECTION 0xff4
 
+/* Each section contains a validation code */
+#define SAVE_SECTION_VALIDATION_CODE 0x08012025
+
+#define SAVE_UNPACKED_TOTAL 55552
+
 const size_t save_section_size_by_id[SAVE_SECTIONS_PER_BLOCK];
 
 struct save_section_signature_t {
     uint8_t section_id;
     uint8_t padding;
     uint16_t checksum;
-    uint16_t validation_code; // should always be 0x08012025
+    uint32_t validation_code; // should always be 0x08012025
     uint32_t save_index;
 };
 
@@ -44,30 +52,16 @@ struct save_file_t {
     uint8_t unknown[16384];
 };
 
-struct save_unpacked {
-    union save_trainer_info_container_t trainer_info;
-    // struct save_file_team_items;
-    uint8_t save_team_items[3968];
-    uint8_t unknown0[3968];
-    uint8_t unknown1[3968];
-    // struct save_rival_info;
-    uint8_t save_rival_info[3848];
-    //struct save_pc_buffer pc_buffer;
-    uint8_t save_pc_buffer[8*3968 + 2000];
+union save_unpacked_t {
+    struct save_ruby_sapphire_t rusa;
+    struct save_emerald_t emer;
+    struct save_firered_leafgreen_t frlg;
 };
 
 size_t 
 save_find_section_zero(struct save_block_t* save_block);
 
-struct save_unpacked_t*
-save_unpack(struct save_file_t* save, size_t index);
+union save_unpacked_t*
+save_unpack(struct save_block_t* block);
 
-int
-save_check_section_integrity(struct save_section_t* section);
-
-int
-save_check_block_integrity(struct save_block_t* save_block);
-
-int
-save_check_file_integrity(struct save_file_t* save_file);
 #endif
