@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "save.h"
 #include "save_pokedex.h"
+#include "save.h"
+#include "save_unpacked.h"
 
 int save_pokedex_search(struct save_pokedex_t* pokedex, uint16_t index) {
     return (pokedex->data[index >> 3] >> (index % 8)) & 1;

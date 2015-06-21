@@ -21,7 +21,7 @@
 #include <getopt.h>
 
 #include "save_integrity.h"
-#include "save.h"
+#include "save_pokedex.h"
 
 #define arrsize(arr) (sizeof(arr)/sizeof(arr[0]))
 
@@ -37,19 +37,7 @@ int main() {
     }
     fprintf(stderr, I("Save file passed integrity-test."));
     union save_unpacked_t* unpacked = save_unpack(&(save.save_blocks[0]));
-    // fwrite(unpacked, sizeof(union save_unpacked_t), 1, output);
-    fprintf(output,
-            "Money: %0u\n"
-            "First item in PC: %u\n"
-            "Quantity: %u\n",
-            unpacked->rusa.money, unpacked->rusa.items.pc_storage[0].index,
-            unpacked->rusa.items.pc_storage[0].quantity);
-    for (size_t i = 0;
-         i < arrsize(unpacked->rusa.items.ball_pocket);
-         i++) {
-        fprintf(output, "Ball %lu: %ux, ID%u\n", i,
-                unpacked->rusa.items.ball_pocket[i].quantity,
-                unpacked->rusa.items.ball_pocket[i].index);
-    }
+    enum save_pokedex_status_t status = save_get_pokedex_entry(unpacked, 27);
+    fprintf(output, "Status: %d", status);
     return EXIT_SUCCESS;
 }

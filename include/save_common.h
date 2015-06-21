@@ -3,9 +3,6 @@
 
 #include <inttypes.h>
 
-#include "save_pokedex.h"
-#include "save_pokemon.h"
-
 struct save_trainer_id_t {
     uint16_t TID;
     uint16_t SID;

@@ -4,6 +4,7 @@
 
 #include "save.h"
 #include "save_integrity.h"
+#include "save_unpacked.h"
 
 const size_t save_section_size_by_id[] = {
     3884,  // Trainer info

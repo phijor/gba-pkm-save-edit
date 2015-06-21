@@ -4,6 +4,8 @@
 #include <inttypes.h>
 
 #include "save_common.h"
+#include "save_pokedex_types.h"
+#include "save_pokemon.h"
 
 struct __attribute__((packed)) save_ruby_sapphire_items_t {
     struct save_item_t pc_storage[50];

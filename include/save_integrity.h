@@ -1,6 +1,9 @@
 #ifndef SAVE_INTEGRITY_H
 #define SAVE_INTEGRITY_H
 
+#include <inttypes.h>
+#include <stddef.h>
+
 #include "save.h"
 
 uint16_t save_checksum(void* buffer, size_t length);

@@ -4,10 +4,6 @@
 #include <stddef.h>
 #include <inttypes.h>
 
-#include "save_ruby_sapphire.h"
-#include "save_emerald.h"
-#include "save_firered_leafgreen.h"
-
 #define I(s) "Info: " s "\n"
 #define W(s) "Warning: " s "\n" 
 #define E(s) "Error: " s "\n"
@@ -59,11 +55,7 @@ struct save_file_t {
     uint8_t unknown[16384];
 };
 
-union save_unpacked_t {
-    struct save_ruby_sapphire_t rusa;
-    struct save_emerald_t emer;
-    struct save_firered_leafgreen_t frlg;
-};
+union save_unpacked_t;
 
 size_t save_find_section_zero(struct save_block_t* save_block);
 union save_unpacked_t* save_unpack(struct save_block_t* block);
