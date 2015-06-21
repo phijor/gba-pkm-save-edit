@@ -3,6 +3,7 @@
 #include <stdio.h>
 
 #include "save.h"
+#include "save_integrity.h"
 
 const size_t save_section_size_by_id[] = {
     3884,  // Trainer info
@@ -21,8 +22,7 @@ const size_t save_section_size_by_id[] = {
     2000   // PC buffer I
 };
 
-size_t
-save_find_section_zero(struct save_block_t* block) {
+size_t save_find_section_zero(struct save_block_t* block) {
     for (size_t i = 0; i < SAVE_SECTIONS_PER_BLOCK; i++) {
         if (block->sections[i].signature.section_id == 0) {
             return i;
@@ -31,14 +31,11 @@ save_find_section_zero(struct save_block_t* block) {
     return SAVE_SECTIONS_PER_BLOCK;
 }
 
-union save_unpacked_t*
-save_unpack(struct save_block_t* block) {
-    size_t zero_section_offset =
-        save_find_section_zero(block);
+union save_unpacked_t* save_unpack(struct save_block_t* block) {
+    size_t zero_section_offset = save_find_section_zero(block);
 
     if (zero_section_offset >= SAVE_SECTIONS_PER_BLOCK) {
-        fprintf(stderr,
-                E("Could not locate first section of block"));
+        fprintf(stderr, E("Could not locate first section of block"));
         return NULL;
     }
 
@@ -46,12 +43,13 @@ save_unpack(struct save_block_t* block) {
         (union save_unpacked_t*)malloc(sizeof(save_unpacked));
 
     if (save_unpacked == NULL) {
-        fprintf(stderr,
-                E("Could not unpack save structure. Memory allocation failed."));
+        fprintf(
+            stderr,
+            E("Could not unpack save structure. Memory allocation failed."));
         return NULL;
     }
     void* current_section_dest = (void*)save_unpacked;
-    for (int i = 0; i < SAVE_SECTIONS_PER_BLOCK; i++) {
+    for (size_t i = 0; i < SAVE_SECTIONS_PER_BLOCK; i++) {
         size_t current_section_id =
             (i + zero_section_offset) % SAVE_SECTIONS_PER_BLOCK;
 
@@ -59,11 +57,31 @@ save_unpack(struct save_block_t* block) {
             &(block->sections[current_section_id]);
 
         size_t current_section_size =
-            save_section_size_by_id[current_section_id]; 
+            save_section_size_by_id[current_section_id];
         memcpy(current_section_dest, &(current_section_source->data),
                current_section_size);
 
         current_section_dest += current_section_size;
     }
     return save_unpacked;
+}
+
+int save_repack(struct save_block_t* destination,
+                union save_unpacked_t* unpacked, uint32_t save_index) {
+    uint8_t* unpacked_byte_array = (uint8_t*)unpacked;
+    size_t byte_offset = 0;
+
+    for (size_t i = 0; i < SAVE_SECTIONS_PER_BLOCK; i++) {
+        size_t bytes_to_copy = save_section_size_by_id[i];
+        memcpy(&(destination->sections[i]), &(unpacked_byte_array[byte_offset]),
+               bytes_to_copy);
+        byte_offset += bytes_to_copy;
+
+        destination->sections[i].signature.save_index = save_index;
+        destination->sections[i].signature.validation_code =
+            SAVE_SECTION_VALIDATION_CODE;
+        destination->sections[i].signature.section_id = i;
+        save_resign_section(&(destination->sections[i]));
+    }
+    return EXIT_SUCCESS;
 }

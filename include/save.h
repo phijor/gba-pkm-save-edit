@@ -8,9 +8,9 @@
 #include "save_emerald.h"
 #include "save_firered_leafgreen.h"
 
-#define I(s) "Info: "    s "\n"
+#define I(s) "Info: " s "\n"
 #define W(s) "Warning: " s "\n"
-#define E(s) "Error: "   s "\n"
+#define E(s) "Error: " s "\n"
 
 /* A save file contains 2 blocks, each on a represents a full game state. */
 #define SAVE_BLOCKS_PER_FILE 2
@@ -34,7 +34,7 @@ struct save_section_signature_t {
     uint8_t section_id;
     uint8_t padding;
     uint16_t checksum;
-    uint32_t validation_code; // should always be 0x08012025
+    uint32_t validation_code;  // should always be 0x08012025
     uint32_t save_index;
 };
 
@@ -58,10 +58,8 @@ union save_unpacked_t {
     struct save_firered_leafgreen_t frlg;
 };
 
-size_t 
-save_find_section_zero(struct save_block_t* save_block);
-
-union save_unpacked_t*
-save_unpack(struct save_block_t* block);
-
+size_t save_find_section_zero(struct save_block_t* save_block);
+union save_unpacked_t* save_unpack(struct save_block_t* block);
+int save_repack(struct save_block_t* destination,
+                union save_unpacked_t* unpacked, uint32_t save_index);
 #endif
