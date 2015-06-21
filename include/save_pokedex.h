@@ -19,6 +19,13 @@ struct save_pokedex_t {
 
 union save_unpacked_t;
 
-enum save_pokedex_status_t save_get_pokedex_save_entry(union save_unpacked_t* save, uint16_t index);
+int save_pokedex_search(struct save_pokedex_t* pokedex, uint16_t index);
 
+enum save_pokedex_status_t save_get_pokedex_save_entry(
+    union save_unpacked_t* save, uint16_t index);
+
+void save_pokedex_basic_set(struct save_pokedex_t* pokedex, uint16_t index);
+void save_pokedex_clear_entry(struct save_pokedex_t* pokedex, uint16_t index);
+int save_set_pokedex_entry(union save_unpacked_t* save, uint16_t index,
+                           enum save_pokedex_status_t status);
 #endif
