@@ -85,3 +85,28 @@ int save_repack(struct save_block_t* destination,
     }
     return EXIT_SUCCESS;
 }
+
+struct save_block_t* save_most_recent_block(struct save_file_t* file) {
+    struct save_block_t* most_recent =
+        (file->save_blocks[0].sections[0].signature.save_index >
+         file->save_blocks[1].sections[0].signature.save_index)
+            ? &(file->save_blocks[0])
+            : &(file->save_blocks[1]);
+    return most_recent;
+}
+
+enum save_game_type_t save_get_gametype(union save_unpacked_t* save) {
+    /* Assume the game is Ruby/Sapphire. For Firered/Leafgreen the location is
+     * the same; Emerald does not have a game_code, instead it's security key 
+     * is stored at this address. 
+     */
+    switch(save->rusa.game_code) {
+        case 0:
+            return RUBY_SAPPHIRE;
+        case 1:
+            return FIRERED_LEAFGREEN;
+        default:
+            return EMERALD;
+    }
+    return UNKNOWN;
+}

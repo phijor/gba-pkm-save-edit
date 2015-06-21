@@ -9,7 +9,7 @@
 #include "save_firered_leafgreen.h"
 
 #define I(s) "Info: " s "\n"
-#define W(s) "Warning: " s "\n"
+#define W(s) "Warning: " s "\n" 
 #define E(s) "Error: " s "\n"
 
 /* A save file contains 2 blocks, each on a represents a full game state. */
@@ -29,6 +29,13 @@
 #define SAVE_UNPACKED_TOTAL 55552
 
 const size_t save_section_size_by_id[SAVE_SECTIONS_PER_BLOCK];
+
+enum save_game_type_t {
+    RUBY_SAPPHIRE,
+    EMERALD,
+    FIRERED_LEAFGREEN,
+    UNKNOWN,
+};
 
 struct save_section_signature_t {
     uint8_t section_id;
@@ -62,4 +69,6 @@ size_t save_find_section_zero(struct save_block_t* save_block);
 union save_unpacked_t* save_unpack(struct save_block_t* block);
 int save_repack(struct save_block_t* destination,
                 union save_unpacked_t* unpacked, uint32_t save_index);
+struct save_block_t* save_most_recent_block(struct save_file_t* file);
+enum save_game_type_t save_get_gametype(union save_unpacked_t* save);
 #endif

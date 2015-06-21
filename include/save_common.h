@@ -3,9 +3,8 @@
 
 #include <inttypes.h>
 
+#include "save_pokedex.h"
 #include "save_pokemon.h"
-
-#define SAVE_DEX_BYTE_SIZE 49
 
 struct save_trainer_id_t {
     uint16_t TID;
@@ -25,10 +24,6 @@ struct save_trainer_info_t {
     uint8_t _0[1];
     struct save_trainer_id_t id;
     struct save_time_played_t time_played;
-};
-
-struct save_pokedex_t {
-    uint8_t data[SAVE_DEX_BYTE_SIZE];
 };
 
 struct save_item_t {
