@@ -56,7 +56,10 @@ int save_check_block_integrity(struct save_block_t* block) {
     int exit_status = EXIT_SUCCESS;
     for (size_t i = 0; i < SAVE_SECTIONS_PER_BLOCK; i++) {
         struct save_section_t* current_section = &(block->sections[i]);
-        exit_status = save_check_section_integrity(current_section);
+
+        if(save_check_section_integrity(current_section) == EXIT_FAILURE) {
+            exit_status = EXIT_FAILURE;
+        }
     }
     return exit_status;
 }
