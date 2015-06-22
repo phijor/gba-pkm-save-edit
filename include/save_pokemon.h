@@ -38,7 +38,7 @@ union save_pokemon_encrypted_data_t {
     };
 };
 
-struct save_boxed_pokemon {
+struct save_boxed_pokemon_t {
     uint32_t PID;
     uint32_t OT_ID;
     uint8_t nickname[10];
@@ -51,7 +51,7 @@ struct save_boxed_pokemon {
 };
 
 struct save_pokemon_t {
-    struct save_boxed_pokemon data;
+    struct save_boxed_pokemon_t data;
     uint32_t status_condition;
     uint8_t level;
     uint8_t pokerus_remaining;
