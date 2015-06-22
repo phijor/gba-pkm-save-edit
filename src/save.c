@@ -6,23 +6,6 @@
 #include "save_integrity.h"
 #include "save_unpacked.h"
 
-const size_t save_section_size_by_id[] = {
-    3884,  // Trainer info
-    3968,  // Team / items
-    3968,  // Unknown
-    3968,  // Unknown
-    3848,  // Rival info
-    3968,  // PC buffer A
-    3968,  // PC buffer B
-    3968,  // PC buffer C
-    3968,  // PC buffer D
-    3968,  // PC buffer E
-    3968,  // PC buffer F
-    3968,  // PC buffer G
-    3968,  // PC buffer H
-    2000   // PC buffer I
-};
-
 size_t save_find_section_zero(struct save_block_t* block) {
     for (size_t i = 0; i < SAVE_SECTIONS_PER_BLOCK; i++) {
         if (block->sections[i].signature.section_id == 0) {
@@ -57,12 +40,10 @@ union save_unpacked_t* save_unpack(struct save_block_t* block) {
         struct save_section_t* current_section_source =
             &(block->sections[current_section_id]);
 
-        size_t current_section_size =
-            save_section_size_by_id[current_section_id];
         memcpy(current_section_dest, &(current_section_source->data),
-               current_section_size);
+               SAVE_DATA_BYTES_PER_SECTION);
 
-        current_section_dest += current_section_size;
+        current_section_dest += SAVE_DATA_BYTES_PER_SECTION;
     }
     return save_unpacked;
 }
@@ -74,13 +55,12 @@ int save_repack(struct save_block_t* destination,
     size_t byte_offset = 0;
 
     for (size_t i = 0; i < SAVE_SECTIONS_PER_BLOCK; i++) {
-        size_t bytes_to_copy = save_section_size_by_id[i];
         size_t current_section_offset = (i + offset) % SAVE_SECTIONS_PER_BLOCK;
         struct save_section_t* dest_section =
             &(destination->sections[current_section_offset]);
-        memcpy(&(dest_section->data[0]), &(unpacked_byte_array[byte_offset]),
-               bytes_to_copy);
-        byte_offset += bytes_to_copy;
+        memcpy(dest_section->data, &(unpacked_byte_array[byte_offset]),
+               SAVE_DATA_BYTES_PER_SECTION);
+        byte_offset += SAVE_DATA_BYTES_PER_SECTION;
 
         dest_section->signature.save_index = save_index;
         dest_section->signature.validation_code = SAVE_SECTION_VALIDATION_CODE;

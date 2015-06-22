@@ -24,16 +24,13 @@ int save_check_section_validation_code(struct save_section_t* section) {
 }
 
 int save_check_section_checksum_integrity(struct save_section_t* section) {
-    size_t section_size =
-        save_section_size_by_id[section->signature.section_id];
-    uint16_t checksum = save_checksum(section->data, section_size);
+    uint16_t checksum =
+        save_checksum(section->data, SAVE_DATA_BYTES_PER_SECTION);
 
     if (checksum != section->signature.checksum) {
-        fprintf(stderr,
-                W("Checksum present in section:   %X\n"
-                  "Checksum calculated from data: %X"),
-                section->signature.checksum,
-                checksum);
+        fprintf(stderr, W("Checksum present in section:   %X\n"
+                          "Checksum calculated from data: %X"),
+                section->signature.checksum, checksum);
         return EXIT_FAILURE;
     }
     return EXIT_SUCCESS;
@@ -57,7 +54,7 @@ int save_check_block_integrity(struct save_block_t* block) {
     for (size_t i = 0; i < SAVE_SECTIONS_PER_BLOCK; i++) {
         struct save_section_t* current_section = &(block->sections[i]);
 
-        if(save_check_section_integrity(current_section) == EXIT_FAILURE) {
+        if (save_check_section_integrity(current_section) == EXIT_FAILURE) {
             exit_status = EXIT_FAILURE;
         }
     }
@@ -82,10 +79,8 @@ int save_check_file_integrity(struct save_file_t* file) {
 }
 
 int save_resign_section(struct save_section_t* section) {
-    size_t section_size =
-        save_section_size_by_id[section->signature.section_id];
-    uint16_t checksum = save_checksum(section->data, section_size);
-
+    uint16_t checksum =
+        save_checksum(section->data, SAVE_DATA_BYTES_PER_SECTION);
     section->signature.checksum = checksum;
     return EXIT_SUCCESS;
 }

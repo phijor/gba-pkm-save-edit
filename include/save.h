@@ -22,10 +22,6 @@
 /* Each section contains a validation code */
 #define SAVE_SECTION_VALIDATION_CODE 0x08012025
 
-#define SAVE_UNPACKED_TOTAL 55552
-
-const size_t save_section_size_by_id[SAVE_SECTIONS_PER_BLOCK];
-
 enum save_game_type_t {
     RUBY_SAPPHIRE,
     EMERALD,
