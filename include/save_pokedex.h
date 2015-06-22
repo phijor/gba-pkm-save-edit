@@ -11,7 +11,7 @@ struct save_pokedex_t;
 
 int save_pokedex_search(struct save_pokedex_t* pokedex, uint16_t index);
 
-enum save_pokedex_status_t save_get_pokedex_save_entry(
+enum save_pokedex_status_t save_get_pokedex_entry(
     union save_unpacked_t* save, uint16_t index);
 
 void save_pokedex_basic_set(struct save_pokedex_t* pokedex, uint16_t index);

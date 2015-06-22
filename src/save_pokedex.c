@@ -76,13 +76,15 @@ int save_set_pokedex_entry(union save_unpacked_t* save, uint16_t index,
             exit(EXIT_FAILURE);
     }
     switch (status) {
+        case OWNED:
+            save_pokedex_basic_set(pokedex_owned, index);
+            /* Missing break-statement is important, as every Pokemon that is
+             * owned/caught has to be seen also.
+             */
         case SEEN:
             for (size_t i = 0; i < 3; i++) {
                 save_pokedex_basic_set(pokedex_seen[i], index);
             }
-            break;
-        case OWNED:
-            save_pokedex_basic_set(pokedex_owned, index);
             break;
         case UNSEEN:
             save_pokedex_clear_entry(pokedex_owned, index);
