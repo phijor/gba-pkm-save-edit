@@ -5,7 +5,7 @@
 #include <inttypes.h>
 
 #define I(s) "Info: " s "\n"
-#define W(s) "Warning: " s "\n" 
+#define W(s) "Warning: " s "\n"
 #define E(s) "Error: " s "\n"
 
 /* A save file contains 2 blocks, each on a represents a full game state. */
@@ -60,7 +60,8 @@ union save_unpacked_t;
 size_t save_find_section_zero(struct save_block_t* save_block);
 union save_unpacked_t* save_unpack(struct save_block_t* block);
 int save_repack(struct save_block_t* destination,
-                union save_unpacked_t* unpacked, uint32_t save_index);
+                union save_unpacked_t* unpacked, uint32_t save_index,
+                size_t offset);
 struct save_block_t* save_most_recent_block(struct save_file_t* file);
 enum save_game_type_t save_get_gametype(union save_unpacked_t* save);
 #endif

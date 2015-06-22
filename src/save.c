@@ -68,21 +68,24 @@ union save_unpacked_t* save_unpack(struct save_block_t* block) {
 }
 
 int save_repack(struct save_block_t* destination,
-                union save_unpacked_t* unpacked, uint32_t save_index) {
+                union save_unpacked_t* unpacked, uint32_t save_index,
+                size_t offset) {
     uint8_t* unpacked_byte_array = (uint8_t*)unpacked;
     size_t byte_offset = 0;
 
     for (size_t i = 0; i < SAVE_SECTIONS_PER_BLOCK; i++) {
         size_t bytes_to_copy = save_section_size_by_id[i];
-        memcpy(&(destination->sections[i]), &(unpacked_byte_array[byte_offset]),
+        size_t current_section_offset = (i + offset) % SAVE_SECTIONS_PER_BLOCK;
+        struct save_section_t* dest_section =
+            &(destination->sections[current_section_offset]);
+        memcpy(&(dest_section->data[0]), &(unpacked_byte_array[byte_offset]),
                bytes_to_copy);
         byte_offset += bytes_to_copy;
 
-        destination->sections[i].signature.save_index = save_index;
-        destination->sections[i].signature.validation_code =
-            SAVE_SECTION_VALIDATION_CODE;
-        destination->sections[i].signature.section_id = i;
-        save_resign_section(&(destination->sections[i]));
+        dest_section->signature.save_index = save_index;
+        dest_section->signature.validation_code = SAVE_SECTION_VALIDATION_CODE;
+        dest_section->signature.section_id = i;
+        save_resign_section(dest_section);
     }
     return EXIT_SUCCESS;
 }
@@ -98,10 +101,10 @@ struct save_block_t* save_most_recent_block(struct save_file_t* file) {
 
 enum save_game_type_t save_get_gametype(union save_unpacked_t* save) {
     /* Assume the game is Ruby/Sapphire. For Firered/Leafgreen the location is
-     * the same; Emerald does not have a game_code, instead it's security key 
-     * is stored at this address. 
+     * the same; Emerald does not have a game_code, instead it's security key
+     * is stored at this address.
      */
-    switch(save->rusa.game_code) {
+    switch (save->rusa.game_code) {
         case 0:
             return RUBY_SAPPHIRE;
         case 1:
