@@ -17,8 +17,6 @@ struct __attribute__((packed)) save_ruby_sapphire_items_t {
 };
 
 struct __attribute__((packed)) save_ruby_sapphire_t {
-    //uint8_t data[55552];
-
     struct save_trainer_info_t player;
     uint8_t _0[(0x0019 - 0x0000) - sizeof(struct save_trainer_info_t)];
 
@@ -52,5 +50,6 @@ struct __attribute__((packed)) save_ruby_sapphire_t {
     uint8_t _9[(0x49b8 - 0x22f8) - sizeof(uint16_t)];
 
     struct save_pokedex_t pokedex_seen_c;
+    uint8_t _10[(0xd084 - 0x49b8) - sizeof(struct save_pokedex_t)];
 };
 #endif
