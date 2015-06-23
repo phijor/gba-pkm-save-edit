@@ -21,6 +21,11 @@ enum save_pokedex_status_t save_get_pokedex_entry(union save_unpacked_t* save,
             seen[1] = &(save->rusa.pokedex_seen_b);
             seen[2] = &(save->rusa.pokedex_seen_c);
             break;
+        case FIRERED_LEAFGREEN:
+            seen[0] = &(save->frlg.pokedex_seen_a);
+            seen[1] = &(save->frlg.pokedex_seen_b);
+            seen[2] = &(save->frlg.pokedex_seen_c);
+            break;
         default:
             fprintf(stderr, E("Game type not implemented."));
             exit(EXIT_FAILURE);
@@ -39,6 +44,9 @@ enum save_pokedex_status_t save_get_pokedex_entry(union save_unpacked_t* save,
     switch (game_type) {
         case RUBY_SAPPHIRE:
             owned = &(save->rusa.pokedex_owned);
+            break;
+        case FIRERED_LEAFGREEN:
+            owned = &(save->frlg.pokedex_owned);
             break;
         default:
             fprintf(stderr, E("Game type not implemented."));
@@ -70,6 +78,12 @@ int save_set_pokedex_entry(union save_unpacked_t* save, uint16_t index,
             pokedex_seen[1] = &(save->rusa.pokedex_seen_b);
             pokedex_seen[2] = &(save->rusa.pokedex_seen_c);
             pokedex_owned = &(save->rusa.pokedex_owned);
+            break;
+        case FIRERED_LEAFGREEN:
+            pokedex_seen[0] = &(save->frlg.pokedex_seen_a);
+            pokedex_seen[1] = &(save->frlg.pokedex_seen_b);
+            pokedex_seen[2] = &(save->frlg.pokedex_seen_c);
+            pokedex_owned = &(save->frlg.pokedex_owned);
             break;
         default:
             fprintf(stderr, E("Game type not implemented."));
