@@ -30,7 +30,10 @@ struct __attribute__((packed)) save_ruby_sapphire_t {
     struct save_pokedex_t pokedex_seen_a;
     uint8_t _3[(0x00ac - 0x005c) - sizeof(struct save_pokedex_t)];
 
-    uint32_t game_code;
+    union {
+        uint32_t game_code;
+        uint32_t security_key;
+    };
     uint8_t _4[(0x1228 - 0x00ac) - sizeof(uint32_t)];
 
     uint32_t team_size;
