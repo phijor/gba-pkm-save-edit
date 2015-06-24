@@ -1,5 +1,6 @@
 bin/
 build/
+doc/
 saves/
 *.sav
 .ycm_extra_conf.py
