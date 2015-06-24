@@ -4,7 +4,7 @@
 #include <inttypes.h>
 
 #include "save_common.h"
-#include "save_pokedex_types.h"
+#include "save_pokedex.h"
 #include "save_pokemon.h"
 #include "save_boxes.h"
 
