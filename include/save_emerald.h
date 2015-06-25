@@ -49,10 +49,10 @@ struct save_emerald_t {
     uint8_t _9[(0x2490 - 0x2302) - sizeof(uint8_t)];
 
     uint16_t pokedex_national_unlocked_c;
-    uint8_t _10[(0x4c70 - 0x2490) - sizeof(uint16_t)];
+    uint8_t _10[(0x4c74 - 0x2490) - sizeof(uint16_t)];
 
     struct save_pokedex_t pokedex_seen_c;
-    uint8_t _11[(0x4fc4 - 0x4c70) - 8*sizeof(uint8_t)];
+    uint8_t _11[(0x4fc4 - 0x4c74) - 8*sizeof(uint8_t)];
 
     struct save_box_data_t boxes;
     //last byte at 0xdf58
