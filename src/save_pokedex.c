@@ -26,6 +26,11 @@ enum save_pokedex_status_t save_get_pokedex_entry(union save_unpacked_t* save,
             seen[1] = &(save->frlg.pokedex_seen_b);
             seen[2] = &(save->frlg.pokedex_seen_c);
             break;
+        case EMERALD:
+            seen[0] = &(save->frlg.pokedex_seen_a);
+            seen[1] = &(save->frlg.pokedex_seen_b);
+            seen[2] = &(save->frlg.pokedex_seen_c);
+            break;
         default:
             fprintf(stderr, E("Game type not implemented."));
             exit(EXIT_FAILURE);
@@ -84,6 +89,12 @@ int save_set_pokedex_entry(union save_unpacked_t* save, uint16_t index,
             pokedex_seen[1] = &(save->frlg.pokedex_seen_b);
             pokedex_seen[2] = &(save->frlg.pokedex_seen_c);
             pokedex_owned = &(save->frlg.pokedex_owned);
+            break;
+        case EMERALD:
+            pokedex_seen[0] = &(save->emer.pokedex_seen_a);
+            pokedex_seen[1] = &(save->emer.pokedex_seen_b);
+            pokedex_seen[2] = &(save->emer.pokedex_seen_c);
+            pokedex_owned = &(save->emer.pokedex_owned);
             break;
         default:
             fprintf(stderr, E("Game type not implemented."));
