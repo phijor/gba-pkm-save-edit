@@ -4,6 +4,7 @@
 #include <inttypes.h>
 
 #define SAVE_DEX_BYTE_SIZE 49
+#define	SAVE_DEX_SIZE 386
 
 enum save_pokedex_status_t {
     UNSEEN,
