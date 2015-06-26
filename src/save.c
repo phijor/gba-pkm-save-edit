@@ -24,7 +24,7 @@ union save_unpacked_t* save_unpack(struct save_block_t* block) {
     }
 
     union save_unpacked_t* save_unpacked =
-        (union save_unpacked_t*)malloc(sizeof(save_unpacked));
+        (union save_unpacked_t*)malloc(SAVE_DATA_BYTES_PER_SECTION * SAVE_SECTIONS_PER_BLOCK);
 
     if (save_unpacked == NULL) {
         fprintf(
