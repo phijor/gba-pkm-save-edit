@@ -27,9 +27,9 @@ enum save_pokedex_status_t save_get_pokedex_entry(union save_unpacked_t* save,
             seen[2] = &(save->frlg.pokedex_seen_c);
             break;
         case EMERALD:
-            seen[0] = &(save->frlg.pokedex_seen_a);
-            seen[1] = &(save->frlg.pokedex_seen_b);
-            seen[2] = &(save->frlg.pokedex_seen_c);
+            seen[0] = &(save->emer.pokedex_seen_a);
+            seen[1] = &(save->emer.pokedex_seen_b);
+            seen[2] = &(save->emer.pokedex_seen_c);
             break;
         default:
             fprintf(stderr, E("Game type not implemented."));
