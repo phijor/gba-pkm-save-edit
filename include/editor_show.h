@@ -4,6 +4,7 @@
 #define BIT(x) (1 << x)
 #define EDITOR_TRAINER_ID BIT(1)
 #define EDITOR_TRAINER_TIME BIT(2)
+#define EDITOR_TRAINER_NAME BIT(3)
 #define EDITOR_TRAINER_ALL ~0
 
 union save_unpacked_t;

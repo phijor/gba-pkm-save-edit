@@ -55,11 +55,16 @@ int editor_show_trainer(union save_unpacked_t* save, int argc,
                 time->seconds,
                 time->frames);
     }
+    if (info_flags & EDITOR_TRAINER_NAME) {
+        char name[8] = {'\0'};
+        save_get_name(save, name);
+        fprintf(stdout, "Name: %s\n", name);
+    }
     return EXIT_SUCCESS;
 }
 
-int editor_show_money(union save_unpacked_t* save, int argc, char* const* argv) {
-        fprintf(stdout,
-                "Money: %u Poké$\n", save_get_money(save));
-        return EXIT_SUCCESS;
+int editor_show_money(union save_unpacked_t* save, int argc,
+                      char* const* argv) {
+    fprintf(stdout, "Money: %u Poké$\n", save_get_money(save));
+    return EXIT_SUCCESS;
 }
