@@ -4,6 +4,7 @@
 #include "save_trainer.h"
 #include "save.h"
 #include "save_unpacked.h"
+#include "save_char_encoding.h"
 
 uint32_t save_get_money(union save_unpacked_t* save) {
     enum save_game_type_t game_type = save_get_gametype(save);
@@ -64,4 +65,28 @@ const struct save_time_played_t* save_get_time_played(
             fprintf(stderr, E("Game type not implemented."));
             exit(EXIT_FAILURE);
     }
+}
+
+int save_get_name(union save_unpacked_t* save, char name[8]) {
+    uint8_t* name_encoded = NULL;
+    enum save_game_type_t game_type = save_get_gametype(save);
+    switch (game_type) {
+        case RUBY_SAPPHIRE:
+            name_encoded = save->rusa.player.name;
+            break;
+        case FIRERED_LEAFGREEN:
+            name_encoded = save->frlg.player.name;
+            break;
+        case EMERALD:
+            name_encoded = save->emer.player.name;
+            break;
+        default:
+            fprintf(stderr, E("Game type not implemented."));
+            exit(EXIT_FAILURE);
+    }
+    if (save_string_decode(name, name_encoded) > 8) {
+        fprintf(stderr, W("Incorrectly terminated name."));
+        return EXIT_FAILURE;
+    }
+    return EXIT_SUCCESS;
 }

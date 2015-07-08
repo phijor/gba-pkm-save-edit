@@ -14,4 +14,6 @@ struct save_trainer_id_t save_get_trainer_id(union save_unpacked_t* save);
 const struct save_time_played_t* save_get_time_played(
     union save_unpacked_t* save);
 
+int save_get_name(union save_unpacked_t* save, char name[8]);
+
 #endif
