@@ -3,6 +3,11 @@
 
 #include <inttypes.h>
 
+enum save_player_gender_t {
+    MALE = 0,
+    FEMALE = 1,
+};
+
 struct save_trainer_id_t {
     uint16_t TID;
     uint16_t SID;
