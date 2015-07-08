@@ -16,7 +16,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#pragma	GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wunused-variable"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -41,8 +42,9 @@ int main(int argc, char* const* argv) {
 
     struct save_block_t* most_recent = save_most_recent_block(&save);
     union save_unpacked_t* unpacked = save_unpack(most_recent);
-    
+
     editor(unpacked, argc - 1, &(argv[1]));
+    free(unpacked);
 
     return EXIT_SUCCESS;
 }
