@@ -5,11 +5,15 @@
 
 #include "editor_show.h"
 #include "editor.h"
+#include "save_common.h"
 #include "save_pokedex.h"
+#include "save_trainer.h"
 
 int editor_show(union save_unpacked_t* save, int argc, char* const* argv) {
     const struct editor_command_t commands[] = {
         {.name = "pokedex", .exec = &editor_show_pokedex},
+        {.name = "trainer", .exec = &editor_show_trainer},
+        {.name = "money",   .exec = &editor_show_money},
         {.name = NULL, .exec = NULL},
     };
     return editor_call(save, commands, argc, argv);
@@ -30,4 +34,32 @@ int editor_show_pokedex(union save_unpacked_t* save, int argc,
         fprintf(stdout, "#%03lu: %s\n", i, status_string[status]);
     }
     return EXIT_SUCCESS;
+}
+
+int editor_show_trainer(union save_unpacked_t* save, int argc,
+                        char* const* argv) {
+    uint32_t info_flags = EDITOR_TRAINER_ALL;
+    if (info_flags & EDITOR_TRAINER_ID) {
+        struct save_trainer_id_t id = save_get_trainer_id(save);
+        fprintf(stdout,
+                "TID: %u\n"
+                "SID: %u\n",
+                id.TID, id.SID);
+    }
+    if (info_flags & EDITOR_TRAINER_TIME) {
+        const struct save_time_played_t* time = save_get_time_played(save);
+        fprintf(stdout,
+                "Time played: %02u:%02u:%02u/%02u\n",
+                time->hours,
+                time->minutes,
+                time->seconds,
+                time->frames);
+    }
+    return EXIT_SUCCESS;
+}
+
+int editor_show_money(union save_unpacked_t* save, int argc, char* const* argv) {
+        fprintf(stdout,
+                "Money: %u Poké$\n", save_get_money(save));
+        return EXIT_SUCCESS;
 }
