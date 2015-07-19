@@ -2,6 +2,7 @@
 #define SAVE_POKEMON_H
 
 #include <inttypes.h>
+#include "save_common.h"
 
 union save_pokemon_data_t {
     struct {
@@ -28,19 +29,19 @@ union save_pokemon_data_t {
         uint8_t smartness;
         uint8_t toughness;
         uint8_t feel;
-    };
+    } condition;
     struct {
         uint8_t pokerus;
         uint8_t met_location;
         uint16_t origin_info;
         uint8_t iv_egg_ability;
         uint32_t ribbons_obedience;
-    };
+    } misc;
 };
 
-struct save_boxed_pokemon_t {
+struct save_pokemon_boxed_t {
     uint32_t PID;
-    uint32_t OT_ID;
+    struct save_trainer_id_t OT_ID;
     uint8_t nickname[10];
     uint16_t language;
     uint8_t OT_name[7];
@@ -51,7 +52,7 @@ struct save_boxed_pokemon_t {
 };
 
 struct save_pokemon_t {
-    struct save_boxed_pokemon_t data;
+    struct save_pokemon_boxed_t boxed;
     uint32_t status_condition;
     uint8_t level;
     uint8_t pokerus_remaining;
