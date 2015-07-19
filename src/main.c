@@ -24,10 +24,7 @@
 #include <getopt.h>
 
 #include "save_integrity.h"
-#include "save_ruby_sapphire.h"
 #include "editor.h"
-
-#define arrsize(arr) (sizeof(arr) / sizeof(arr[0]))
 
 int main(int argc, char* const* argv) {
     FILE* input = stdin;
