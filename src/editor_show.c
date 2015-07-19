@@ -40,24 +40,26 @@ int editor_show_trainer(union save_unpacked_t* save, int argc,
                         char* const* argv) {
     uint32_t info_flags = EDITOR_TRAINER_ALL;
     if (info_flags & EDITOR_TRAINER_ID) {
-        struct save_trainer_id_t id = save_get_trainer_id(save);
+        struct save_trainer_id_t id;
+        save_get_trainer_id(&id, save);
         fprintf(stdout,
                 "TID: %u\n"
                 "SID: %u\n",
                 id.TID, id.SID);
     }
     if (info_flags & EDITOR_TRAINER_TIME) {
-        const struct save_time_played_t* time = save_get_time_played(save);
+        struct save_time_played_t time;
+        save_get_time_played(&time, save);
         fprintf(stdout,
                 "Time played: %02u:%02u:%02u/%02u\n",
-                time->hours,
-                time->minutes,
-                time->seconds,
-                time->frames);
+                time.hours,
+                time.minutes,
+                time.seconds,
+                time.frames);
     }
     if (info_flags & EDITOR_TRAINER_NAME) {
         char name[8] = {'\0'};
-        save_get_name(save, name);
+        save_get_name(name, save);
         fprintf(stdout, "Name: %s\n", name);
     }
     return EXIT_SUCCESS;

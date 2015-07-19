@@ -36,38 +36,45 @@ enum save_player_gender_t save_get_trainer_gender(union save_unpacked_t* save) {
     }
 }
 
-struct save_trainer_id_t save_get_trainer_id(union save_unpacked_t* save) {
+void save_get_trainer_id(struct save_trainer_id_t* id,
+                         union save_unpacked_t* save) {
     enum save_game_type_t game_type = save_get_gametype(save);
     switch (game_type) {
         case RUBY_SAPPHIRE:
-            return save->rusa.player.id;
+            *id = save->rusa.player.id;
+            break;
         case FIRERED_LEAFGREEN:
-            return save->frlg.player.id;
+            *id = save->frlg.player.id;
+            break;
         case EMERALD:
-            return save->emer.player.id;
+            *id = save->emer.player.id;
+            break;
         default:
             fprintf(stderr, E("Game type not implemented."));
             exit(EXIT_FAILURE);
     }
 }
 
-const struct save_time_played_t* save_get_time_played(
-    union save_unpacked_t* save) {
+void save_get_time_played(struct save_time_played_t* time,
+                          union save_unpacked_t* save) {
     enum save_game_type_t game_type = save_get_gametype(save);
     switch (game_type) {
         case RUBY_SAPPHIRE:
-            return &(save->rusa.player.time_played);
+            *time = save->rusa.player.time_played;
+            break;
         case FIRERED_LEAFGREEN:
-            return &(save->frlg.player.time_played);
+            *time = save->frlg.player.time_played;
+            break;
         case EMERALD:
-            return &(save->emer.player.time_played);
+            *time = save->emer.player.time_played;
+            break;
         default:
             fprintf(stderr, E("Game type not implemented."));
             exit(EXIT_FAILURE);
     }
 }
 
-int save_get_name(union save_unpacked_t* save, char name[8]) {
+int save_get_name(char name[8], union save_unpacked_t* save) {
     uint8_t* name_encoded = NULL;
     enum save_game_type_t game_type = save_get_gametype(save);
     switch (game_type) {
