@@ -65,4 +65,8 @@ struct save_pokemon_t {
     uint16_t special_defense;
 };
 
+int save_pokemon_check_data_integrity(struct save_pokemon_boxed_t* pokemon);
+uint32_t save_pokemon_get_crypt_key(struct save_pokemon_boxed_t* pokemon);
+void save_pokemon_xor_crypt(struct save_pokemon_boxed_t* pokemon);
+
 #endif
