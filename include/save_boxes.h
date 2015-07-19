@@ -9,7 +9,7 @@
 
 struct save_box_data_t {
     uint32_t current;
-    struct save_boxed_pokemon_t pokemon[SAVE_BOXES][30];
+    struct save_pokemon_boxed_t pokemon[SAVE_BOXES][30];
     uint8_t names[SAVE_BOXES][9];
     uint8_t wallpapers[SAVE_BOXES];
 };
