@@ -3,7 +3,7 @@
 
 #include <inttypes.h>
 
-union save_pokemon_encrypted_data_t {
+union save_pokemon_data_t {
     struct {
         uint16_t species;
         uint16_t item_held;
@@ -47,7 +47,7 @@ struct save_boxed_pokemon_t {
     uint8_t markings;
     uint16_t checksum;
     uint16_t _0[1];
-    union save_pokemon_encrypted_data_t data[4];
+    union save_pokemon_data_t data[4];
 };
 
 struct save_pokemon_t {
