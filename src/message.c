@@ -90,9 +90,10 @@ int message(const char* const format_string, const char* const message, ...) {
             return EXIT_FAILURE;
     }
 
-    fprintf(current_output, "%*s%s\n",
+    fprintf(current_output, "%*s%s",
             message_indent_level * MSG_SPACES_PER_INDENT, "", prefixes[format.type]);
     vfprintf(current_output, message, args);
+    va_end(args);
 
     message_indent(format.indent);
     return EXIT_SUCCESS;

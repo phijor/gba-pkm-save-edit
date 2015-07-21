@@ -43,10 +43,8 @@ int editor_show_trainer(union save_unpacked_t* save, int argc,
     if (info_flags & EDITOR_TRAINER_ID) {
         struct save_trainer_id_t id;
         save_get_trainer_id(&id, save);
-        message("",
-                "TID: %u\n"
-                "SID: %u\n",
-                id.TID, id.SID);
+        message("", "TID: %u\n", id.TID);
+        message("", "SID: %u\n", id.SID);
     }
     if (info_flags & EDITOR_TRAINER_TIME) {
         struct save_time_played_t time;
