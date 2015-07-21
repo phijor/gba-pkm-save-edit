@@ -3,6 +3,34 @@
 
 #include "save_pokemon.h"
 
+const struct save_pokemon_data_permutation_t save_pokemon_data_permutations[24] = {
+  // G  A  E  M
+    {0, 1, 2, 3},
+    {0, 1, 3, 2},
+    {0, 2, 1, 3},
+    {0, 2, 3, 1},
+    {0, 3, 1, 2},
+    {0, 3, 2, 1},
+    {1, 0, 2, 3},
+    {1, 0, 3, 2},
+    {2, 0, 1, 3},
+    {3, 0, 1, 2},
+    {2, 0, 3, 1},
+    {3, 0, 2, 1},
+    {1, 2, 0, 3},
+    {1, 3, 0, 2},
+    {2, 1, 0, 3},
+    {3, 1, 0, 2},
+    {2, 3, 0, 1},
+    {3, 2, 0, 1},
+    {1, 2, 3, 0},
+    {1, 3, 2, 0},
+    {2, 1, 3, 0},
+    {3, 1, 2, 0},
+    {2, 3, 1, 0},
+    {3, 2, 1, 0},
+};
+
 uint32_t save_pokemon_get_crypt_key(struct save_pokemon_boxed_t* pokemon) {
     /* interpret OT's whole ID (public and secret) as one 32-bit number and XOR
      * it with the Pokémons PID to get the de-/encryption key needed to
@@ -21,6 +49,20 @@ void save_pokemon_xor_crypt(struct save_pokemon_boxed_t* pokemon) {
     for (size_t i = 0; i < raw_size; i++) {
         raw_data[i] ^= key;
     }
+}
+
+void save_pokemon_order_data(struct save_pokemon_boxed_t* pokemon,
+                             struct save_pokemon_data_ordered_t* odered) {
+
+    union save_pokemon_data_t* data = pokemon->data;
+
+    const struct save_pokemon_data_permutation_t* current_permutation =
+        &save_pokemon_data_permutations[pokemon->PID % 24];
+
+    odered->growth = &data[current_permutation->growth].growth;
+    odered->attacks = &data[current_permutation->attacks].attacks;
+    odered->condition = &data[current_permutation->condition].condition;
+    odered->misc = &data[current_permutation->misc].misc;
 }
 
 int save_pokemon_check_data_integrity(struct save_pokemon_boxed_t* pokemon) {

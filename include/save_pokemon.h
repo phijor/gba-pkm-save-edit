@@ -1,8 +1,19 @@
 #ifndef SAVE_POKEMON_H
 #define SAVE_POKEMON_H
 
+#include <stddef.h>
 #include <inttypes.h>
 #include "save_common.h"
+
+struct save_pokemon_data_permutation_t {
+    size_t growth;
+    size_t attacks;
+    size_t condition;
+    size_t misc;
+};
+
+extern const struct save_pokemon_data_permutation_t
+    save_pokemon_data_permutations[24];
 
 struct save_pokemon_data_growth_t {
     uint16_t species;
@@ -47,6 +58,13 @@ union save_pokemon_data_t {
     struct save_pokemon_data_misc_t misc;
 };
 
+struct save_pokemon_data_ordered_t {
+    struct save_pokemon_data_growth_t* growth;
+    struct save_pokemon_data_attacks_t* attacks;
+    struct save_pokemon_data_condition_t* condition;
+    struct save_pokemon_data_misc_t* misc;
+};
+
 struct save_pokemon_boxed_t {
     uint32_t PID;
     struct save_trainer_id_t OT_ID;
@@ -73,8 +91,10 @@ struct save_pokemon_t {
     uint16_t special_defense;
 };
 
-int save_pokemon_check_data_integrity(struct save_pokemon_boxed_t* pokemon);
 uint32_t save_pokemon_get_crypt_key(struct save_pokemon_boxed_t* pokemon);
 void save_pokemon_xor_crypt(struct save_pokemon_boxed_t* pokemon);
+void save_pokemon_order_data(struct save_pokemon_boxed_t* pokemon,
+                             struct save_pokemon_data_ordered_t* odered);
+int save_pokemon_check_data_integrity(struct save_pokemon_boxed_t* pokemon);
 
 #endif
