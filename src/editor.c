@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <assert.h>
 
+#include "message.h"
 #include "editor.h"
 #include "editor_show.h"
 #include "editor_dump.h"
@@ -44,11 +45,11 @@ const struct editor_command_t* editor_parse(
 
 void editor_print_commands(const struct editor_command_t commands[]) {
     for (size_t i = 0; commands[i].name != NULL; i++) {
-        fprintf(stderr, "%s\n", commands[i].name);
+        message("", "%s\n", commands[i].name);
     }
 }
 void editor_error_unknown_command(const struct editor_command_t commands[],
                                   const char unknown[]) {
-    fprintf(stderr, "Unknown command \"%s\". Valid commands are:\n", unknown);
+    message("E", "Unknown command \"%s\". Valid commands are:\n", unknown);
     editor_print_commands(commands);
 }

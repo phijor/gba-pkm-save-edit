@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#include "message.h"
 #include "editor_show.h"
 #include "editor.h"
 #include "save_common.h"
@@ -31,7 +32,7 @@ int editor_show_pokedex(union save_unpacked_t* save, int argc,
         if (status == POKEDEX_ERROR) {
             return EXIT_FAILURE;
         }
-        fprintf(stdout, "#%03lu: %s\n", i, status_string[status]);
+        message("", "#%03lu: %s\n", i, status_string[status]);
     }
     return EXIT_SUCCESS;
 }
@@ -42,7 +43,7 @@ int editor_show_trainer(union save_unpacked_t* save, int argc,
     if (info_flags & EDITOR_TRAINER_ID) {
         struct save_trainer_id_t id;
         save_get_trainer_id(&id, save);
-        fprintf(stdout,
+        message("",
                 "TID: %u\n"
                 "SID: %u\n",
                 id.TID, id.SID);
@@ -60,13 +61,13 @@ int editor_show_trainer(union save_unpacked_t* save, int argc,
     if (info_flags & EDITOR_TRAINER_NAME) {
         char name[8] = {'\0'};
         save_get_name(name, save);
-        fprintf(stdout, "Name: %s\n", name);
+        message("", "Name: %s\n", name);
     }
     return EXIT_SUCCESS;
 }
 
 int editor_show_money(union save_unpacked_t* save, int argc,
                       char* const* argv) {
-    fprintf(stdout, "Money: %u Poké$\n", save_get_money(save));
+    message("", "Money: %u Poké$\n", save_get_money(save));
     return EXIT_SUCCESS;
 }

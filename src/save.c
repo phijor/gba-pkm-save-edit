@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 
+#include "message.h"
 #include "save.h"
 #include "save_integrity.h"
 #include "save_unpacked.h"
@@ -19,7 +20,7 @@ union save_unpacked_t* save_unpack(struct save_block_t* block) {
     size_t zero_section_offset = save_find_section_zero(block);
 
     if (zero_section_offset >= SAVE_SECTIONS_PER_BLOCK) {
-        fprintf(stderr, E("Could not locate first section of block"));
+        message("E", "Could not locate first section of block.");
         return NULL;
     }
 
@@ -27,9 +28,8 @@ union save_unpacked_t* save_unpack(struct save_block_t* block) {
         (union save_unpacked_t*)malloc(SAVE_DATA_BYTES_PER_SECTION * SAVE_SECTIONS_PER_BLOCK);
 
     if (save_unpacked == NULL) {
-        fprintf(
-            stderr,
-            E("Could not unpack save structure. Memory allocation failed."));
+        message("E",
+                "Could not unpack save structure. Memory allocation failed.");
         return NULL;
     }
     void* current_section_dest = (void*)save_unpacked;

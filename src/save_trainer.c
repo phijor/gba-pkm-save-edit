@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "message.h"
 #include "save_trainer.h"
 #include "save.h"
 #include "save_unpacked.h"
@@ -16,7 +17,7 @@ uint32_t save_get_money(union save_unpacked_t* save) {
         case EMERALD:
             return save->emer.money ^ save->emer.security_key;
         default:
-            fprintf(stderr, E("Game type not implemented."));
+            message("E", "Game type not implemented.");
             exit(EXIT_FAILURE);
     }
 }
@@ -31,7 +32,7 @@ enum save_player_gender_t save_get_trainer_gender(union save_unpacked_t* save) {
         case EMERALD:
             return save->emer.player.gender;
         default:
-            fprintf(stderr, E("Game type not implemented."));
+            message("E", "Game type not implemented.");
             exit(EXIT_FAILURE);
     }
 }
@@ -50,7 +51,7 @@ void save_get_trainer_id(struct save_trainer_id_t* id,
             *id = save->emer.player.id;
             break;
         default:
-            fprintf(stderr, E("Game type not implemented."));
+            message("E", "Game type not implemented.");
             exit(EXIT_FAILURE);
     }
 }
@@ -69,7 +70,7 @@ void save_get_time_played(struct save_time_played_t* time,
             *time = save->emer.player.time_played;
             break;
         default:
-            fprintf(stderr, E("Game type not implemented."));
+            message("E", "Game type not implemented.");
             exit(EXIT_FAILURE);
     }
 }
@@ -88,11 +89,11 @@ int save_get_name(char name[8], union save_unpacked_t* save) {
             name_encoded = save->emer.player.name;
             break;
         default:
-            fprintf(stderr, E("Game type not implemented."));
+            message("E", "Game type not implemented.");
             exit(EXIT_FAILURE);
     }
     if (save_string_decode(name, name_encoded) > 8) {
-        fprintf(stderr, W("Incorrectly terminated name."));
+        message("W", "Incorrectly terminated name.");
         return EXIT_FAILURE;
     }
     return EXIT_SUCCESS;

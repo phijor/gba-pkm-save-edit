@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <assert.h>
 
+#include "message.h"
 #include "save_pokemon.h"
 
 #define arrsize(a) (sizeof(a) / sizeof(a[0]))
@@ -83,6 +84,9 @@ int save_pokemon_check_data_integrity(struct save_pokemon_boxed_t* pokemon) {
     save_pokemon_xor_crypt(pokemon);
 
     if (checksum != pokemon->checksum) {
+        message("W+", "Pokémon checksum-mismatch:");
+        message("",  "Checksum calculated:   %u", checksum);
+        message("-", "Checksum in save file: %u", pokemon->checksum);
         return EXIT_FAILURE;
     }
     return EXIT_SUCCESS;
