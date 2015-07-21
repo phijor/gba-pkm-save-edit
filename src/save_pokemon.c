@@ -84,9 +84,9 @@ int save_pokemon_check_data_integrity(struct save_pokemon_boxed_t* pokemon) {
     save_pokemon_xor_crypt(pokemon);
 
     if (checksum != pokemon->checksum) {
-        message("W+", "Pokémon checksum-mismatch:");
-        message("",  "Checksum calculated:   %u", checksum);
-        message("-", "Checksum in save file: %u", pokemon->checksum);
+        message("W+", "Pokémon checksum-mismatch:\n");
+        message("",  "Checksum calculated:   %u\n", checksum);
+        message("-", "Checksum in save file: %u\n", pokemon->checksum);
         return EXIT_FAILURE;
     }
     return EXIT_SUCCESS;

@@ -33,10 +33,10 @@ int main(int argc, char* const* argv) {
     struct save_file_t save;
     fread(&save, sizeof(save), 1, input);
     if (save_check_file_integrity(&save) == EXIT_FAILURE) {
-        message("E", "Save file seems to be corrupt.");
+        message("E", "Save file seems to be corrupt.\n");
         exit(EXIT_FAILURE);
     }
-    message("I", "Save file passed integrity-test.");
+    message("I", "Save file passed integrity-test.\n");
 
     struct save_block_t* most_recent = save_most_recent_block(&save);
     union save_unpacked_t* unpacked = save_unpack(most_recent);

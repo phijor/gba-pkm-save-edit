@@ -14,7 +14,7 @@ int editor_dump(union save_unpacked_t* save, int argc, char* const* argv) {
         message("E", "Missing file name.\n");
         dump_file_name = "dump.sav.unpacked";
     }
-    message("I", "Writing to \'%s\'.", dump_file_name);
+    message("I", "Writing to \'%s\'.\n", dump_file_name);
 
     FILE* dump_file = fopen(dump_file_name, "w");
     fwrite(save, sizeof(union save_unpacked_t), 1, dump_file);

@@ -29,8 +29,8 @@ int save_check_section_checksum_integrity(struct save_section_t* section) {
         save_checksum(section->data, SAVE_DATA_BYTES_PER_SECTION);
 
     if (checksum != section->signature.checksum) {
-        message("I", "Checksum present in section:   %X", section->signature.checksum);
-        message("I", "Checksum calculated from data: %X", checksum);
+        message("I", "Checksum present in section:   %X\n", section->signature.checksum);
+        message("I", "Checksum calculated from data: %X\n", checksum);
         return EXIT_FAILURE;
     }
     return EXIT_SUCCESS;
@@ -38,7 +38,7 @@ int save_check_section_checksum_integrity(struct save_section_t* section) {
 
 int save_check_section_integrity(struct save_section_t* section) {
     if (save_check_section_checksum_integrity(section) == EXIT_FAILURE) {
-        message("W", "Checksum of section with ID %d seems to be incorrect",
+        message("W", "Checksum of section with ID %d seems to be incorrect\n",
                 section->signature.section_id);
         return EXIT_FAILURE;
     }
@@ -69,7 +69,7 @@ int save_check_file_integrity(struct save_file_t* file) {
         if (save_check_block_integrity(current_block) == EXIT_FAILURE) {
             exit_status = EXIT_FAILURE;
             message("W",
-                    "One ore more sections in block %ld seem to be corrupted",
+                    "One ore more sections in block %ld seem to be corrupted\n",
                     i);
         }
     }

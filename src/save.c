@@ -20,7 +20,7 @@ union save_unpacked_t* save_unpack(struct save_block_t* block) {
     size_t zero_section_offset = save_find_section_zero(block);
 
     if (zero_section_offset >= SAVE_SECTIONS_PER_BLOCK) {
-        message("E", "Could not locate first section of block.");
+        message("E", "Could not locate first section of block.\n");
         return NULL;
     }
 
@@ -29,7 +29,7 @@ union save_unpacked_t* save_unpack(struct save_block_t* block) {
 
     if (save_unpacked == NULL) {
         message("E",
-                "Could not unpack save structure. Memory allocation failed.");
+                "Could not unpack save structure. Memory allocation failed.\n");
         return NULL;
     }
     void* current_section_dest = (void*)save_unpacked;
