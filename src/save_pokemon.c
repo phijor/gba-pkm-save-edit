@@ -3,7 +3,9 @@
 
 #include "save_pokemon.h"
 
-const struct save_pokemon_data_permutation_t save_pokemon_data_permutations[24] = {
+#define arrsize(a) (sizeof(a) / sizeof(a[0]))
+
+const struct save_pokemon_data_permutation_t save_pokemon_data_permutations[] = {
   // G  A  E  M
     {0, 1, 2, 3},
     {0, 1, 3, 2},
@@ -53,11 +55,12 @@ void save_pokemon_xor_crypt(struct save_pokemon_boxed_t* pokemon) {
 
 void save_pokemon_order_data(struct save_pokemon_boxed_t* pokemon,
                              struct save_pokemon_data_ordered_t* odered) {
-
     union save_pokemon_data_t* data = pokemon->data;
 
+    size_t permutation_index =
+        pokemon->PID % arrsize(save_pokemon_data_permutations);
     const struct save_pokemon_data_permutation_t* current_permutation =
-        &save_pokemon_data_permutations[pokemon->PID % 24];
+        &save_pokemon_data_permutations[permutation_index];
 
     odered->growth = &data[current_permutation->growth].growth;
     odered->attacks = &data[current_permutation->attacks].attacks;
