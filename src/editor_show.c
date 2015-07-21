@@ -51,7 +51,7 @@ int editor_show_trainer(union save_unpacked_t* save, int argc,
     if (info_flags & EDITOR_TRAINER_TIME) {
         struct save_time_played_t time;
         save_get_time_played(&time, save);
-        fprintf(stdout,
+        message("",
                 "Time played: %02u:%02u:%02u/%02u\n",
                 time.hours,
                 time.minutes,
