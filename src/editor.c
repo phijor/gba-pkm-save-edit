@@ -42,10 +42,13 @@ const struct editor_command_t* editor_parse(
     return NULL;
 }
 
-void editor_error_unknown_command(const struct editor_command_t commands[],
-                                  const char unknown[]) {
-    fprintf(stderr, "Unknown command \"%s\". Valid commands are:\n", unknown);
+void editor_print_commands(const struct editor_command_t commands[]) {
     for (size_t i = 0; commands[i].name != NULL; i++) {
         fprintf(stderr, "%s\n", commands[i].name);
     }
+}
+void editor_error_unknown_command(const struct editor_command_t commands[],
+                                  const char unknown[]) {
+    fprintf(stderr, "Unknown command \"%s\". Valid commands are:\n", unknown);
+    editor_print_commands(commands);
 }
