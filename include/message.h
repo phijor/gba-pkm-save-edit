@@ -36,6 +36,6 @@ void message_set_output(FILE* output);
 void message_set_error(FILE* error);
 
 int message_indent(int ammount);
-int message(const char* const format, const char* const message);
+int message(const char* const format, const char* const message, ...);
 
 #endif

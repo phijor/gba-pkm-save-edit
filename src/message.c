@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <assert.h>
+#include <stdarg.h>
 
 #include "message.h"
 
@@ -50,7 +51,10 @@ int message_parse_format(const char* const format_string, struct message_format*
     return EXIT_SUCCESS;
 }
 
-int message(const char* const format_string, const char* const message) {
+int message(const char* const format_string, const char* const message, ...) {
+    va_list args;
+    va_start(args, message);
+
     if (message_output == NULL) {
         message_set_output(stdout);
     }
@@ -86,9 +90,9 @@ int message(const char* const format_string, const char* const message) {
             return EXIT_FAILURE;
     }
 
-    fprintf(current_output, "%*s%s%s\n",
-            message_indent_level * MSG_SPACES_PER_INDENT, "", prefixes[format.type],
-            message);
+    fprintf(current_output, "%*s%s\n",
+            message_indent_level * MSG_SPACES_PER_INDENT, "", prefixes[format.type]);
+    vfprintf(current_output, message, args);
 
     message_indent(format.indent);
     return EXIT_SUCCESS;
