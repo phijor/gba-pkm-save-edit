@@ -4,39 +4,47 @@
 #include <inttypes.h>
 #include "save_common.h"
 
+struct save_pokemon_data_growth_t {
+    uint16_t species;
+    uint16_t item_held;
+    uint32_t experience_points;
+    uint8_t pp_bonuses;
+    uint8_t friendship;
+};
+
+struct save_pokemon_data_attacks_t {
+    uint16_t moves[4];
+    uint8_t pp_ups[4];
+};
+
+struct save_pokemon_data_condition_t {
+    uint8_t ev_hp;
+    uint8_t ev_atk;
+    uint8_t ev_def;
+    uint8_t ev_spe;
+    uint8_t ev_spa;
+    uint8_t ev_spd;
+    uint8_t coolness;
+    uint8_t beauty;
+    uint8_t cuteness;
+    uint8_t smartness;
+    uint8_t toughness;
+    uint8_t feel;
+};
+
+struct save_pokemon_data_misc_t {
+    uint8_t pokerus;
+    uint8_t met_location;
+    uint16_t origin_info;
+    uint8_t iv_egg_ability;
+    uint32_t ribbons_obedience;
+};
+
 union save_pokemon_data_t {
-    struct {
-        uint16_t species;
-        uint16_t item_held;
-        uint32_t experience_points;
-        uint8_t pp_bonuses;
-        uint8_t friendship;
-    } growth;
-    struct {
-        uint16_t moves[4];
-        uint8_t pp_ups[4];
-    } attacks;
-    struct {
-        uint8_t ev_hp;
-        uint8_t ev_atk;
-        uint8_t ev_def;
-        uint8_t ev_spe;
-        uint8_t ev_spa;
-        uint8_t ev_spd;
-        uint8_t coolness;
-        uint8_t beauty;
-        uint8_t cuteness;
-        uint8_t smartness;
-        uint8_t toughness;
-        uint8_t feel;
-    } condition;
-    struct {
-        uint8_t pokerus;
-        uint8_t met_location;
-        uint16_t origin_info;
-        uint8_t iv_egg_ability;
-        uint32_t ribbons_obedience;
-    } misc;
+    struct save_pokemon_data_growth_t growth;
+    struct save_pokemon_data_attacks_t attacks;
+    struct save_pokemon_data_condition_t condition;
+    struct save_pokemon_data_misc_t misc;
 };
 
 struct save_pokemon_boxed_t {
