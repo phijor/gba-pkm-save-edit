@@ -28,19 +28,27 @@ struct save_pokemon_data_attacks_t {
     uint8_t pp_ups[4];
 };
 
-struct save_pokemon_data_condition_t {
-    uint8_t ev_hp;
-    uint8_t ev_atk;
-    uint8_t ev_def;
-    uint8_t ev_spe;
-    uint8_t ev_spa;
-    uint8_t ev_spd;
+struct save_pokemon_data_ev_t {
+    uint8_t HP;
+    uint8_t ATK;
+    uint8_t DEF;
+    uint8_t SPE;
+    uint8_t SPA;
+    uint8_t SPD;
+};
+
+struct save_pokemon_data_contest_t {
     uint8_t coolness;
     uint8_t beauty;
     uint8_t cuteness;
     uint8_t smartness;
     uint8_t toughness;
     uint8_t feel;
+};
+
+struct save_pokemon_data_condition_t {
+    struct save_pokemon_data_ev_t EV;
+    struct save_pokemon_data_contest_t contest;
 };
 
 struct save_pokemon_data_misc_t {
