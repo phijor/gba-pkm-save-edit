@@ -28,10 +28,26 @@
 #include "message.h"
 
 int main(int argc, char* const* argv) {
-    FILE* input = stdin;
-    FILE* output = stdout;
+    char current_option;
+    while ((current_option = getopt(argc, argv, "h")) != -1) {
+    }
+
     struct save_file_t save;
-    fread(&save, sizeof(save), 1, input);
+    char* save_file_name = argv[optind++];
+    if (save_file_name == NULL) {
+        message("E", "No input file specified. Exiting.\n");
+        exit(EXIT_FAILURE);
+    }
+    message("I", "Reading from \'%s\'.\n", save_file_name);
+
+    FILE* save_file = fopen(save_file_name, "r");
+    if (save_file == NULL) {
+        message("E", "Unable to open '%s'. Exiting.\n", save_file_name);
+        exit(EXIT_FAILURE);
+    }
+    fread(&save, sizeof(save), 1, save_file);
+    fclose(save_file);
+
     if (save_check_file_integrity(&save) == EXIT_FAILURE) {
         message("E", "Save file seems to be corrupt.\n");
         exit(EXIT_FAILURE);
@@ -41,7 +57,8 @@ int main(int argc, char* const* argv) {
     struct save_block_t* most_recent = save_most_recent_block(&save);
     union save_unpacked_t* unpacked = save_unpack(most_recent);
 
-    editor(unpacked, argc - 1, &(argv[1]));
+    char* const* editor_argv = (argc - optind <= 0) ? NULL : &argv[optind];
+    editor(unpacked, argc - optind, editor_argv);
     free(unpacked);
 
     return EXIT_SUCCESS;
