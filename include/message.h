@@ -19,7 +19,7 @@
 
 #define MSG_RESET ANSI_COLOR_RESET
 
-#define MSG_SPACES_PER_INDENT 2
+#define MSG_SPACES_PER_INDENT 4
 
 enum message_type_t {
     MSG_NORMAL,
@@ -29,7 +29,7 @@ enum message_type_t {
     MSG_PROMPT,
 };
 
-struct message_format {
+struct message_format_t {
     enum message_type_t type;
     int indent;
 };

@@ -37,14 +37,21 @@ int message_indent(int ammount) {
     return message_indent_level += ammount;
 }
 
-int message_parse_format(const char* const format_string, struct message_format* format) {
-    for (size_t i = 0; format_string[i] != '\0'; i++) {
-        switch (format_string[i]) {
+int message_indent_reset() {
+    return message_indent_level = 0;
+}
+
+int message_parse_format(const char* const format_string, struct message_format_t* format) {
+    for (const char* p = format_string; *p != '\0'; p++) {
+        switch (*p) {
             case '+':
                 format->indent++;
                 break;
             case '-':
                 format->indent--;
+                break;
+            case '0':
+                message_indent_reset();
                 break;
             case 'I':
                 format->type = MSG_INFO;
@@ -77,7 +84,7 @@ int message(const char* const format_string, const char* const message, ...) {
         message_set_input(stdin);
     }
 
-    struct message_format format = {
+    struct message_format_t format = {
         .type = MSG_NORMAL,
         .indent = 0,
     };
@@ -117,7 +124,7 @@ int message(const char* const format_string, const char* const message, ...) {
 }
 
 void message_read_line(char* string, size_t length) {
-    message("P", "");
+    message("0P", "");
     fgets(string, length, stdin);
     string[strcspn(string, "\r\n")] = '\0';
 }
