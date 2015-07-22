@@ -22,8 +22,13 @@ int editor(union save_unpacked_t* save, int argc, char* const* argv) {
 int editor_call(union save_unpacked_t* save,
                 const struct editor_command_t commands[], int argc,
                 char* const* argv) {
-    const struct editor_command_t* matched_command =
-        editor_parse(commands, argv[0]);
+    const struct editor_command_t* matched_command;
+    if (argc > 0) {
+        matched_command = editor_parse(commands, argv[0]);
+    }
+    else {
+        matched_command = editor_interactive(commands);
+    }
     if (matched_command == NULL) {
         return EXIT_FAILURE;
     }
@@ -41,6 +46,16 @@ const struct editor_command_t* editor_parse(
     }
     editor_error_unknown_command(commands, parameter);
     return NULL;
+}
+
+const struct editor_command_t* editor_interactive(const struct editor_command_t commands[]) {
+#define INPUT_MAX_LENGTH 80
+    char input_string[INPUT_MAX_LENGTH];
+    message("I+", "Available commands:\n");
+    editor_print_commands(commands);
+
+    message_read_line(input_string, sizeof(input_string));
+    return editor_parse(commands, input_string);
 }
 
 void editor_print_commands(const struct editor_command_t commands[]) {
