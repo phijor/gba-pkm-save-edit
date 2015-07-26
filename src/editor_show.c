@@ -1,7 +1,6 @@
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
 #include <stdlib.h>
-#include <stdio.h>
 
 #include "message.h"
 #include "editor_show.h"

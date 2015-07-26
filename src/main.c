@@ -20,7 +20,6 @@
 #pragma GCC diagnostic ignored "-Wunused-variable"
 
 #include <stdlib.h>
-#include <stdio.h>
 #include <getopt.h>
 
 #include "save_integrity.h"
