@@ -55,7 +55,7 @@ void save_pokemon_xor_crypt(struct save_pokemon_boxed_t* pokemon) {
 }
 
 void save_pokemon_order_data(struct save_pokemon_boxed_t* pokemon,
-                             struct save_pokemon_data_ordered_t* odered) {
+                             struct save_pokemon_data_ordered_t* ordered) {
     union save_pokemon_data_t* data = pokemon->data;
 
     size_t permutation_index =
@@ -63,10 +63,10 @@ void save_pokemon_order_data(struct save_pokemon_boxed_t* pokemon,
     const struct save_pokemon_data_permutation_t* current_permutation =
         &save_pokemon_data_permutations[permutation_index];
 
-    odered->growth = &data[current_permutation->growth].growth;
-    odered->attacks = &data[current_permutation->attacks].attacks;
-    odered->condition = &data[current_permutation->condition].condition;
-    odered->misc = &data[current_permutation->misc].misc;
+    ordered->growth = &data[current_permutation->growth].growth;
+    ordered->attacks = &data[current_permutation->attacks].attacks;
+    ordered->condition = &data[current_permutation->condition].condition;
+    ordered->misc = &data[current_permutation->misc].misc;
 }
 
 int save_pokemon_check_data_integrity(struct save_pokemon_boxed_t* pokemon) {

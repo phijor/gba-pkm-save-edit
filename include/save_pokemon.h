@@ -102,7 +102,7 @@ struct save_pokemon_t {
 uint32_t save_pokemon_get_crypt_key(struct save_pokemon_boxed_t* pokemon);
 void save_pokemon_xor_crypt(struct save_pokemon_boxed_t* pokemon);
 void save_pokemon_order_data(struct save_pokemon_boxed_t* pokemon,
-                             struct save_pokemon_data_ordered_t* odered);
+                             struct save_pokemon_data_ordered_t* ordered);
 int save_pokemon_check_data_integrity(struct save_pokemon_boxed_t* pokemon);
 
 #endif
