@@ -32,12 +32,12 @@ int main(int argc, char* const* argv) {
     while ((current_option = getopt(argc, argv, "h")) != -1) {
     }
 
-    struct save_file_t save;
-    char* save_file_name = argv[optind++];
-    if (save_file_name == NULL) {
+    char* save_file_name = NULL;
+    if (optind >= argc || argv[optind] == NULL) {
         message("E", "No input file specified. Exiting.\n");
         exit(EXIT_FAILURE);
     }
+    save_file_name = argv[optind++];
     message("I", "Reading from \'%s\'.\n", save_file_name);
 
     FILE* save_file = fopen(save_file_name, "r");
@@ -45,6 +45,8 @@ int main(int argc, char* const* argv) {
         message("E", "Unable to open '%s'. Exiting.\n", save_file_name);
         exit(EXIT_FAILURE);
     }
+
+    struct save_file_t save;
     fread(&save, sizeof(save), 1, save_file);
     fclose(save_file);
 
@@ -57,8 +59,9 @@ int main(int argc, char* const* argv) {
     struct save_block_t* most_recent = save_most_recent_block(&save);
     union save_unpacked_t* unpacked = save_unpack(most_recent);
 
-    char* const* editor_argv = (argc - optind <= 0) ? NULL : &argv[optind];
-    editor(unpacked, argc - optind, editor_argv);
+    int editor_argc = argc - optind;
+    char* const* editor_argv = (editor_argc > 0) ? &argv[optind] : NULL;
+    editor(unpacked, editor_argc, editor_argv);
     free(unpacked);
 
     return EXIT_SUCCESS;
