@@ -6,6 +6,9 @@ gba-pkm-save-edit
 TODO
 ----
 
+0. *Update this README.* Seriously, this program can do much more now, but I
+cannot convince myself to actually type it all out.
+
 `gba-pkm-save-edit` currently checks the integrity of any save file it is
 passed on `stdin`. There's obviously much to do.
 
