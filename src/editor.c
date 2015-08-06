@@ -22,16 +22,35 @@ int editor_call(union save_unpacked_t* save,
                 const struct editor_command_t commands[], int argc,
                 char* const* argv) {
     const struct editor_command_t* matched_command;
+    char** editor_argv;
+    int editor_argc;
+
+    int was_interactive = 0;
+
     if (argc > 0) {
-        matched_command = editor_parse(commands, argv[0]);
+        editor_argv = (char**) argv; //We're not going to modify argv or its
+                                     //contents, promised.
+        editor_argc = argc;
     }
     else {
-        matched_command = editor_interactive(commands);
+        was_interactive = 1;
+        static const size_t arg_depth = 5;
+        editor_argv = malloc(arg_depth * sizeof(editor_argv));
+        editor_argc = editor_interactive(commands, editor_argv, 5);
     }
+
+    matched_command = editor_parse(commands, editor_argv[0]);
     if (matched_command == NULL) {
         return EXIT_FAILURE;
     }
-    return matched_command->exec(save, argc - 1, &(argv[1]));
+
+    int exit_status =
+        matched_command->exec(save, editor_argc - 1, &(editor_argv[1]));
+
+    if (was_interactive) {
+        free((void*) editor_argv);
+    }
+    return exit_status;
 }
 
 const struct editor_command_t* editor_parse(
@@ -47,14 +66,12 @@ const struct editor_command_t* editor_parse(
     return NULL;
 }
 
-const struct editor_command_t* editor_interactive(const struct editor_command_t commands[]) {
-#define INPUT_MAX_LENGTH 80
-    char input_string[INPUT_MAX_LENGTH];
+int editor_interactive(const struct editor_command_t commands[], char** argv,
+                       size_t arg_depth) {
     message("I+", "Available commands:\n");
     editor_print_commands(commands);
 
-    message_read_line(input_string, sizeof(input_string));
-    return editor_parse(commands, input_string);
+    return message_read_args(argv, arg_depth);
 }
 
 void editor_print_commands(const struct editor_command_t commands[]) {

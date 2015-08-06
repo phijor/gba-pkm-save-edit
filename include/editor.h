@@ -1,6 +1,8 @@
 #ifndef EDITOR_H
 #define EDITOR_H
 
+#include <stddef.h>
+
 union save_unpacked_t;
 
 struct editor_command_t {
@@ -17,8 +19,8 @@ int editor_call(union save_unpacked_t* save,
 const struct editor_command_t* editor_parse(
     const struct editor_command_t commands[], const char parameter[]);
 
-const struct editor_command_t* editor_interactive(
-    const struct editor_command_t commands[]);
+int editor_interactive(const struct editor_command_t commands[], char** argv,
+                       size_t arg_depth);
 
 void editor_print_commands(const struct editor_command_t commands[]);
 
