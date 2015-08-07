@@ -34,9 +34,9 @@ int editor_call(union save_unpacked_t* save,
     }
     else {
         was_interactive = 1;
-        static const size_t arg_depth = 5;
+        static const size_t arg_depth = 10;
         editor_argv = malloc(arg_depth * sizeof(editor_argv[0]));
-        editor_argc = editor_interactive(commands, editor_argv, 5);
+        editor_argc = editor_interactive(commands, editor_argv, arg_depth);
     }
 
     matched_command = editor_parse(commands, editor_argv[0]);
