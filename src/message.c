@@ -132,8 +132,8 @@ void message_read_line(char* string, size_t length) {
 
 int message_read_args(char** argv, int argc) {
 #define INPUT_MAX_LENGTH 80
-    char input_string[INPUT_MAX_LENGTH];
-    message_read_line(input_string, sizeof(input_string));
+    char* input_string = malloc(INPUT_MAX_LENGTH * sizeof(char));
+    message_read_line(input_string, INPUT_MAX_LENGTH);
 
     const char* seperator = " \t\n\r";
     argv[0] = strtok(input_string, seperator);
