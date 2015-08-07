@@ -16,6 +16,7 @@
 #define MSG_COLOR_ERROR ANSI_COLOR_RED
 #define MSG_COLOR_PROMPT ANSI_COLOR_CYAN
 #define MSG_COLOR_INTERNAL ANSI_COLOR_BLUE
+#define MSG_COLOR_BULLET ANSI_COLOR_GREEN
 
 #define MSG_RESET ANSI_COLOR_RESET
 
@@ -27,6 +28,7 @@ enum message_type_t {
     MSG_WARNING,
     MSG_ERROR,
     MSG_PROMPT,
+    MSG_BULLET,
 };
 
 struct message_format_t {

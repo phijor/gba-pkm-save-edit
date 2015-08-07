@@ -66,6 +66,9 @@ int message_parse_format(const char* const format_string, struct message_format_
             case 'P':
                 format->type = MSG_PROMPT;
                 break;
+            case '*':
+                format->type = MSG_BULLET;
+                break;
         }
     }
     return EXIT_SUCCESS;
@@ -92,11 +95,12 @@ int message(const char* const format_string, const char* const message, ...) {
     message_parse_format(format_string, &format);
 
     const char* prefixes[] = {
-            [MSG_NORMAL] = "",
-            [MSG_INFO] =    MSG_COLOR_INFO    "[INFORMATION]: " MSG_RESET,
+            [MSG_NORMAL]  = "",
+            [MSG_INFO]    = MSG_COLOR_INFO    "[INFORMATION]: " MSG_RESET,
             [MSG_WARNING] = MSG_COLOR_WARNING "[WARNING]: " MSG_RESET,
-            [MSG_ERROR] =   MSG_COLOR_ERROR   "[ERROR]: " MSG_RESET,
-            [MSG_PROMPT] =   MSG_COLOR_PROMPT   "[>]: " MSG_RESET,
+            [MSG_ERROR]   = MSG_COLOR_ERROR   "[ERROR]: " MSG_RESET,
+            [MSG_PROMPT]  = MSG_COLOR_PROMPT  "[>]: " MSG_RESET,
+            [MSG_BULLET]  = MSG_COLOR_BULLET  "* " MSG_RESET,
     };
 
     FILE* current_output = NULL;
@@ -105,6 +109,7 @@ int message(const char* const format_string, const char* const message, ...) {
         case MSG_INFO:
         case MSG_WARNING:
         case MSG_PROMPT:
+        case MSG_BULLET:
             current_output = message_output;
             break;
         case MSG_ERROR:
