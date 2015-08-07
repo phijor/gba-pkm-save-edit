@@ -69,7 +69,7 @@ const struct editor_command_t* editor_parse(
 
 int editor_interactive(const struct editor_command_t commands[], char** argv,
                        size_t arg_depth) {
-    message("I+", "Available commands:\n");
+    message("", "Commands available:\n");
     editor_print_commands(commands);
 
     return message_read_args(argv, arg_depth);
@@ -77,7 +77,7 @@ int editor_interactive(const struct editor_command_t commands[], char** argv,
 
 void editor_print_commands(const struct editor_command_t commands[]) {
     for (size_t i = 0; commands[i].name != NULL; i++) {
-        message("", "%s\n", commands[i].name);
+        message("*", "%s\n", commands[i].name);
     }
 }
 void editor_error_unknown_command(const struct editor_command_t commands[],

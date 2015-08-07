@@ -38,23 +38,23 @@ int editor_show_pokedex(union save_unpacked_t* save, int argc,
 
 int editor_show_trainer(union save_unpacked_t* save, int argc,
                         char* const* argv) {
-    message("+", "Trainer Information:\n");
+    message_indent(+1);
     uint32_t info_flags = EDITOR_TRAINER_ALL;
     if (info_flags & EDITOR_TRAINER_NAME) {
         char name[8] = {'\0'};
         save_get_name(name, save);
-        message("", "Name: %s\n", name);
+        message("*", "Name: %s\n", name);
     }
     if (info_flags & EDITOR_TRAINER_ID) {
         struct save_trainer_id_t id;
         save_get_trainer_id(&id, save);
-        message("", "TID: %u\n", id.TID);
-        message("", "SID: %u\n", id.SID);
+        message("*", "TID: %u\n", id.TID);
+        message("*", "SID: %u\n", id.SID);
     }
     if (info_flags & EDITOR_TRAINER_TIME) {
         struct save_time_played_t time;
         save_get_time_played(&time, save);
-        message("",
+        message("*",
                 "Time played: %02u:%02u:%02u/%02u\n",
                 time.hours,
                 time.minutes,
