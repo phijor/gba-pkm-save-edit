@@ -69,6 +69,8 @@ int message_parse_format(const char* const format_string, struct message_format_
             case '*':
                 format->type = MSG_BULLET;
                 break;
+            default:
+                format->type = MSG_NORMAL;
         }
     }
     return EXIT_SUCCESS;
@@ -88,10 +90,7 @@ int message(const char* const format_string, const char* const message, ...) {
         message_set_input(stdin);
     }
 
-    struct message_format_t format = {
-        .type = MSG_NORMAL,
-        .indent = 0,
-    };
+    struct message_format_t format;
     message_parse_format(format_string, &format);
 
     const char* prefixes[] = {
@@ -116,12 +115,14 @@ int message(const char* const format_string, const char* const message, ...) {
             current_output = message_error;
             break;
         default:
-            fprintf(message_output, MSG_COLOR_INTERNAL "Invalid type of message specified.\n");
+            fprintf(message_error,
+                    MSG_COLOR_INTERNAL "Invalid type of message specified.\n");
             return EXIT_FAILURE;
     }
 
     fprintf(current_output, "%*s%s",
-            message_indent_level * MSG_SPACES_PER_INDENT, "", prefixes[format.type]);
+            message_indent_level * MSG_SPACES_PER_INDENT, "",
+            prefixes[format.type]);
     vfprintf(current_output, message, args);
     va_end(args);
 
