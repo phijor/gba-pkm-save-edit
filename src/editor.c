@@ -9,6 +9,8 @@
 #include "editor_show.h"
 #include "editor_dump.h"
 
+#define	ARG_MAX_DEPTH 5
+
 int editor(union save_unpacked_t* save, int argc, char* const* argv) {
     const struct editor_command_t commands[] = {
         {.name = "show", .exec = &editor_show},
@@ -34,9 +36,8 @@ int editor_call(union save_unpacked_t* save,
     }
     else {
         was_interactive = 1;
-        static const size_t arg_depth = 5;
-        editor_argv = malloc(arg_depth * sizeof(editor_argv[0]));
-        editor_argc = editor_interactive(commands, editor_argv, 5);
+        editor_argv = malloc(ARG_MAX_DEPTH * sizeof(editor_argv[0]));
+        editor_argc = editor_interactive(commands, editor_argv, ARG_MAX_DEPTH);
     }
 
     matched_command = editor_parse(commands, editor_argv[0]);
