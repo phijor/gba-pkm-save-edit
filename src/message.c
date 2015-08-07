@@ -43,6 +43,8 @@ int message_indent_reset() {
 }
 
 int message_parse_format(const char* const format_string, struct message_format_t* format) {
+    format->type = MSG_NORMAL;
+    format->indent = 0;
     for (const char* p = format_string; *p != '\0'; p++) {
         switch (*p) {
             case '+':
@@ -69,8 +71,6 @@ int message_parse_format(const char* const format_string, struct message_format_
             case '*':
                 format->type = MSG_BULLET;
                 break;
-            default:
-                format->type = MSG_NORMAL;
         }
     }
     return EXIT_SUCCESS;
