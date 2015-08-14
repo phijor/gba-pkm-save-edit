@@ -49,7 +49,7 @@ int editor_call(union save_unpacked_t* save,
         matched_command->exec(save, editor_argc - 1, &(editor_argv[1]));
 
     if (was_interactive) {
-        free((void*) editor_argv);
+        editor_free_args(editor_argv, editor_argc);
     }
     return exit_status;
 }
@@ -80,8 +80,14 @@ void editor_print_commands(const struct editor_command_t commands[]) {
         message("*", "%s\n", commands[i].name);
     }
 }
+
 void editor_error_unknown_command(const struct editor_command_t commands[],
                                   const char unknown[]) {
     message("E", "Unknown command \"%s\". Valid commands are:\n", unknown);
     editor_print_commands(commands);
+}
+
+void editor_free_args(char** argv, int argc) {
+    free((void*) argv[0]);
+    free((void*)argv);
 }
