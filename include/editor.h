@@ -40,6 +40,6 @@ int editor_get_args(struct editor_arguments_t* args);
 
 int editor_count_args(struct editor_arguments_t*, char* seperator);
 
-void editor_free_args(char** argv, int argc);
+void editor_free_args(struct editor_arguments_t* args);
 
 #endif

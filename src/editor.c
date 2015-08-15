@@ -11,7 +11,6 @@
 #include "editor_dump.h"
 
 #define ARG_MAX_STR_LEN 80
-#define	ARG_MAX_DEPTH 5
 #define ARG_SEPERATOR " \t\n\r"
 
 int editor(union save_unpacked_t* save, int argc, char* const* argv) {
@@ -40,7 +39,7 @@ int editor_call(union save_unpacked_t* save,
     else {
         was_interactive = 1;
         arguments.input_length = ARG_MAX_STR_LEN;
-        editor_interactive(commands, &arguments, ARG_MAX_DEPTH);
+        editor_interactive(commands, &arguments);
     }
 
     matched_command = editor_parse(commands, arguments.vector[0]);
@@ -52,8 +51,7 @@ int editor_call(union save_unpacked_t* save,
         matched_command->exec(save, arguments.count - 1, &(arguments.vector[1]));
 
     if (was_interactive) {
-        free(arguments.vector);
-        free(arguments.input_line);
+        editor_free_args(&arguments);
     }
     return exit_status;
 }
@@ -113,9 +111,9 @@ int editor_get_args(struct editor_arguments_t* args) {
     return args->count = i;
 }
 
-void editor_free_args(char** argv, int argc) {
-    free((void*) argv[0]);
-    free((void*)argv);
+void editor_free_args(struct editor_arguments_t* args) {
+    free((void*) args->vector);
+    free((void*) args->input_line);
 }
 
 int editor_count_args(struct editor_arguments_t* args, char* seperator) {
