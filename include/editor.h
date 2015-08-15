@@ -10,6 +10,13 @@ struct editor_command_t {
     int (*exec)(union save_unpacked_t* save, int argc, char* const* argv);
 };
 
+struct editor_arguments_t {
+        int count;
+        char** vector;
+        char* input_line;
+        size_t input_length;
+};
+
 int editor(union save_unpacked_t* save, int argc, char* const* argv);
 
 int editor_call(union save_unpacked_t* save,
@@ -19,8 +26,8 @@ int editor_call(union save_unpacked_t* save,
 const struct editor_command_t* editor_parse(
     const struct editor_command_t commands[], const char parameter[]);
 
-int editor_interactive(const struct editor_command_t commands[], char** argv,
-                       size_t arg_depth);
+int editor_interactive(const struct editor_command_t commands[],
+                       struct editor_arguments_t* arguments, size_t arg_depth);
 
 void editor_print_commands(const struct editor_command_t commands[]);
 
