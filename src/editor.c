@@ -12,6 +12,7 @@
 
 #define ARG_MAX_STR_LEN 80
 #define	ARG_MAX_DEPTH 5
+#define ARG_SEPERATOR " \t\n\r"
 
 int editor(union save_unpacked_t* save, int argc, char* const* argv) {
     const struct editor_command_t commands[] = {
@@ -71,16 +72,16 @@ const struct editor_command_t* editor_parse(
 }
 
 int editor_interactive(const struct editor_command_t commands[],
-                       struct editor_arguments_t* arguments, size_t arg_depth) {
+                       struct editor_arguments_t* arguments) {
     message("", "Commands available:\n");
     editor_print_commands(commands);
 
     arguments->input_line = malloc(arguments->input_length * sizeof(char));
-    arguments->vector = malloc(arg_depth * sizeof(char*));
-
     message_read_line(arguments->input_line, arguments->input_length);
 
-    arguments->count = arg_depth;
+    editor_count_args(arguments, ARG_SEPERATOR);
+
+    arguments->vector = malloc(arguments->count * sizeof(char*));
     editor_get_args(arguments);
     return arguments->count;
 }
@@ -98,7 +99,7 @@ void editor_error_unknown_command(const struct editor_command_t commands[],
 }
 
 int editor_get_args(struct editor_arguments_t* args) {
-    const char* seperator = " \t\n\r";
+    const char* seperator = ARG_SEPERATOR;
     args->vector[0] = strtok(args->input_line, seperator);
 
     ssize_t i;
@@ -117,16 +118,16 @@ void editor_free_args(char** argv, int argc) {
     free((void*)argv);
 }
 
-int editor_count_args(char* arg_string, char* seperator) {
-    if (arg_string[0] == '\0') {
-        return 0;
+int editor_count_args(struct editor_arguments_t* args, char* seperator) {
+    if (args->input_line[0] == '\0') {
+        return args->count = 0;
     }
     int count = 1;
     int was_sep = 0;
-    for (size_t i = 0; arg_string[i] != '\0'; i++) {
+    for (size_t i = 0; args->input_line[i] != '\0'; i++) {
         int is_sep = 0;
         for (size_t j = 0; seperator[j] != '\0'; j++) {
-            if (arg_string[i] == seperator[j]) {
+            if (args->input_line[i] == seperator[j]) {
                 is_sep = 1;
                 break;
             }
@@ -136,5 +137,5 @@ int editor_count_args(char* arg_string, char* seperator) {
         }
         was_sep = is_sep;
     }
-    return count;
+    return args->count = count;
 }

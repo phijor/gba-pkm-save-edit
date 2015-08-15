@@ -27,7 +27,7 @@ const struct editor_command_t* editor_parse(
     const struct editor_command_t commands[], const char parameter[]);
 
 int editor_interactive(const struct editor_command_t commands[],
-                       struct editor_arguments_t* arguments, size_t arg_depth);
+                       struct editor_arguments_t* arguments);
 
 void editor_print_commands(const struct editor_command_t commands[]);
 
@@ -38,7 +38,7 @@ int editor_dump(union save_unpacked_t* save, int argc, char* const* argv);
 
 int editor_get_args(struct editor_arguments_t* args);
 
-int editor_count_args(char* arg_string, char* seperator);
+int editor_count_args(struct editor_arguments_t*, char* seperator);
 
 void editor_free_args(char** argv, int argc);
 
