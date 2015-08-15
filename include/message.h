@@ -44,5 +44,6 @@ int message_indent(int ammount);
 int message(const char* const format, const char* const message, ...);
 void message_read_line(char* string, size_t length);
 int message_get_args(char* arg_string, char** argv, int max_args);
+int message_count_args(char* arg_string, char* seperator);
 
 #endif
