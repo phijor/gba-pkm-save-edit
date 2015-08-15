@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <sys/types.h>
 
 #include "message.h"
 #include "editor.h"
@@ -76,8 +77,11 @@ int editor_interactive(const struct editor_command_t commands[],
 
     arguments->input_line = malloc(arguments->input_length * sizeof(char));
     arguments->vector = malloc(arg_depth * sizeof(char*));
+
     message_read_line(arguments->input_line, arguments->input_length);
-    arguments->count = message_get_args(arguments->input_line, arguments->vector, arg_depth);
+
+    arguments->count = arg_depth;
+    editor_get_args(arguments);
     return arguments->count;
 }
 
@@ -91,6 +95,21 @@ void editor_error_unknown_command(const struct editor_command_t commands[],
                                   const char unknown[]) {
     message("E", "Unknown command \"%s\". Valid commands are:\n", unknown);
     editor_print_commands(commands);
+}
+
+int editor_get_args(struct editor_arguments_t* args) {
+    const char* seperator = " \t\n\r";
+    args->vector[0] = strtok(args->input_line, seperator);
+
+    ssize_t i;
+    for (i = 1; i < args->count; i++) {
+        char* current_arg = strtok(NULL, seperator);
+        if (current_arg == NULL) {
+            break;
+        }
+        args->vector[i] = current_arg;
+    }
+    return args->count = i;
 }
 
 void editor_free_args(char** argv, int argc) {

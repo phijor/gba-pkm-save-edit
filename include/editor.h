@@ -36,6 +36,8 @@ void editor_error_unknown_command(const struct editor_command_t commands[],
 
 int editor_dump(union save_unpacked_t* save, int argc, char* const* argv);
 
+int editor_get_args(struct editor_arguments_t* args);
+
 void editor_free_args(char** argv, int argc);
 
 #endif
