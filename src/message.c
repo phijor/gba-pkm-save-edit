@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <stdarg.h>
-#include <sys/types.h>
 
 #include "message.h"
 
@@ -134,26 +133,4 @@ void message_read_line(char* string, size_t length) {
     message("0P", "");
     fgets(string, length, stdin);
     string[strcspn(string, "\r\n")] = '\0';
-}
-
-int message_count_args(char* arg_string, char* seperator) {
-    if (arg_string[0] == '\0') {
-        return 0;
-    }
-    int count = 1;
-    int was_sep = 0;
-    for (size_t i = 0; arg_string[i] != '\0'; i++) {
-        int is_sep = 0;
-        for (size_t j = 0; seperator[j] != '\0'; j++) {
-            if (arg_string[i] == seperator[j]) {
-                is_sep = 1;
-                break;
-            }
-        }
-        if (is_sep && !was_sep) {
-            count++;
-        }
-        was_sep = is_sep;
-    }
-    return count;
 }

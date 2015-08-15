@@ -38,6 +38,8 @@ int editor_dump(union save_unpacked_t* save, int argc, char* const* argv);
 
 int editor_get_args(struct editor_arguments_t* args);
 
+int editor_count_args(char* arg_string, char* seperator);
+
 void editor_free_args(char** argv, int argc);
 
 #endif
