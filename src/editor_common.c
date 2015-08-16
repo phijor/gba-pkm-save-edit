@@ -3,15 +3,14 @@
 #include "editor_common.h"
 #include "message.h"
 
-void editor_print_commands(const struct editor_command_t commands[]) {
-    for (size_t i = 0; commands[i].name != NULL; i++) {
-        message("*", "%s\n", commands[i].name);
+void editor_print_calls(const struct editor_call_t calls[]) {
+    for (size_t i = 0; calls[i].name != NULL; i++) {
+        message("*", "%s\n", calls[i].name);
     }
 }
 
-void editor_error_unknown_command(const struct editor_command_t commands[],
+void editor_error_unknown_call(const struct editor_call_t commands[],
                                   const char unknown[]) {
     message("E", "Unknown command \"%s\". Valid commands are:\n", unknown);
-    editor_print_commands(commands);
+    editor_print_calls(commands);
 }
-

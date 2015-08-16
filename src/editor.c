@@ -16,19 +16,19 @@
 #define ARG_SEPERATOR " \t\n\r"
 
 int editor(union save_unpacked_t* save, int argc, char* const* argv) {
-    const struct editor_command_t commands[] = {
+    const struct editor_call_t calls[] = {
         {.name = "show", .exec = &editor_show},
         {.name = "dump", .exec = &editor_dump},
         {.name = "export", .exec = &editor_export},
         {.name = NULL, .exec = NULL},
     };
-    return editor_call(save, commands, argc, argv);
+    return editor_call(save, calls, argc, argv);
 }
 
 int editor_call(union save_unpacked_t* save,
-                const struct editor_command_t commands[], int argc,
+                const struct editor_call_t commands[], int argc,
                 char* const* argv) {
-    const struct editor_command_t* matched_command;
+    const struct editor_call_t* matched_call;
     struct editor_arguments_t arguments;
 
     int was_interactive = 0;
@@ -45,13 +45,13 @@ int editor_call(union save_unpacked_t* save,
         editor_interactive(commands, &arguments);
     }
 
-    matched_command = editor_parse(commands, arguments.vector[0]);
-    if (matched_command == NULL) {
+    matched_call = editor_parse_call(commands, arguments.vector[0]);
+    if (matched_call == NULL) {
         return EXIT_FAILURE;
     }
 
     int exit_status =
-        matched_command->exec(save, arguments.count - 1, &(arguments.vector[1]));
+        matched_call->exec(save, arguments.count - 1, &(arguments.vector[1]));
 
     if (was_interactive) {
         editor_free_args(&arguments);
@@ -59,10 +59,10 @@ int editor_call(union save_unpacked_t* save,
     return exit_status;
 }
 
-int editor_interactive(const struct editor_command_t commands[],
+int editor_interactive(const struct editor_call_t calls[],
                        struct editor_arguments_t* arguments) {
     message("", "Commands available:\n");
-    editor_print_commands(commands);
+    editor_print_calls(calls);
 
     arguments->input_line = malloc(arguments->input_length * sizeof(char));
     message_read_line(arguments->input_line, arguments->input_length);

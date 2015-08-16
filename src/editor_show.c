@@ -10,7 +10,7 @@
 #include "save_trainer.h"
 
 int editor_show(union save_unpacked_t* save, int argc, char* const* argv) {
-    const struct editor_command_t commands[] = {
+    const struct editor_call_t commands[] = {
         {.name = "pokedex", .exec = &editor_show_pokedex},
         {.name = "trainer", .exec = &editor_show_trainer},
         {.name = "money",   .exec = &editor_show_money},

@@ -8,7 +8,7 @@
 #include "save_pokemon_storage.h"
 
 int editor_export(union save_unpacked_t* save, int argc, char* const* argv) {
-    const struct editor_command_t commands[] = {
+    const struct editor_call_t commands[] = {
         {.name = "pokemon", .exec = &editor_export_pokemon},
         {.name = NULL, .exec = NULL},
     };
@@ -17,7 +17,7 @@ int editor_export(union save_unpacked_t* save, int argc, char* const* argv) {
 
 int editor_export_pokemon(union save_unpacked_t* save, int argc,
                           char* const* argv) {
-    const struct editor_command_t commands[] = {
+    const struct editor_call_t commands[] = {
         {.name = "team", .exec = &editor_export_pokemon_team},
         {.name = "box", .exec = NULL},
         {.name = NULL, .exec = NULL},
