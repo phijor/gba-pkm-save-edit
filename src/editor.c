@@ -7,6 +7,7 @@
 
 #include "message.h"
 #include "editor.h"
+#include "editor_parse.h"
 #include "editor_show.h"
 #include "editor_dump.h"
 #include "editor_export.h"
@@ -58,19 +59,6 @@ int editor_call(union save_unpacked_t* save,
     return exit_status;
 }
 
-const struct editor_command_t* editor_parse(
-    const struct editor_command_t commands[], const char parameter[]) {
-    assert(commands != NULL && parameter != NULL);
-    for (size_t i = 0; commands[i].exec != NULL; i++) {
-        assert(commands[i].name != NULL);
-        if (strcmp(commands[i].name, parameter) == 0) {
-            return &commands[i];
-        }
-    }
-    editor_error_unknown_command(commands, parameter);
-    return NULL;
-}
-
 int editor_interactive(const struct editor_command_t commands[],
                        struct editor_arguments_t* arguments) {
     message("", "Commands available:\n");
@@ -84,18 +72,6 @@ int editor_interactive(const struct editor_command_t commands[],
     arguments->vector = malloc(arguments->count * sizeof(char*));
     editor_get_args(arguments);
     return arguments->count;
-}
-
-void editor_print_commands(const struct editor_command_t commands[]) {
-    for (size_t i = 0; commands[i].name != NULL; i++) {
-        message("*", "%s\n", commands[i].name);
-    }
-}
-
-void editor_error_unknown_command(const struct editor_command_t commands[],
-                                  const char unknown[]) {
-    message("E", "Unknown command \"%s\". Valid commands are:\n", unknown);
-    editor_print_commands(commands);
 }
 
 int editor_get_args(struct editor_arguments_t* args) {

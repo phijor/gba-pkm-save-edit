@@ -3,12 +3,9 @@
 
 #include <stddef.h>
 
-union save_unpacked_t;
+#include "editor_common.h"
 
-struct editor_command_t {
-    const char* name;
-    int (*exec)(union save_unpacked_t* save, int argc, char* const* argv);
-};
+union save_unpacked_t;
 
 struct editor_arguments_t {
         int count;
