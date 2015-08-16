@@ -9,6 +9,7 @@
 #include "editor.h"
 #include "editor_show.h"
 #include "editor_dump.h"
+#include "editor_export.h"
 
 #define ARG_MAX_STR_LEN 80
 #define ARG_SEPERATOR " \t\n\r"
@@ -17,6 +18,7 @@ int editor(union save_unpacked_t* save, int argc, char* const* argv) {
     const struct editor_command_t commands[] = {
         {.name = "show", .exec = &editor_show},
         {.name = "dump", .exec = &editor_dump},
+        {.name = "export", .exec = &editor_export},
         {.name = NULL, .exec = NULL},
     };
     return editor_call(save, commands, argc, argv);
