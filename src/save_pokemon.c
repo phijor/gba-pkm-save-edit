@@ -3,6 +3,7 @@
 
 #include "message.h"
 #include "save_pokemon.h"
+#include "save_char_encoding.h"
 
 #define arrsize(a) (sizeof(a) / sizeof(a[0]))
 
@@ -90,4 +91,12 @@ int save_pokemon_check_data_integrity(struct save_pokemon_boxed_t* pokemon) {
         return EXIT_FAILURE;
     }
     return EXIT_SUCCESS;
+}
+
+size_t save_pokemon_get_nickname(struct save_pokemon_boxed_t* pokemon, char* nickname) {
+    return save_string_decode(nickname, pokemon->nickname);
+}
+
+size_t save_pokemon_get_ot_name(struct save_pokemon_boxed_t* pokemon, char* OT_name) {
+    return save_string_decode(OT_name, pokemon->OT_name);
 }

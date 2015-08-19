@@ -105,4 +105,7 @@ void save_pokemon_order_data(struct save_pokemon_boxed_t* pokemon,
                              struct save_pokemon_data_ordered_t* ordered);
 int save_pokemon_check_data_integrity(struct save_pokemon_boxed_t* pokemon);
 
+size_t save_pokemon_get_nickname(struct save_pokemon_boxed_t* pokemon, char* nickname);
+size_t save_pokemon_get_ot_name(struct save_pokemon_boxed_t* pokemon, char* ot_name);
+
 #endif
