@@ -3,6 +3,7 @@ build/
 doc/
 saves/
 *.sav
+*.pkm
 .ycm_extra_conf.py
 .ycm_extra_conf.pyc
 gba-pkm-save-edit
