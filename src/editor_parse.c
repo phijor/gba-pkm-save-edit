@@ -6,7 +6,7 @@
 
 #include "editor_parse.h"
 
-#define EDITOR_PARSE_ZERO_INDEXED
+#undef EDITOR_PARSE_ZERO_INDEXED
 
 #ifdef EDITOR_PARSE_ZERO_INDEXED
 #define EDITOR_INDEX_OFFSET (0)
@@ -48,8 +48,13 @@ int editor_parse_range(struct editor_range_t* range, const char parameter[]) {
     for (; isdigit(index[0]); index++)
         ;
 
+    // if the string ends after the first number, assume the range to only span
+    // one value.
+    if (index[0] == '\0'){
+        range->upper = range->lower;
+    }
     // if the next character is '-', point to the following one and...
-    if (*(index++) == '-') {
+    else if (*(index++) == '-') {
         // ...parse it, if it's a number...
         if (isdigit(index[0])) {
             range->upper = atoi(index) + EDITOR_INDEX_OFFSET;
@@ -63,11 +68,6 @@ int editor_parse_range(struct editor_range_t* range, const char parameter[]) {
         else {
             return EXIT_FAILURE;
         }
-    }
-    // if the string ends after the first number, assume the range to only span
-    // one value.
-    else if (index[0] == '\0'){
-        range->upper = range->lower;
     }
     // otherwise, fail because there's invalid characters following.
     else {
