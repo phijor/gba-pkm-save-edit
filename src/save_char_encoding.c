@@ -33,12 +33,12 @@ unsigned char save_char_table[] =
     "FGHIJKLMNOPQRSTU"
     "VWXYZabcdefghijk"
     "lmnopqrstuvwxyz>"
-    ":AOUaou?\?<??????";
+    ":AOUaou?\?<?????\0";
 
 size_t save_string_decode(char dest[], unsigned char source[]) {
     size_t i = 0;
-    for(; source[i] != 0xff; i++) {
+    do {
         dest[i] = save_char_table[source[i]];
-    }
-    return i + 1;
+    } while (source[i++] != 0xff);
+    return i;
 }
