@@ -9,7 +9,6 @@
 FILE* message_output;
 FILE* message_error;
 FILE* message_input;
-
 int message_indent_level = {0};
 
 void message_set_output(FILE* output) {
@@ -94,11 +93,11 @@ int message(const char* const format_string, const char* const message, ...) {
 
     const char* prefixes[] = {
             [MSG_NORMAL]  = "",
-            [MSG_INFO]    = MSG_COLOR_INFO    "[INFORMATION]: " MSG_RESET,
-            [MSG_WARNING] = MSG_COLOR_WARNING "[WARNING]: " MSG_RESET,
-            [MSG_ERROR]   = MSG_COLOR_ERROR   "[ERROR]: " MSG_RESET,
+            [MSG_INFO]    = MSG_COLOR_INFO    "[I]: " MSG_RESET,
+            [MSG_WARNING] = MSG_COLOR_WARNING "[W]: " MSG_RESET,
+            [MSG_ERROR]   = MSG_COLOR_ERROR   "[E]: " MSG_RESET,
             [MSG_PROMPT]  = MSG_COLOR_PROMPT  "[>]: " MSG_RESET,
-            [MSG_BULLET]  = MSG_COLOR_BULLET  "* " MSG_RESET,
+            [MSG_BULLET]  = MSG_COLOR_BULLET  "  *  " MSG_RESET,
     };
 
     FILE* current_output = NULL;
