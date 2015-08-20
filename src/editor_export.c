@@ -42,7 +42,7 @@ int editor_export_pokemon_team(union save_unpacked_t* save, int argc,
     message("I", "Exporting Pokemon from team slot(s) %d to %d.\n",
             range.lower + 1, range.upper + 1);
 
-    char export_file_names[6][sizeof("~-[NAME~~~~]-0x[PID~~~]-[OT~~~].pkm")] = {'\0'};
+    char export_file_names[6][sizeof("~-[NAME~~~~]-0x[PID~~~]-[OT~~~].g3pkm")] = {'\0'};
 
     struct save_pokemon_boxed_t team[6];
     save_pokemon_get_team(save, team);
