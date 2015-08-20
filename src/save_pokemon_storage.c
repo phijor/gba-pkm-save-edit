@@ -31,3 +31,7 @@ int save_pokemon_get_team(
     }
     return EXIT_SUCCESS;
 }
+
+int save_pokemon_slot_is_empty(struct save_pokemon_boxed_t* pokemon) {
+    return pokemon->nickname[0] == '\0' && pokemon->language == 0;
+}
