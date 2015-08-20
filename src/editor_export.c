@@ -42,17 +42,18 @@ int editor_export_pokemon_team(union save_unpacked_t* save, int argc,
     message("I", "Exporting Pokemon from team slot(s) %d to %d.\n",
             range.lower + 1, range.upper + 1);
 
-#define EXPORT_NICK "___name___"
-#define EXPORT_OT   "___OT__"
-#define EXPORT_PID  "___PID__"
-    char export_file_names[6][sizeof(EXPORT_NICK "-" EXPORT_PID "-" EXPORT_OT
-                                                 "-_.pkm")] = {'\0'};
+    char export_file_names[6][sizeof("~-[NAME~~~~]-0x[PID~~~]-[OT~~~].pkm")] = {'\0'};
 
     struct save_pokemon_boxed_t team[6];
     save_pokemon_get_team(save, team);
 
     for (ssize_t i = range.lower; i <= range.upper; i++) {
         struct save_pokemon_boxed_t* current = &team[i];
+
+        if (save_pokemon_slot_is_empty(current)) {
+            message("I", "Slot %ld is empty; skipping slot.\n", i + 1);
+            continue;
+        }
 
         char nickname[sizeof(((struct save_pokemon_boxed_t*)0)->nickname)];
         save_pokemon_get_nickname(current, nickname);
@@ -61,8 +62,9 @@ int editor_export_pokemon_team(union save_unpacked_t* save, int argc,
         save_pokemon_get_ot_name(current, ot_name);
 
         snprintf(export_file_names[i], sizeof(export_file_names[0]),
-                 "%s-%08x-%s-%ld.pkm", nickname, current->PID, ot_name, i + 1);
+                 "%ld-%s-%#08x-%s.pkm", i + 1, nickname, current->PID, ot_name);
 
+        message("I", "Writing to %s\n", export_file_names[i]);
         FILE* export_file = fopen(export_file_names[i], "w");
         fwrite(current, sizeof(struct save_pokemon_boxed_t), 1, export_file);
         fclose(export_file);
