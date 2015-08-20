@@ -61,7 +61,7 @@ int editor_call(union save_unpacked_t* save,
 
 int editor_interactive(const struct editor_call_t calls[],
                        struct editor_arguments_t* arguments) {
-    message("", "Commands available:\n");
+    message("I", "Commands available:\n");
     editor_print_calls(calls);
 
     arguments->input_line = malloc(arguments->input_length * sizeof(char));
