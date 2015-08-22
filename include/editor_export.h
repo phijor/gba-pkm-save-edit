@@ -8,7 +8,7 @@ int editor_export(union save_unpacked_t* save, int argc, char* const* argv);
 int editor_export_pokemon(union save_unpacked_t* save, int argc,
                           char* const* argv);
 
-int editor_export_pokemon_team(union save_unpacked_t* save, int argc,
+int editor_export_pokemon_party(union save_unpacked_t* save, int argc,
                                char* const* argv);
 
 #endif /* ----- #ifndef EDITOR_EXPORT_H ----- */

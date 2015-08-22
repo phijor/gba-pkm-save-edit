@@ -6,28 +6,28 @@
 #include "save.h"
 #include "save_unpacked.h"
 
-int save_pokemon_get_team(
-    union save_unpacked_t* save, struct save_pokemon_boxed_t* team) {
-    struct save_pokemon_t* team_extended;
+int save_pokemon_get_party(
+    union save_unpacked_t* save, struct save_pokemon_boxed_t* party) {
+    struct save_pokemon_t* party_extended;
     enum save_game_type_t game_type = save_get_gametype(save);
     switch (game_type) {
         case RUBY_SAPPHIRE:
-            team_extended = save->rusa.team_pokemon;
+            party_extended = save->rusa.party;
             break;
         case FIRERED_LEAFGREEN:
-            team_extended = save->frlg.team_pokemon;
+            party_extended = save->frlg.party;
             break;
         case EMERALD:
-            team_extended = save->emer.team_pokemon;
+            party_extended = save->emer.party;
             break;
         default:
             message("E", "Game type not implemented.\n");
             exit(EXIT_FAILURE);
     }
 
-    assert(team != NULL);
+    assert(party != NULL);
     for (size_t i = 0; i < 6; i++) {
-        memcpy(&team[i], &team_extended[i].boxed, sizeof(struct save_pokemon_boxed_t));
+        memcpy(&party[i], &party_extended[i].boxed, sizeof(struct save_pokemon_boxed_t));
     }
     return EXIT_SUCCESS;
 }

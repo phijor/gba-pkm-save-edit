@@ -21,14 +21,14 @@ int editor_export(union save_unpacked_t* save, int argc, char* const* argv) {
 int editor_export_pokemon(union save_unpacked_t* save, int argc,
                           char* const* argv) {
     const struct editor_call_t commands[] = {
-        {.name = "team", .exec = &editor_export_pokemon_team},
+        {.name = "party", .exec = &editor_export_pokemon_party},
         {.name = "box", .exec = NULL},
         {.name = NULL, .exec = NULL},
     };
     return editor_call(save, commands, argc, argv);
 }
 
-int editor_export_pokemon_team(union save_unpacked_t* save, int argc,
+int editor_export_pokemon_party(union save_unpacked_t* save, int argc,
                                char* const* argv) {
     struct editor_range_t range = {
         .min = 0, .max = 5,
@@ -39,16 +39,16 @@ int editor_export_pokemon_team(union save_unpacked_t* save, int argc,
         range.lower = range.min;
         range.upper = range.max;
     }
-    message("I", "Exporting Pokemon from team slot(s) %d to %d.\n",
+    message("I", "Exporting Pokemon from party slot(s) %d to %d.\n",
             range.lower + 1, range.upper + 1);
 
     char export_file_names[6][sizeof("~-[NAME~~~~]-0x[PID~~~]-[OT~~~].g3pkm")] = {'\0'};
 
-    struct save_pokemon_boxed_t team[6];
-    save_pokemon_get_team(save, team);
+    struct save_pokemon_boxed_t party[6];
+    save_pokemon_get_party(save, party);
 
     for (ssize_t i = range.lower; i <= range.upper; i++) {
-        struct save_pokemon_boxed_t* current = &team[i];
+        struct save_pokemon_boxed_t* current = &party[i];
 
         if (save_pokemon_slot_is_empty(current)) {
             message("I", "Slot %ld is empty; skipping slot.\n", i + 1);

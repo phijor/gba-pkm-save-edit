@@ -36,8 +36,8 @@ struct save_firered_leafgreen_t {
     uint32_t security_key;
     uint8_t _5[(0x1028 - 0x0af8) - sizeof(uint32_t)];
 
-    uint32_t team_size;
-    struct save_pokemon_t team_pokemon[6];
+    uint32_t party_size;
+    struct save_pokemon_t party[6];
     uint32_t money;
     uint8_t _6[(0x128c - 0x1028) - 2 * sizeof(uint32_t) -
                6*sizeof(struct save_pokemon_t)];
