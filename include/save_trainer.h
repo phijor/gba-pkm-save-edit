@@ -3,6 +3,7 @@
 
 #include <inttypes.h>
 #include "save_common.h"
+#define SAVE_TRAINER_NAME_SIZE 8
 
 union save_unpacked_t;
 
@@ -16,6 +17,6 @@ void save_get_trainer_id(struct save_trainer_id_t* id,
 void save_get_time_played(struct save_time_played_t* time,
                           union save_unpacked_t* save);
 
-int save_get_name(char name[8], union save_unpacked_t* save);
+int save_get_name(char name[SAVE_TRAINER_NAME_SIZE], union save_unpacked_t* save);
 
 #endif

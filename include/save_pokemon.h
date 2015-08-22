@@ -5,6 +5,9 @@
 #include <inttypes.h>
 #include "save_common.h"
 
+#define SAVE_POKEMON_NICKNAME_SIZE 10
+#define SAVE_POKEMON_OT_NAME_SIZE 7
+
 struct save_pokemon_data_permutation_t {
     size_t growth;
     size_t attacks;
@@ -76,9 +79,9 @@ struct save_pokemon_data_ordered_t {
 struct save_pokemon_boxed_t {
     uint32_t PID;
     struct save_trainer_id_t OT_ID;
-    uint8_t nickname[10];
+    uint8_t nickname[SAVE_POKEMON_NICKNAME_SIZE];
     uint16_t language;
-    uint8_t OT_name[7];
+    uint8_t OT_name[SAVE_POKEMON_OT_NAME_SIZE];
     uint8_t markings;
     uint16_t checksum;
     uint16_t _0[1];

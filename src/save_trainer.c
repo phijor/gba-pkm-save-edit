@@ -74,7 +74,7 @@ void save_get_time_played(struct save_time_played_t* time,
     }
 }
 
-int save_get_name(char name[8], union save_unpacked_t* save) {
+int save_get_name(char name[SAVE_TRAINER_NAME_SIZE], union save_unpacked_t* save) {
     uint8_t* name_encoded = NULL;
     enum save_game_type_t game_type = save_get_gametype(save);
     switch (game_type) {
@@ -91,9 +91,6 @@ int save_get_name(char name[8], union save_unpacked_t* save) {
             message("E", "Game type not implemented.\n");
             exit(EXIT_FAILURE);
     }
-    if (save_string_decode(name, name_encoded) > 8) {
-        message("W", "Incorrectly terminated string detected.\n");
-        return EXIT_FAILURE;
-    }
+    save_string_decode(name, name_encoded, SAVE_TRAINER_NAME_SIZE);
     return EXIT_SUCCESS;
 }

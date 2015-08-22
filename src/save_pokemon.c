@@ -94,9 +94,9 @@ int save_pokemon_check_data_integrity(struct save_pokemon_boxed_t* pokemon) {
 }
 
 size_t save_pokemon_get_nickname(struct save_pokemon_boxed_t* pokemon, char* nickname) {
-    return save_string_decode(nickname, pokemon->nickname);
+    return save_string_decode(nickname, pokemon->nickname, SAVE_POKEMON_NICKNAME_SIZE);
 }
 
 size_t save_pokemon_get_ot_name(struct save_pokemon_boxed_t* pokemon, char* OT_name) {
-    return save_string_decode(OT_name, pokemon->OT_name);
+    return save_string_decode(OT_name, pokemon->OT_name, SAVE_POKEMON_OT_NAME_SIZE);
 }
