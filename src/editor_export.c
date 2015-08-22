@@ -62,7 +62,7 @@ int editor_export_pokemon_party(union save_unpacked_t* save, int argc,
         save_pokemon_get_ot_name(current, ot_name);
 
         snprintf(export_file_names[i], sizeof(export_file_names[0]),
-                 "%ld-%s-%#08x-%s.pkm", i + 1, nickname, current->PID, ot_name);
+                 "%ld-%s-%#08x-%s.g3pkm", i + 1, nickname, current->PID, ot_name);
 
         message("I", "Writing to %s\n", export_file_names[i]);
         FILE* export_file = fopen(export_file_names[i], "w");
