@@ -60,8 +60,8 @@ int main(int argc, char* const* argv) {
 
     int editor_argc = argc - optind;
     char* const* editor_argv = (editor_argc > 0) ? &argv[optind] : NULL;
-    editor(unpacked, editor_argc, editor_argv);
+    int ret = editor(unpacked, editor_argc, editor_argv);
     free(unpacked);
 
-    return EXIT_SUCCESS;
+    return ret;
 }
