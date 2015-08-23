@@ -6,14 +6,6 @@
 
 #include "editor_parse.h"
 
-#undef EDITOR_PARSE_ZERO_INDEXED
-
-#ifdef EDITOR_PARSE_ZERO_INDEXED
-#define EDITOR_INDEX_OFFSET (0)
-#else
-#define EDITOR_INDEX_OFFSET (-1)
-#endif
-
 const struct editor_call_t* editor_parse_call(
     const struct editor_call_t calls[], const char parameter[]) {
     assert(calls != NULL && parameter != NULL);
@@ -36,7 +28,7 @@ int editor_parse_range(struct editor_range_t* range, const char parameter[]) {
     }
     // if `parameter` starts with a number, parse it and set it as lower bound.
     else if (isdigit(parameter[0])) {
-        range->lower = atoi(parameter) + EDITOR_INDEX_OFFSET;
+        range->lower = atoi(parameter);
     }
     // otherwise, fail because there's no valid lower bound to be extracted.
     else {
@@ -57,7 +49,7 @@ int editor_parse_range(struct editor_range_t* range, const char parameter[]) {
     else if (*(index++) == '-') {
         // ...parse it, if it's a number...
         if (isdigit(index[0])) {
-            range->upper = atoi(index) + EDITOR_INDEX_OFFSET;
+            range->upper = atoi(index);
         }
         // ...or set the upper bound to the maximum value, if the string ends
         // there...
