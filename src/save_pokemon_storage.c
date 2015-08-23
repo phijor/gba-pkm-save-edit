@@ -32,6 +32,21 @@ int save_pokemon_get_party(
     return EXIT_SUCCESS;
 }
 
+uint32_t save_pokemon_get_party_size(union save_unpacked_t* save) {
+    enum save_game_type_t game_type = save_get_gametype(save);
+    switch (game_type) {
+        case RUBY_SAPPHIRE:
+            return save->rusa.party_size;
+        case FIRERED_LEAFGREEN:
+            return save->frlg.party_size;
+        case EMERALD:
+            return save->emer.party_size;
+        default:
+            message("E", "Game type not implemented.\n");
+            exit(EXIT_FAILURE);
+    }
+}
+
 int save_pokemon_slot_is_empty(struct save_pokemon_boxed_t* pokemon) {
     return pokemon->nickname[0] == '\0' && pokemon->language == 0;
 }
