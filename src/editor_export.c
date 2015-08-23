@@ -40,6 +40,12 @@ int editor_export_pokemon_party(union save_unpacked_t* save, int argc,
         range.upper = range.max;
     }
 
+    long int party_size = save_pokemon_get_party_size(save);
+    if (range.upper >= party_size) {
+        message("W", "Only %ld out of 6 slots are/is occupied.\n", party_size);
+        range.upper = party_size;
+    }
+
     message("I", "Exporting Pokemon from party slot(s) %d to %d.\n",
             range.lower, range.upper);
 
