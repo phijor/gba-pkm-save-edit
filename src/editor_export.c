@@ -31,7 +31,7 @@ int editor_export_pokemon(union save_unpacked_t* save, int argc,
 int editor_export_pokemon_party(union save_unpacked_t* save, int argc,
                                char* const* argv) {
     struct editor_range_t range = {
-        .min = 0, .max = 5,
+        .min = 1, .max = 6,
     };
     if (argc >= 1 && argv[0] != NULL) {
         editor_parse_range(&range, argv[0]);
@@ -39,8 +39,9 @@ int editor_export_pokemon_party(union save_unpacked_t* save, int argc,
         range.lower = range.min;
         range.upper = range.max;
     }
+
     message("I", "Exporting Pokemon from party slot(s) %d to %d.\n",
-            range.lower + 1, range.upper + 1);
+            range.lower, range.upper);
 
     char export_file_names[6][sizeof("~-[NAME~~~~]-0x[PID~~~]-[OT~~~].g3pkm")] = {'\0'};
 
@@ -48,10 +49,11 @@ int editor_export_pokemon_party(union save_unpacked_t* save, int argc,
     save_pokemon_get_party(save, party);
 
     for (ssize_t i = range.lower; i <= range.upper; i++) {
-        struct save_pokemon_boxed_t* current = &party[i];
+        struct save_pokemon_boxed_t* current = &party[i - 1];
+        char* current_file_name = export_file_names[i - 1];
 
         if (save_pokemon_slot_is_empty(current)) {
-            message("I", "Slot %ld is empty; skipping slot.\n", i + 1);
+            message("I", "Slot %ld is empty; skipping slot.\n", i);
             continue;
         }
 
@@ -61,11 +63,11 @@ int editor_export_pokemon_party(union save_unpacked_t* save, int argc,
         char ot_name[sizeof(((struct save_pokemon_boxed_t*)0)->OT_name)];
         save_pokemon_get_ot_name(current, ot_name);
 
-        snprintf(export_file_names[i], sizeof(export_file_names[0]),
-                 "%ld-%s-%#08x-%s.g3pkm", i + 1, nickname, current->PID, ot_name);
+        snprintf(current_file_name, sizeof(export_file_names[0]),
+                 "%ld-%s-%#08x-%s.g3pkm", i, nickname, current->PID, ot_name);
 
-        message("I", "Writing to %s\n", export_file_names[i]);
-        FILE* export_file = fopen(export_file_names[i], "w");
+        message("I", "Writing to \'%s\'.\n", current_file_name);
+        FILE* export_file = fopen(current_file_name, "w");
         fwrite(current, sizeof(struct save_pokemon_boxed_t), 1, export_file);
         fclose(export_file);
     }
