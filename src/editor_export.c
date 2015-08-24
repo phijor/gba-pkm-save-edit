@@ -41,7 +41,7 @@ int editor_export_pokemon_party(union save_unpacked_t* save, int argc,
     }
 
     long int party_size = save_pokemon_get_party_size(save);
-    if (range.upper >= party_size) {
+    if (range.upper > party_size) {
         message("W", "Only %ld out of 6 slots are/is occupied.\n", party_size);
         range.upper = party_size;
     }
@@ -59,7 +59,7 @@ int editor_export_pokemon_party(union save_unpacked_t* save, int argc,
         char* current_file_name = export_file_names[i - 1];
 
         if (save_pokemon_slot_is_empty(current)) {
-            message("I", "Slot %ld is empty; skipping slot.\n", i);
+            message("W", "Slot %ld is empty; skipping slot.\n", i);
             continue;
         }
 
@@ -72,7 +72,7 @@ int editor_export_pokemon_party(union save_unpacked_t* save, int argc,
         snprintf(current_file_name, sizeof(export_file_names[0]),
                  "%ld-%s-%#08x-%s.g3pkm", i, nickname, current->PID, ot_name);
 
-        message("I", "Writing to \'%s\'.\n", current_file_name);
+        message("I", "Writing slot %ld to \'%s\'.\n", i, current_file_name);
         FILE* export_file = fopen(current_file_name, "w");
         fwrite(current, sizeof(struct save_pokemon_boxed_t), 1, export_file);
         fclose(export_file);
