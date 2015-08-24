@@ -5,9 +5,11 @@
 #include "message.h"
 #include "save.h"
 #include "save_unpacked.h"
+#include "save_boxes.h"
+#include "save_char_encoding.h"
 
-int save_pokemon_get_party(
-    union save_unpacked_t* save, struct save_pokemon_boxed_t* party) {
+int save_pokemon_get_party(union save_unpacked_t* save,
+                           struct save_pokemon_boxed_t* party) {
     struct save_pokemon_t* party_extended;
     enum save_game_type_t game_type = save_get_gametype(save);
     switch (game_type) {
@@ -27,8 +29,47 @@ int save_pokemon_get_party(
 
     assert(party != NULL);
     for (size_t i = 0; i < 6; i++) {
-        memcpy(&party[i], &party_extended[i].boxed, sizeof(struct save_pokemon_boxed_t));
+        memcpy(&party[i], &party_extended[i].boxed,
+               sizeof(struct save_pokemon_boxed_t));
     }
+    return EXIT_SUCCESS;
+}
+
+int save_pokemon_get_box(union save_unpacked_t* save, size_t index,
+                         struct save_box_unpacked_t* box) {
+    if (index >= SAVE_BOXES) {
+        message("E", "Cannot access box %ld: Out of range.\n", index);
+        return EXIT_FAILURE;
+    }
+    uint8_t* name_ptr;
+    struct save_pokemon_boxed_t* pkm_ptr;
+
+    enum save_game_type_t game_type = save_get_gametype(save);
+    switch (game_type) {
+        case RUBY_SAPPHIRE:
+            box->wallpaper = save->rusa.boxes.wallpapers[index];
+            name_ptr = save->rusa.boxes.names[index];
+            pkm_ptr = save->rusa.boxes.pokemon[index];
+            break;
+        case FIRERED_LEAFGREEN:
+            box->wallpaper = save->frlg.boxes.wallpapers[index];
+            name_ptr = save->frlg.boxes.names[index];
+            pkm_ptr = save->rusa.boxes.pokemon[index];
+            break;
+        case EMERALD:
+            box->wallpaper = save->emer.boxes.wallpapers[index];
+            name_ptr = save->emer.boxes.names[index];
+            pkm_ptr = save->rusa.boxes.pokemon[index];
+            break;
+        default:
+            message("E", "Game type not implemented.\n");
+            exit(EXIT_FAILURE);
+    }
+
+    assert(box != NULL);
+    save_string_decode(box->name, name_ptr, SAVE_BOX_NAME_LENGTH);
+    memcpy(&box->pokemon, pkm_ptr,
+           SAVE_BOX_SLOTS * sizeof(struct save_pokemon_boxed_t));
     return EXIT_SUCCESS;
 }
 
