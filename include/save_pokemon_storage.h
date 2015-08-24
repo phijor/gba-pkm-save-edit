@@ -3,6 +3,9 @@
 
 #include "save_pokemon.h"
 
+#define SAVE_PARTY_SLOTS 6
+#define SAVE_BOX_SLOTS 30
+
 union save_unpacked_t;
 
 int save_pokemon_get_party(union save_unpacked_t* save,

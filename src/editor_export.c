@@ -31,7 +31,7 @@ int editor_export_pokemon(union save_unpacked_t* save, int argc,
 int editor_export_pokemon_party(union save_unpacked_t* save, int argc,
                                char* const* argv) {
     struct editor_range_t range = {
-        .min = 1, .max = 6,
+        .min = 1, .max = SAVE_PARTY_SLOTS,
     };
     if (argc >= 1 && argv[0] != NULL) {
         editor_parse_range(&range, argv[0]);
@@ -49,9 +49,9 @@ int editor_export_pokemon_party(union save_unpacked_t* save, int argc,
     message("I", "Exporting Pokemon from party slot(s) %d to %d.\n",
             range.lower, range.upper);
 
-    char export_file_names[6][sizeof("~-[NAME~~~~]-0x[PID~~~]-[OT~~~].g3pkm")] = {'\0'};
+    char export_file_names[SAVE_PARTY_SLOTS][sizeof("~-[NAME~~~~]-0x[PID~~~]-[OT~~~].g3pkm")] = {'\0'};
 
-    struct save_pokemon_boxed_t party[6];
+    struct save_pokemon_boxed_t party[SAVE_PARTY_SLOTS];
     save_pokemon_get_party(save, party);
 
     for (ssize_t i = range.lower; i <= range.upper; i++) {
