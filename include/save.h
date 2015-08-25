@@ -22,6 +22,8 @@
 /* Each section contains a validation code */
 #define SAVE_SECTION_VALIDATION_CODE 0x08012025
 
+extern const size_t save_section_size_by_id[SAVE_SECTIONS_PER_BLOCK];
+
 enum save_game_type_t {
     RUBY_SAPPHIRE,
     EMERALD,
@@ -54,7 +56,7 @@ struct save_file_t {
 union save_unpacked_t;
 
 size_t save_find_section_zero(struct save_block_t* save_block);
-union save_unpacked_t* save_unpack(struct save_block_t* block);
+int save_unpack(struct save_block_t* block, union save_unpacked_t* save);
 int save_repack(struct save_block_t* destination,
                 union save_unpacked_t* unpacked, uint32_t save_index,
                 size_t offset);
