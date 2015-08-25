@@ -3,6 +3,8 @@
 
 #include <inttypes.h>
 
+#define SAVE_TRAINER_NAME_SIZE 8
+
 enum save_player_gender_t {
     MALE = 0,
     FEMALE = 1,

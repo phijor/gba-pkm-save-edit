@@ -3,7 +3,6 @@
 
 #include <inttypes.h>
 #include "save_common.h"
-#define SAVE_TRAINER_NAME_SIZE 8
 
 union save_unpacked_t;
 
