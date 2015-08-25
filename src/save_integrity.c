@@ -24,13 +24,15 @@ int save_check_section_validation_code(struct save_section_t* section) {
 }
 
 int save_check_section_checksum_integrity(struct save_section_t* section) {
-    uint16_t checksum =
-        save_checksum(section->data, SAVE_DATA_BYTES_PER_SECTION);
+    size_t section_size =
+        save_section_size_by_id[section->signature.section_id];
+    uint16_t checksum = save_checksum(section->data, section_size);
 
     if (checksum != section->signature.checksum) {
         message("W+", "Checksum of section with ID %u seems to be incorrect\n",
                 section->signature.section_id);
-        message(" ", "Checksum present in section:   %X\n", section->signature.checksum);
+        message(" ", "Checksum present in section:   %X\n",
+                section->signature.checksum);
         message("-", "Checksum calculated from data: %X\n", checksum);
         return EXIT_FAILURE;
     }
