@@ -34,29 +34,28 @@ struct __attribute__((packed)) save_ruby_sapphire_t {
         uint32_t game_code;
         uint32_t security_key;
     };
-    uint8_t _4[(0x1228 - 0x00ac) - sizeof(uint32_t)];
+    uint8_t _4[(0x1160 - 0x00ac) - sizeof(uint32_t)];
 
     uint32_t party_size;
     struct save_pokemon_t party[6];
     uint32_t money;
-    uint8_t _5[(0x148c - 0x1228) - 2*sizeof(uint32_t) - 6*sizeof(struct save_pokemon_t)];
+    uint8_t _5[(0x13c4 - 0x1160) - 2*sizeof(uint32_t) - 6*sizeof(struct save_pokemon_t)];
 
     struct save_ruby_sapphire_items_t items;
-    uint8_t _6[(0x192c - 0x148c) - sizeof(struct save_ruby_sapphire_items_t)];
+    uint8_t _6[(0x1864 - 0x13c4) - sizeof(struct save_ruby_sapphire_items_t)];
 
     struct save_pokedex_t pokedex_seen_b;
-    uint8_t _7[(0x238e - 0x192c) - sizeof(struct save_pokedex_t)];
+    uint8_t _7[(0x2252 - 0x1864) - sizeof(struct save_pokedex_t)];
     
     uint8_t pokedex_national_unlocked_b;
-    uint8_t _8[(0x2434 - 0x238e) - sizeof(uint8_t)];
+    uint8_t _8[(0x22f8 - 0x2252) - sizeof(uint8_t)];
 
     uint16_t pokedex_national_unlocked_c;
-    uint8_t _9[(0x4bdc - 0x2434) - sizeof(uint16_t)];
+    uint8_t _9[(0x49b0 - 0x22f8) - sizeof(uint16_t)];
 
     struct save_pokedex_t pokedex_seen_c;
-    uint8_t _10[(0x4fc4 - 0x4bdc) - sizeof(struct save_pokedex_t)];
+    uint8_t _10[(0x4cb4 - 0x49b0) - sizeof(struct save_pokedex_t)];
 
     struct save_box_data_t boxes;
-    //last byte at 0xdf58
 };
 #endif
