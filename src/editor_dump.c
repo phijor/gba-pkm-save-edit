@@ -7,10 +7,14 @@
 #include "save_unpacked.h"
 
 int editor_dump(union save_unpacked_t* save, int argc, char* const* argv) {
+    if (argv == NULL) {
+        message("E", "Passed invalid argument-vector.");
+        return EXIT_FAILURE;
+    }
     char* dump_file_name = argv[0];
 
-    if (dump_file_name == NULL) {
-        message("E", "Missing file name.\n");
+    if (argc < 1 && dump_file_name == NULL) {
+        message("W", "Missing file name.\n");
         dump_file_name = "dump.sav.unpacked";
     }
     message("I", "Writing to \'%s\'.\n", dump_file_name);
