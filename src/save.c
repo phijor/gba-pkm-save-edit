@@ -48,7 +48,6 @@ int save_unpack(struct save_block_t* block, union save_unpacked_t* save) {
         struct save_section_t* section_source = &block->sections[section_index];
         size_t section_size = save_section_size_by_id[section_source->signature.section_id];
 
-        message("I", "Writing block at offset %p\n", section_dest - (char*)save);
         memcpy(section_dest, &section_source->data, section_size);
 
         section_dest += section_size;
