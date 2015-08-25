@@ -53,6 +53,9 @@ enum save_pokedex_status_t save_get_pokedex_entry(union save_unpacked_t* save,
         case FIRERED_LEAFGREEN:
             owned = &(save->frlg.pokedex_owned);
             break;
+        case EMERALD:
+            owned = &(save->emer.pokedex_owned);
+            break;
         default:
             message("E", "Game type not implemented.\n");
             exit(EXIT_FAILURE);
