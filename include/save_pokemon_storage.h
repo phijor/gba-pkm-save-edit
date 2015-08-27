@@ -3,6 +3,8 @@
 
 #include "save_pokemon.h"
 
+#define SAVE_PARTY_SLOTS 6
+
 union save_unpacked_t;
 struct save_box_unpacked_t;
 

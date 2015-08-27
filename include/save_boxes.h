@@ -6,8 +6,6 @@
 #include "save_common.h"
 #include "save_pokemon.h"
 
-#define SAVE_PARTY_SLOTS 6
-
 #define SAVE_BOXES 14
 #define SAVE_BOX_SLOTS 30
 #define SAVE_BOX_NAME_LENGTH 9
