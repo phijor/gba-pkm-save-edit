@@ -5,7 +5,7 @@
 #include "save_pokemon.h"
 #include "save_char_encoding.h"
 
-#define arrsize(a) (sizeof(a) / sizeof(a[0]))
+#define SAVE_DATA_PERMUTATIONS 24
 
 const struct save_pokemon_data_permutation_t save_pokemon_data_permutations[] = {
   // G  A  E  M
@@ -46,7 +46,7 @@ void save_pokemon_xor_crypt(struct save_pokemon_boxed_t* pokemon) {
     uint32_t key = save_pokemon_get_crypt_key(pokemon);
 
     assert(sizeof(union save_pokemon_data_t) % sizeof(uint32_t) == 0);
-    size_t raw_size = sizeof(union save_pokemon_data_t) / sizeof(uint32_t);
+    size_t raw_size = 4 * sizeof(union save_pokemon_data_t) / sizeof(uint32_t);
 
     uint32_t* raw_data = (uint32_t*)pokemon->data;
 
@@ -60,7 +60,7 @@ void save_pokemon_order_data(struct save_pokemon_boxed_t* pokemon,
     union save_pokemon_data_t* data = pokemon->data;
 
     size_t permutation_index =
-        pokemon->PID % arrsize(save_pokemon_data_permutations);
+        pokemon->PID % SAVE_DATA_PERMUTATIONS;
     const struct save_pokemon_data_permutation_t* current_permutation =
         &save_pokemon_data_permutations[permutation_index];
 
@@ -74,7 +74,7 @@ int save_pokemon_check_data_integrity(struct save_pokemon_boxed_t* pokemon) {
     uint16_t checksum = 0;
 
     assert(sizeof(union save_pokemon_data_t) % sizeof(uint16_t) == 0);
-    size_t raw_size = sizeof(pokemon->data) / sizeof(uint16_t);
+    size_t raw_size = sizeof(union save_pokemon_data_t) / sizeof(uint16_t);
 
     uint16_t* raw_data = (uint16_t*)pokemon->data;
 
