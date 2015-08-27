@@ -7,6 +7,18 @@
 
 #define SAVE_POKEMON_NICKNAME_SIZE 10
 #define SAVE_POKEMON_OT_NAME_SIZE 7
+#define SAVE_POKEMON_ATTACKS 4
+
+enum save_pokemon_language_t {
+    SAVE_LANG_BASE = 0x200,
+    SAVE_LANG_JAPANESE,
+    SAVE_LANG_ENGLISH,
+    SAVE_LANG_FRENCH,
+    SAVE_LANG_ITALIAN,
+    SAVE_LANG_GERMAN,
+    SAVE_LANG_KOREAN,
+    SAVE_LANG_SPANISH,
+};
 
 struct save_pokemon_data_permutation_t {
     size_t growth;
@@ -110,5 +122,8 @@ int save_pokemon_check_data_integrity(struct save_pokemon_boxed_t* pokemon);
 
 size_t save_pokemon_get_nickname(struct save_pokemon_boxed_t* pokemon, char* nickname);
 size_t save_pokemon_get_ot_name(struct save_pokemon_boxed_t* pokemon, char* ot_name);
+
+uint8_t save_pokemon_get_pp_bonuses(struct save_pokemon_data_ordered_t* pokemon,
+                                    size_t move);
 
 #endif

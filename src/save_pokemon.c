@@ -100,3 +100,8 @@ size_t save_pokemon_get_nickname(struct save_pokemon_boxed_t* pokemon, char* nic
 size_t save_pokemon_get_ot_name(struct save_pokemon_boxed_t* pokemon, char* OT_name) {
     return save_string_decode(OT_name, pokemon->OT_name, SAVE_POKEMON_OT_NAME_SIZE);
 }
+
+uint8_t save_pokemon_get_pp_bonuses(
+    struct save_pokemon_data_ordered_t* pkm_data, size_t move) {
+    return (pkm_data->growth->pp_bonuses & (0x3 << move)) >> move;
+}
