@@ -119,12 +119,13 @@ int editor_export_pokemon_box(union save_unpacked_t* save, int argc,
 
 int editor_export_pokemon_write(struct save_pokemon_boxed_t* pokemon,
                                 char* dir_path, char* prefix) {
-    size_t file_name_size = strlen(dir_path) + sizeof('/') + strlen(prefix) +
-                            sizeof("-[NAME~~~~]-[OT~~~]-0x[PID~~~].g3pkm");
-    char* file_name = malloc(file_name_size);
     if (save_pokemon_slot_is_empty(pokemon)) {
         return EXIT_FAILURE;
     }
+
+    size_t file_name_size = strlen(dir_path) + sizeof('/') + strlen(prefix) +
+                            sizeof("-[NAME~~~~]-[OT~~~]-0x[PID~~~].g3pkm");
+    char* file_name = calloc(file_name_size, sizeof(char));
 
     char nickname[SAVE_POKEMON_NICKNAME_SIZE];
     save_pokemon_get_nickname(pokemon, nickname);
@@ -139,5 +140,6 @@ int editor_export_pokemon_write(struct save_pokemon_boxed_t* pokemon,
     FILE* export_file = fopen(file_name, "w");
     fwrite(pokemon, sizeof(struct save_pokemon_boxed_t), 1, export_file);
     fclose(export_file);
+    free(file_name);
     return EXIT_SUCCESS;
 }
