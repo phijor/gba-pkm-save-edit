@@ -255,7 +255,7 @@ int editor_show_pokemon_info(struct save_pokemon_boxed_t* pokemon) {
         if (remaining) {
             message_indent(+1);
             message("*", "Day(s) remaining: %u/%u\n",
-                    save_pokemon_pokerus_get_remaining(&pkm_data),
+                    remaining,
                     save_pokemon_pokerus_get_max_days(&pkm_data));
             message_indent(-1);
         }
