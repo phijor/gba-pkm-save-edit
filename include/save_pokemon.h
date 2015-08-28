@@ -9,6 +9,21 @@
 #define SAVE_POKEMON_OT_NAME_SIZE 7
 #define SAVE_POKEMON_ATTACKS 4
 
+#define SAVE_POKEMON_MARK_CIRCLE (1 << 0)
+#define SAVE_POKEMON_MARK_SQUARE (1 << 1)
+#define SAVE_POKEMON_MARK_TRIANG (1 << 2)
+#define SAVE_POKEMON_MARK_HEART  (1 << 3)
+
+#define SAVE_POKEMON_MET_LEVEL (0x3f << 0)
+#define SAVE_POKEMON_ORIG_GAME (0x0f << 7)
+#define SAVE_POKEMON_BALL      (0x0f << 11)
+#define SAVE_POKEMON_OT_GENDER (0x01 << 15)
+
+#define SAVE_POKEMON_MET_LEVEL_SHIFT 0
+#define SAVE_POKEMON_ORIG_GAME_SHIFT 7
+#define SAVE_POKEMON_BALL_SHIFT      11
+#define SAVE_POKEMON_OT_GENDER_SHIFT 15
+
 enum save_pokemon_language_t {
     SAVE_LANG_BASE = 0x200,
     SAVE_LANG_JAPANESE,
@@ -18,6 +33,23 @@ enum save_pokemon_language_t {
     SAVE_LANG_GERMAN,
     SAVE_LANG_KOREAN,
     SAVE_LANG_SPANISH,
+};
+
+enum save_pokerus_status_t {
+    SAVE_POKERUS_NONE,
+    SAVE_POKERUS_INFECTED,
+    SAVE_POKERUS_CURED,
+    SAVE_POKERUS_INVALID
+};
+
+enum save_pokemon_game_of_origin_t {
+    SAVE_ORIG_COL_BONUS_DISK = 0,
+    SAVE_ORIG_SAPPHIRE,
+    SAVE_ORIG_RUBY,
+    SAVE_ORIG_EMERALD,
+    SAVE_ORIG_FIRERED,
+    SAVE_ORIG_LEAFGREEN,
+    SAVE_ORIG_COL_XD = 15,
 };
 
 struct save_pokemon_data_permutation_t {
@@ -70,7 +102,7 @@ struct save_pokemon_data_misc_t {
     uint8_t pokerus;
     uint8_t met_location;
     uint16_t origin_info;
-    uint8_t iv_egg_ability;
+    uint32_t iv_egg_ability;
     uint32_t ribbons_obedience;
 };
 
@@ -123,7 +155,30 @@ int save_pokemon_check_data_integrity(struct save_pokemon_boxed_t* pokemon);
 size_t save_pokemon_get_nickname(struct save_pokemon_boxed_t* pokemon, char* nickname);
 size_t save_pokemon_get_ot_name(struct save_pokemon_boxed_t* pokemon, char* ot_name);
 
-uint8_t save_pokemon_get_pp_bonuses(struct save_pokemon_data_ordered_t* pokemon,
+uint8_t save_pokemon_get_pp_bonuses(struct save_pokemon_data_ordered_t* pkm_data,
                                     size_t move);
+
+int save_pokemon_pokerus_get_remaining(
+    struct save_pokemon_data_ordered_t* pkm_data);
+
+int save_pokemon_pokerus_get_max_days(
+    struct save_pokemon_data_ordered_t* pkm_data);
+
+uint8_t save_pokemon_pokerus_get_strain(
+    struct save_pokemon_data_ordered_t* pkm_data);
+
+enum save_pokerus_status_t save_pokemon_pokerus_get_status(
+    struct save_pokemon_data_ordered_t* pkm_data);
+
+uint8_t save_pokemon_get_level_metj(
+    struct save_pokemon_data_ordered_t* pkm_data);
+
+enum save_pokemon_game_of_origin_t save_pokemon_get_origin(
+    struct save_pokemon_data_ordered_t* pkm_data);
+
+uint8_t save_pokemon_get_ball(struct save_pokemon_data_ordered_t* pkm_data);
+
+enum save_player_gender_t save_pokemon_get_ot_gender(
+    struct save_pokemon_data_ordered_t* pkm_data);
 
 #endif

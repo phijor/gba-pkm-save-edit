@@ -105,3 +105,54 @@ uint8_t save_pokemon_get_pp_bonuses(
     struct save_pokemon_data_ordered_t* pkm_data, size_t move) {
     return (pkm_data->growth->pp_bonuses & (0x3 << move)) >> move;
 }
+
+int save_pokemon_pokerus_get_remaining(struct save_pokemon_data_ordered_t* pkm_data) {
+    return pkm_data->misc->pokerus & 0x0f;
+}
+
+uint8_t save_pokemon_pokerus_get_strain(struct save_pokemon_data_ordered_t* pkm_data) {
+    return (pkm_data->misc->pokerus >> 4) & 0x0f;
+}
+
+int save_pokemon_pokerus_get_max_days(
+    struct save_pokemon_data_ordered_t* pkm_data) {
+    return save_pokemon_pokerus_get_strain(pkm_data) % 4 + 1;
+}
+
+enum save_pokerus_status_t save_pokemon_pokerus_get_status(
+    struct save_pokemon_data_ordered_t* pkm_data) {
+    uint8_t strain = save_pokemon_pokerus_get_strain(pkm_data);
+    uint8_t days = save_pokemon_pokerus_get_remaining(pkm_data);
+    if (strain == 0) {
+        return SAVE_POKERUS_NONE;
+    }
+    if (days == 0) {
+        return SAVE_POKERUS_CURED;
+    }
+    if (days <= save_pokemon_pokerus_get_max_days(pkm_data)) {
+        return SAVE_POKERUS_INFECTED;
+    }
+    return SAVE_POKERUS_INVALID;
+}
+
+uint8_t save_pokemon_met_level(struct save_pokemon_data_ordered_t* pkm_data) {
+    return (pkm_data->misc->origin_info & SAVE_POKEMON_MET_LEVEL) >>
+           SAVE_POKEMON_MET_LEVEL_SHIFT;
+}
+
+enum save_pokemon_game_of_origin_t save_pokemon_get_origin(
+    struct save_pokemon_data_ordered_t* pkm_data) {
+    return (pkm_data->misc->origin_info & SAVE_POKEMON_ORIG_GAME) >>
+           SAVE_POKEMON_ORIG_GAME_SHIFT;
+}
+
+uint8_t save_pokemon_get_ball(struct save_pokemon_data_ordered_t* pkm_data) {
+    return (pkm_data->misc->origin_info & SAVE_POKEMON_BALL) >>
+           SAVE_POKEMON_BALL_SHIFT;
+}
+
+enum save_player_gender_t save_pokemon_get_ot_gender(
+    struct save_pokemon_data_ordered_t* pkm_data) {
+    return (pkm_data->misc->origin_info & SAVE_POKEMON_OT_GENDER) >>
+           SAVE_POKEMON_OT_GENDER_SHIFT;
+}
