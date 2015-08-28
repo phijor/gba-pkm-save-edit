@@ -2,6 +2,7 @@
 #define  SAVE_POKEMON_STORAGE_H
 
 #include "save_pokemon.h"
+#include "save_boxes.h"
 
 #define SAVE_PARTY_SLOTS 6
 
