@@ -4,10 +4,6 @@
 #include <stddef.h>
 #include <inttypes.h>
 
-#define I(s) "Info: " s "\n"
-#define W(s) "Warning: " s "\n"
-#define E(s) "Error: " s "\n"
-
 /* A save file contains 2 blocks, each on a represents a full game state. */
 #define SAVE_BLOCKS_PER_FILE 2
 
