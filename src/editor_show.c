@@ -55,36 +55,33 @@ int editor_show_pokedex(union save_unpacked_t* save, int argc,
 
 int editor_show_trainer(union save_unpacked_t* save, int argc,
                         char* const* argv) {
-    message_indent(+1);
-    uint32_t info_flags = EDITOR_TRAINER_ALL;
-    if (info_flags & EDITOR_TRAINER_NAME) {
-        char name[8] = {'\0'};
+    {
+        char name[SAVE_TRAINER_NAME_SIZE] = {'\0'};
         save_get_name(name, save);
         message("*", "Name: %s\n", name);
     }
-    if (info_flags & EDITOR_TRAINER_ID) {
+    {
         struct save_trainer_id_t id;
         save_get_trainer_id(&id, save);
-        message("*", "TID: %u\n", id.TID);
-        message("*", "SID: %u\n", id.SID);
+        message("*", "Trainer ID (TID): %05u\n", id.TID);
+        message("*", "Secret ID  (SID): %05u\n", id.SID);
     }
-    if (info_flags & EDITOR_TRAINER_TIME) {
+    {
         struct save_time_played_t time;
         save_get_time_played(&time, save);
         message("*",
-                "Time played: %02u:%02u:%02u/%02u\n",
+                "Time played: %03u:%02u:%02u/%02u\n",
                 time.hours,
                 time.minutes,
                 time.seconds,
                 time.frames);
     }
-    message_indent(-1);
     return EXIT_SUCCESS;
 }
 
 int editor_show_money(union save_unpacked_t* save, int argc,
                       char* const* argv) {
-    message("", "Money: %u Poké$\n", save_get_money(save));
+    message("*", "Money: %u\n", save_get_money(save));
     return EXIT_SUCCESS;
 }
 
