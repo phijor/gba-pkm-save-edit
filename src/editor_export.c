@@ -50,7 +50,7 @@ int editor_export_pokemon_party(union save_unpacked_t* save, int argc,
         directory = ".";
     }
 
-    long int party_size = save_pokemon_get_party_size(save);
+    long int party_size = save_pokemon_party_size_get(save);
     if (range.upper > party_size) {
         message("W", "Only %ld out of 6 slots are/is occupied.\n", party_size);
         range.upper = party_size;
@@ -60,7 +60,7 @@ int editor_export_pokemon_party(union save_unpacked_t* save, int argc,
             range.lower, range.upper);
 
     struct save_pokemon_boxed_t party[SAVE_PARTY_SLOTS];
-    save_pokemon_get_party(save, party);
+    save_pokemon_party_get(save, party);
 
     for (ssize_t i = range.lower; i <= range.upper; i++) {
         char prefix[2];
@@ -107,7 +107,7 @@ int editor_export_pokemon_box(union save_unpacked_t* save, int argc,
 
     for (ssize_t box_ind = boxes.lower; box_ind <= boxes.upper; box_ind++) {
         struct save_box_unpacked_t box;
-        save_pokemon_get_box(save, box_ind - 1, &box);
+        save_pokemon_box_get(save, box_ind - 1, &box);
         for (ssize_t slot = slots.lower; slot <= slots.upper; slot++) {
             char prefix[6];
             snprintf(prefix, 6, "%02ld-%02ld", box_ind, slot);
@@ -128,10 +128,10 @@ int editor_export_pokemon_write(struct save_pokemon_boxed_t* pokemon,
     char* file_name = calloc(file_name_size, sizeof(char));
 
     char nickname[SAVE_POKEMON_NICKNAME_SIZE];
-    save_pokemon_get_nickname(pokemon, nickname);
+    save_pokemon_nickname_get(pokemon, nickname);
 
     char ot_name[SAVE_TRAINER_NAME_SIZE];
-    save_pokemon_get_ot_name(pokemon, ot_name);
+    save_pokemon_ot_name_get(pokemon, ot_name);
 
     snprintf(file_name, file_name_size, "%s/%s-%s-%s-%#08x.g3pkm",
              dir_path, prefix, nickname, ot_name, pokemon->PID);

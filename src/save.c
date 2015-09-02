@@ -25,7 +25,7 @@ const size_t save_section_size_by_id[] = {
     2000   // PC buffer I
 };
 
-size_t save_find_section_zero(struct save_block_t* block) {
+size_t save_section_offset_get(struct save_block_t* block) {
     for (size_t i = 0; i < SAVE_SECTIONS_PER_BLOCK; i++) {
         if (block->sections[i].signature.section_id == 0) {
             return i;
@@ -35,7 +35,7 @@ size_t save_find_section_zero(struct save_block_t* block) {
 }
 
 int save_unpack(struct save_block_t* block, union save_unpacked_t* save) {
-    size_t zero_section_offset = save_find_section_zero(block);
+    size_t zero_section_offset = save_section_offset_get(block);
 
     if (zero_section_offset >= SAVE_SECTIONS_PER_BLOCK) {
         message("E", "Could not locate first section of block.\n");
@@ -74,12 +74,12 @@ int save_repack(struct save_block_t* destination,
         dest_section->signature.save_index = save_index;
         dest_section->signature.validation_code = SAVE_SECTION_VALIDATION_CODE;
         dest_section->signature.section_id = i;
-        save_resign_section(dest_section);
+        save_section_resign(dest_section);
     }
     return EXIT_SUCCESS;
 }
 
-struct save_block_t* save_most_recent_block(struct save_file_t* file) {
+struct save_block_t* save_most_recent_block_get(struct save_file_t* file) {
     struct save_block_t* most_recent =
         (file->save_blocks[0].sections[0].signature.save_index >
          file->save_blocks[1].sections[0].signature.save_index)
@@ -88,7 +88,7 @@ struct save_block_t* save_most_recent_block(struct save_file_t* file) {
     return most_recent;
 }
 
-enum save_game_type_t save_get_gametype(union save_unpacked_t* save) {
+enum save_game_type_t save_gametype_get(union save_unpacked_t* save) {
     /* Assume the game is Ruby/Sapphire. For Firered/Leafgreen the location is
      * the same; Emerald does not have a game_code, instead it's security key
      * is stored at this address.

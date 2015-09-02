@@ -4,7 +4,7 @@
 #include "message.h"
 #include "save_integrity.h"
 
-uint16_t save_checksum(void* buffer, size_t length) {
+uint16_t save_checksum_get(void* buffer, size_t length) {
     uint32_t checksum = 0;
     uint32_t* dword_buffer = (uint32_t*)buffer;
 
@@ -17,16 +17,16 @@ uint16_t save_checksum(void* buffer, size_t length) {
     return ((checksum & 0xffff) + (checksum >> 16)) & 0xffff;
 }
 
-int save_check_section_validation_code(struct save_section_t* section) {
+int save_section_validation_code_check(struct save_section_t* section) {
     return (section->signature.validation_code == SAVE_SECTION_VALIDATION_CODE)
                ? EXIT_SUCCESS
                : EXIT_FAILURE;
 }
 
-int save_check_section_checksum_integrity(struct save_section_t* section) {
+int save_section_data_integrity_check(struct save_section_t* section) {
     size_t section_size =
         save_section_size_by_id[section->signature.section_id];
-    uint16_t checksum = save_checksum(section->data, section_size);
+    uint16_t checksum = save_checksum_get(section->data, section_size);
 
     if (checksum != section->signature.checksum) {
         message("W+", "Checksum of section with ID %u seems to be incorrect\n",
@@ -39,35 +39,35 @@ int save_check_section_checksum_integrity(struct save_section_t* section) {
     return EXIT_SUCCESS;
 }
 
-int save_check_section_integrity(struct save_section_t* section) {
-    if (save_check_section_checksum_integrity(section) == EXIT_FAILURE) {
+int save_section_integrity_check(struct save_section_t* section) {
+    if (save_section_data_integrity_check(section) == EXIT_FAILURE) {
         return EXIT_FAILURE;
     }
 
     /* Only the validation code can be wrong at this point, so return wether it
      * is correct or not as a result of this integrity check */
-    return save_check_section_validation_code(section);
+    return save_section_validation_code_check(section);
 }
 
-int save_check_block_integrity(struct save_block_t* block) {
+int save_block_integrity_check(struct save_block_t* block) {
     int exit_status = EXIT_SUCCESS;
     for (size_t i = 0; i < SAVE_SECTIONS_PER_BLOCK; i++) {
         struct save_section_t* current_section = &(block->sections[i]);
 
-        if (save_check_section_integrity(current_section) == EXIT_FAILURE) {
+        if (save_section_integrity_check(current_section) == EXIT_FAILURE) {
             exit_status = EXIT_FAILURE;
         }
     }
     return exit_status;
 }
 
-int save_check_file_integrity(struct save_file_t* file) {
+int save_file_integrity_check(struct save_file_t* file) {
     int exit_status = EXIT_SUCCESS;
 
     for (size_t i = 0; i < SAVE_BLOCKS_PER_FILE; i++) {
         struct save_block_t* current_block = &(file->save_blocks[i]);
 
-        if (save_check_block_integrity(current_block) == EXIT_FAILURE) {
+        if (save_block_integrity_check(current_block) == EXIT_FAILURE) {
             exit_status = EXIT_FAILURE;
             message("W",
                     "One ore more sections in block %ld seem to be corrupted\n",
@@ -77,32 +77,32 @@ int save_check_file_integrity(struct save_file_t* file) {
     return exit_status;
 }
 
-int save_resign_section(struct save_section_t* section) {
+int save_section_resign(struct save_section_t* section) {
     uint16_t checksum =
-        save_checksum(section->data, SAVE_DATA_BYTES_PER_SECTION);
+        save_checksum_get(section->data, SAVE_DATA_BYTES_PER_SECTION);
     section->signature.checksum = checksum;
     return EXIT_SUCCESS;
 }
 
-int save_resign_block(struct save_block_t* block) {
+int save_block_resign(struct save_block_t* block) {
     int exit_status = EXIT_SUCCESS;
     for (size_t i = 0; i < SAVE_SECTIONS_PER_BLOCK; i++) {
         struct save_section_t* current_section = &(block->sections[i]);
 
-        if (save_resign_section(current_section) == EXIT_FAILURE) {
+        if (save_section_resign(current_section) == EXIT_FAILURE) {
             exit_status = EXIT_FAILURE;
         }
     }
     return exit_status;
 }
 
-int save_resign_file(struct save_file_t* file) {
+int save_file_resign(struct save_file_t* file) {
     int exit_status = EXIT_SUCCESS;
 
     for (size_t i = 0; i < SAVE_BLOCKS_PER_FILE; i++) {
         struct save_block_t* current_block = &(file->save_blocks[i]);
 
-        if (save_resign_block(current_block) == EXIT_FAILURE) {
+        if (save_block_resign(current_block) == EXIT_FAILURE) {
             exit_status = EXIT_FAILURE;
         }
     }

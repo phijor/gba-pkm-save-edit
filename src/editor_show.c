@@ -42,7 +42,7 @@ int editor_show_pokedex(union save_unpacked_t* save, int argc,
     }
 
     for (ssize_t i = range.lower; i <= range.upper; i++) {
-        enum save_pokedex_status_t status = save_get_pokedex_entry(save, i - 1);
+        enum save_pokedex_status_t status = save_pokedex_get(save, i - 1);
         if (status == POKEDEX_ERROR) {
             message("E", "Pokedex data at index #%03ld is invalid.\n", i);
             return EXIT_FAILURE;
@@ -56,18 +56,18 @@ int editor_show_trainer(union save_unpacked_t* save, int argc,
                         char* const* argv) {
     {
         char name[SAVE_TRAINER_NAME_SIZE] = {'\0'};
-        save_get_name(name, save);
+        save_trainer_name_get(name, save);
         message("*", "Name: %s\n", name);
     }
     {
         struct save_trainer_id_t id;
-        save_get_trainer_id(&id, save);
+        save_trainer_id_get(&id, save);
         message("*", "Trainer ID (TID): %05u\n", id.TID);
         message("*", "Secret ID  (SID): %05u\n", id.SID);
     }
     {
         struct save_time_played_t time;
-        save_get_time_played(&time, save);
+        save_time_played_get(&time, save);
         message("*",
                 "Time played: %03u:%02u:%02u/%02u\n",
                 time.hours,
@@ -76,7 +76,7 @@ int editor_show_trainer(union save_unpacked_t* save, int argc,
                 time.frames);
     }
     {
-        message("*", "Money: %u\n", save_get_money(save));
+        message("*", "Money: %u\n", save_trainer_money_get(save));
     }
     return EXIT_SUCCESS;
 }
@@ -106,14 +106,14 @@ int editor_show_pokemon_party(union save_unpacked_t* save, int argc,
         range.upper = range.max;
     }
 
-    long int party_size = save_pokemon_get_party_size(save);
+    long int party_size = save_pokemon_party_size_get(save);
     if (range.upper > party_size) {
         message("W", "Only %ld out of 6 slots are/is occupied.\n", party_size);
         range.upper = party_size;
     }
 
     struct save_pokemon_boxed_t party[SAVE_PARTY_SLOTS];
-    save_pokemon_get_party(save, party);
+    save_pokemon_party_get(save, party);
 
     for (ssize_t i = range.lower; i <= range.upper; i++) {
         message("+", "Party Pokemon #%ld:\n", i);
@@ -150,7 +150,7 @@ int editor_show_pokemon_box(union save_unpacked_t* save, int argc,
 
     for (ssize_t box_ind = boxes.lower; box_ind <= boxes.upper; box_ind++) {
         struct save_box_unpacked_t box;
-        save_pokemon_get_box(save, box_ind - 1, &box);
+        save_pokemon_box_get(save, box_ind - 1, &box);
         for (ssize_t slot = slots.lower; slot <= slots.upper; slot++) {
             message("+", "Box \'%s\', slot #%ld:\n", box.name, slot);
             int ret = editor_show_pokemon_info(&box.pokemon[slot - 1]);
@@ -177,12 +177,12 @@ int editor_show_pokemon_info(struct save_pokemon_boxed_t* pokemon) {
     }
     {
         char nickname[SAVE_POKEMON_NICKNAME_SIZE];
-        save_pokemon_get_nickname(pokemon, nickname);
+        save_pokemon_nickname_get(pokemon, nickname);
         message("*", "Nickname: %s\n", nickname);
     }
     {
         char ot_name[SAVE_TRAINER_NAME_SIZE];
-        save_pokemon_get_ot_name(pokemon, ot_name);
+        save_pokemon_ot_name_get(pokemon, ot_name);
         message("*+", "Original Trainer (OT): %s\n", ot_name);
         message("*",  "Trainer ID (TID): %05d\n", pokemon->OT_ID.TID);
         message("*-", "Secret ID (SID):  %05d\n", pokemon->OT_ID.SID);
@@ -242,14 +242,14 @@ int editor_show_pokemon_info(struct save_pokemon_boxed_t* pokemon) {
         };
 
         message("*", "Pokerus: %s (%#03x)\n",
-                pkrs_status[save_pokemon_pokerus_get_status(&pkm_data)],
+                pkrs_status[save_pokemon_pokerus_status_get(&pkm_data)],
                 pkm_data.misc->pokerus);
-        int remaining = save_pokemon_pokerus_get_remaining(&pkm_data);
+        int remaining = save_pokemon_pokerus_remaining_get(&pkm_data);
         if (remaining) {
             message_indent(+1);
             message("*", "Day(s) remaining: %u/%u\n",
                     remaining,
-                    save_pokemon_pokerus_get_max_days(&pkm_data));
+                    save_pokemon_pokerus_max_days_get(&pkm_data));
             message_indent(-1);
         }
     }
@@ -259,7 +259,7 @@ int editor_show_pokemon_info(struct save_pokemon_boxed_t* pokemon) {
             message("*+", "#%lu: ID %3u\n", i + 1, pkm_data.attacks->moves[i]);
             message("*",  "PP:    %3u\n",
                     pkm_data.attacks->pp_ups[i]);
-            message("*-", "PP Up: %u/3\n", save_pokemon_get_pp_bonuses(&pkm_data, i));
+            message("*-", "PP Up: %u/3\n", save_pokemon_pp_bonuses_get(&pkm_data, i));
         }
         message_indent(-1);
     }

@@ -5,16 +5,24 @@
 #include "save.h"
 #include "save_unpacked.h"
 
-int save_pokedex_search(struct save_pokedex_t* pokedex, uint16_t index) {
+int save_pokedex_basic_get(struct save_pokedex_t* pokedex, uint16_t index) {
     return (pokedex->data[index >> 3] >> (index % 8)) & 1;
 }
 
-enum save_pokedex_status_t save_get_pokedex_entry(union save_unpacked_t* save,
+void save_pokedex_basic_set(struct save_pokedex_t* pokedex, uint16_t index) {
+    pokedex->data[index >> 3] |= 1 << (index % 8);
+}
+
+void save_pokedex_basic_clear(struct save_pokedex_t* pokedex, uint16_t index) {
+    pokedex->data[index >> 3] &= ~(1 << (index % 8));
+}
+
+enum save_pokedex_status_t save_pokedex_get(union save_unpacked_t* save,
                                                   uint16_t index) {
     enum save_pokedex_status_t status = POKEDEX_ERROR;
     struct save_pokedex_t* seen[3] = {NULL, NULL, NULL};
 
-    enum save_game_type_t game_type = save_get_gametype(save);
+    enum save_game_type_t game_type = save_gametype_get(save);
     switch (game_type) {
         case RUBY_SAPPHIRE:
             seen[0] = &(save->rusa.pokedex_seen_a);
@@ -37,7 +45,7 @@ enum save_pokedex_status_t save_get_pokedex_entry(union save_unpacked_t* save,
     }
     int is_seen = 1;
     for (size_t i = 0; i < 3; i++) {
-        is_seen = save_pokedex_search(seen[i], index) && is_seen;
+        is_seen = save_pokedex_basic_get(seen[i], index) && is_seen;
     }
     if (is_seen) {
         status = SEEN;
@@ -60,24 +68,16 @@ enum save_pokedex_status_t save_get_pokedex_entry(union save_unpacked_t* save,
             message("E", "Game type not implemented.\n");
             exit(EXIT_FAILURE);
     }
-    if (save_pokedex_search(owned, index)) {
+    if (save_pokedex_basic_get(owned, index)) {
         status = OWNED;
     }
 
     return status;
 }
 
-void save_pokedex_basic_set(struct save_pokedex_t* pokedex, uint16_t index) {
-    pokedex->data[index >> 3] |= 1 << (index % 8);
-}
-
-void save_pokedex_clear_entry(struct save_pokedex_t* pokedex, uint16_t index) {
-    pokedex->data[index >> 3] &= ~(1 << (index % 8));
-}
-
-int save_set_pokedex_entry(union save_unpacked_t* save, uint16_t index,
+int save_pokedex_set(union save_unpacked_t* save, uint16_t index,
                            enum save_pokedex_status_t status) {
-    enum save_game_type_t game_type = save_get_gametype(save);
+    enum save_game_type_t game_type = save_gametype_get(save);
     struct save_pokedex_t* pokedex_seen[3] = {NULL, NULL, NULL};
     struct save_pokedex_t* pokedex_owned = NULL;
     switch (game_type) {
@@ -115,9 +115,9 @@ int save_set_pokedex_entry(union save_unpacked_t* save, uint16_t index,
             }
             break;
         case UNSEEN:
-            save_pokedex_clear_entry(pokedex_owned, index);
+            save_pokedex_basic_clear(pokedex_owned, index);
             for (size_t i = 0; i < 3; i++) {
-                save_pokedex_clear_entry(pokedex_seen[i], index);
+                save_pokedex_basic_clear(pokedex_seen[i], index);
             }
             break;
         default:

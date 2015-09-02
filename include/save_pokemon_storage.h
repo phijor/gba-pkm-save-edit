@@ -9,13 +9,13 @@
 union save_unpacked_t;
 struct save_box_unpacked_t;
 
-int save_pokemon_get_party(union save_unpacked_t* save,
+int save_pokemon_party_get(union save_unpacked_t* save,
                           struct save_pokemon_boxed_t* party);
 
-int save_pokemon_get_box(union save_unpacked_t* save, size_t index,
+int save_pokemon_box_get(union save_unpacked_t* save, size_t index,
                          struct save_box_unpacked_t* box);
 
-uint32_t save_pokemon_get_party_size(union save_unpacked_t* save);
+uint32_t save_pokemon_party_size_get(union save_unpacked_t* save);
 
 int save_pokemon_slot_is_empty(struct save_pokemon_boxed_t* pokemon);
 

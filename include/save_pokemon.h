@@ -24,8 +24,7 @@
 #define SAVE_POKEMON_BALL_SHIFT      11
 #define SAVE_POKEMON_OT_GENDER_SHIFT 15
 
-enum save_pokemon_language_t {
-    SAVE_LANG_BASE = 0x200,
+enum save_pokemon_language_t { SAVE_LANG_BASE = 0x200,
     SAVE_LANG_JAPANESE,
     SAVE_LANG_ENGLISH,
     SAVE_LANG_FRENCH,
@@ -146,39 +145,39 @@ struct save_pokemon_t {
     uint16_t special_defense;
 };
 
-uint32_t save_pokemon_get_crypt_key(struct save_pokemon_boxed_t* pokemon);
+uint32_t save_pokemon_crypt_key_set(struct save_pokemon_boxed_t* pokemon);
 void save_pokemon_xor_crypt(struct save_pokemon_boxed_t* pokemon);
 void save_pokemon_order_data(struct save_pokemon_boxed_t* pokemon,
                              struct save_pokemon_data_ordered_t* ordered);
-int save_pokemon_check_data_integrity(struct save_pokemon_boxed_t* pokemon);
+int save_pokemon_data_integrity_check(struct save_pokemon_boxed_t* pokemon);
 
-size_t save_pokemon_get_nickname(struct save_pokemon_boxed_t* pokemon, char* nickname);
-size_t save_pokemon_get_ot_name(struct save_pokemon_boxed_t* pokemon, char* ot_name);
+size_t save_pokemon_nickname_get(struct save_pokemon_boxed_t* pokemon, char* nickname);
+size_t save_pokemon_ot_name_get(struct save_pokemon_boxed_t* pokemon, char* ot_name);
 
-uint8_t save_pokemon_get_pp_bonuses(struct save_pokemon_data_ordered_t* pkm_data,
+uint8_t save_pokemon_pp_bonuses_get(struct save_pokemon_data_ordered_t* pkm_data,
                                     size_t move);
 
-int save_pokemon_pokerus_get_remaining(
+int save_pokemon_pokerus_remaining_get(
     struct save_pokemon_data_ordered_t* pkm_data);
 
-int save_pokemon_pokerus_get_max_days(
+int save_pokemon_pokerus_max_days_get(
     struct save_pokemon_data_ordered_t* pkm_data);
 
-uint8_t save_pokemon_pokerus_get_strain(
+uint8_t save_pokemon_pokerus_strain_get(
     struct save_pokemon_data_ordered_t* pkm_data);
 
-enum save_pokerus_status_t save_pokemon_pokerus_get_status(
+enum save_pokerus_status_t save_pokemon_pokerus_status_get(
     struct save_pokemon_data_ordered_t* pkm_data);
 
-uint8_t save_pokemon_get_level_metj(
+uint8_t save_pokemon_met_level_get(
     struct save_pokemon_data_ordered_t* pkm_data);
 
-enum save_pokemon_game_of_origin_t save_pokemon_get_origin(
+enum save_pokemon_game_of_origin_t save_pokemon_origin_get(
     struct save_pokemon_data_ordered_t* pkm_data);
 
-uint8_t save_pokemon_get_ball(struct save_pokemon_data_ordered_t* pkm_data);
+uint8_t save_pokemon_ball_get(struct save_pokemon_data_ordered_t* pkm_data);
 
-enum save_player_gender_t save_pokemon_get_ot_gender(
+enum save_player_gender_t save_pokemon_ot_gender_get(
     struct save_pokemon_data_ordered_t* pkm_data);
 
 #endif
