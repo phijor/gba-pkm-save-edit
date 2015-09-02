@@ -101,7 +101,9 @@ size_t save_pokemon_ot_name_get(struct save_pokemon_boxed_t* pokemon, char* OT_n
 
 uint8_t save_pokemon_pp_bonuses_get(
     struct save_pokemon_data_ordered_t* pkm_data, size_t move) {
-    return (pkm_data->growth->pp_bonuses & (0x3 << move)) >> move;
+    int shift = SAVE_POKEMON_PP_SHIFT * move;
+    return (pkm_data->growth->pp_bonuses & (SAVE_POKEMON_PP_MASK << shift)) >>
+           shift;
 }
 
 int save_pokemon_pokerus_remaining_get(struct save_pokemon_data_ordered_t* pkm_data) {
