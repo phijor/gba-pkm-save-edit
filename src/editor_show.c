@@ -11,7 +11,7 @@
 #include "save_pokedex.h"
 #include "save_trainer.h"
 #include "save_pokemon.h"
-#include "save_pokemon_storage.h"
+#include "save_storage.h"
 
 int editor_show(union save_unpacked_t* save, int argc, char* const* argv) {
     const struct editor_call_t commands[] = {
@@ -106,14 +106,14 @@ int editor_show_pokemon_party(union save_unpacked_t* save, int argc,
         range.upper = range.max;
     }
 
-    long int party_size = save_pokemon_party_size_get(save);
+    long int party_size = save_storage_party_size_get(save);
     if (range.upper > party_size) {
         message("W", "Only %ld out of 6 slots are/is occupied.\n", party_size);
         range.upper = party_size;
     }
 
     struct save_pokemon_boxed_t party[SAVE_PARTY_SLOTS];
-    save_pokemon_party_get(save, party);
+    save_storage_party_get(save, party);
 
     for (ssize_t i = range.lower; i <= range.upper; i++) {
         message("+", "Party Pokemon #%ld:\n", i);
@@ -150,7 +150,7 @@ int editor_show_pokemon_box(union save_unpacked_t* save, int argc,
 
     for (ssize_t box_ind = boxes.lower; box_ind <= boxes.upper; box_ind++) {
         struct save_box_unpacked_t box;
-        save_pokemon_box_get(save, box_ind - 1, &box);
+        save_storage_box_get(save, box_ind - 1, &box);
         for (ssize_t slot = slots.lower; slot <= slots.upper; slot++) {
             message("+", "Box \'%s\', slot #%ld:\n", box.name, slot);
             int ret = editor_show_pokemon_info(&box.pokemon[slot - 1]);
@@ -164,7 +164,7 @@ int editor_show_pokemon_box(union save_unpacked_t* save, int argc,
 }
 
 int editor_show_pokemon_info(struct save_pokemon_boxed_t* pokemon) {
-    if (save_pokemon_slot_is_empty(pokemon)) {
+    if (save_storage_slot_is_empty(pokemon)) {
         return EXIT_FAILURE;
     }
 

@@ -9,7 +9,7 @@
 #include "save_boxes.h"
 #include "save_char_encoding.h"
 
-int save_pokemon_party_get(union save_unpacked_t* save,
+int save_storage_party_get(union save_unpacked_t* save,
                            struct save_pokemon_boxed_t* party) {
     struct save_pokemon_t* party_extended;
     enum save_game_type_t game_type = save_gametype_get(save);
@@ -36,7 +36,7 @@ int save_pokemon_party_get(union save_unpacked_t* save,
     return EXIT_SUCCESS;
 }
 
-int save_pokemon_box_get(union save_unpacked_t* save, size_t index,
+int save_storage_box_get(union save_unpacked_t* save, size_t index,
                          struct save_box_unpacked_t* box) {
     if (index >= SAVE_BOXES) {
         message("E", "Cannot access box %ld: Out of range.\n", index);
@@ -74,7 +74,7 @@ int save_pokemon_box_get(union save_unpacked_t* save, size_t index,
     return EXIT_SUCCESS;
 }
 
-uint32_t save_pokemon_party_size_get(union save_unpacked_t* save) {
+uint32_t save_storage_party_size_get(union save_unpacked_t* save) {
     enum save_game_type_t game_type = save_gametype_get(save);
     switch (game_type) {
         case RUBY_SAPPHIRE:
@@ -89,6 +89,6 @@ uint32_t save_pokemon_party_size_get(union save_unpacked_t* save) {
     }
 }
 
-int save_pokemon_slot_is_empty(struct save_pokemon_boxed_t* pokemon) {
+int save_storage_slot_is_empty(struct save_pokemon_boxed_t* pokemon) {
     return pokemon->nickname[0] == '\0' && pokemon->language == 0;
 }
