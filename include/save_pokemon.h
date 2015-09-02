@@ -177,7 +177,7 @@ enum save_pokemon_game_of_origin_t save_pokemon_origin_get(
 
 uint8_t save_pokemon_ball_get(struct save_pokemon_data_ordered_t* pkm_data);
 
-enum save_player_gender_t save_pokemon_ot_gender_get(
+enum save_trainer_gender_t save_pokemon_ot_gender_get(
     struct save_pokemon_data_ordered_t* pkm_data);
 
 #endif

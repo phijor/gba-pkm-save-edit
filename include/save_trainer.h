@@ -8,7 +8,7 @@ union save_unpacked_t;
 
 uint32_t save_trainer_money_get(union save_unpacked_t* save);
 
-enum save_player_gender_t save_trainer_gender_get(union save_unpacked_t* save);
+enum save_trainer_gender_t save_trainer_gender_get(union save_unpacked_t* save);
 
 void save_trainer_id_get(struct save_trainer_id_t* id,
                          union save_unpacked_t* save);

@@ -21,7 +21,7 @@ uint32_t save_trainer_money_get(union save_unpacked_t* save) {
     }
 }
 
-enum save_player_gender_t save_trainer_gender_get(union save_unpacked_t* save) {
+enum save_trainer_gender_t save_trainer_gender_get(union save_unpacked_t* save) {
     enum save_game_type_t game_type = save_gametype_get(save);
     switch (game_type) {
         case RUBY_SAPPHIRE:

@@ -151,7 +151,7 @@ uint8_t save_pokemon_ball_get(struct save_pokemon_data_ordered_t* pkm_data) {
            SAVE_POKEMON_BALL_SHIFT;
 }
 
-enum save_player_gender_t save_pokemon_ot_gender_get(
+enum save_trainer_gender_t save_pokemon_ot_gender_get(
     struct save_pokemon_data_ordered_t* pkm_data) {
     return (pkm_data->misc->origin_info & SAVE_POKEMON_OT_GENDER) >>
            SAVE_POKEMON_OT_GENDER_SHIFT;
