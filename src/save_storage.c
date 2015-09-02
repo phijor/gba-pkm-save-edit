@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "message.h"
+#include "save_storage.h"
 #include "save.h"
 #include "save_unpacked.h"
 #include "save_boxes.h"
