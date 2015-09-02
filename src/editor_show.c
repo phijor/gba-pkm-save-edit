@@ -55,7 +55,7 @@ int editor_show_pokedex(union save_unpacked_t* save, int argc,
 int editor_show_trainer(union save_unpacked_t* save, int argc,
                         char* const* argv) {
     {
-        char name[SAVE_TRAINER_NAME_SIZE] = {'\0'};
+        char name[SAVE_TRAINER_NAME_SIZE_UNPACKED] = {'\0'};
         save_trainer_name_get(name, save);
         message("*", "Name: %s\n", name);
     }
@@ -176,12 +176,12 @@ int editor_show_pokemon_info(struct save_pokemon_boxed_t* pokemon) {
         message("*", "Species:  %3u\n", pkm_data.growth->species);
     }
     {
-        char nickname[SAVE_POKEMON_NICKNAME_SIZE];
+        char nickname[SAVE_POKEMON_NICKNAME_SIZE_UNPACKED] = {'\0'};
         save_pokemon_nickname_get(pokemon, nickname);
         message("*", "Nickname: %s\n", nickname);
     }
     {
-        char ot_name[SAVE_TRAINER_NAME_SIZE];
+        char ot_name[SAVE_TRAINER_NAME_SIZE_UNPACKED] = {'\0'};
         save_pokemon_ot_name_get(pokemon, ot_name);
         message("*+", "Original Trainer (OT): %s\n", ot_name);
         message("*",  "Trainer ID (TID): %05d\n", pokemon->OT_ID.TID);

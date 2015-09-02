@@ -127,10 +127,10 @@ int editor_export_pokemon_write(struct save_pokemon_boxed_t* pokemon,
                             sizeof("-[NAME~~~~]-[OT~~~]-0x[PID~~~].g3pkm");
     char* file_name = calloc(file_name_size, sizeof(char));
 
-    char nickname[SAVE_POKEMON_NICKNAME_SIZE];
+    char nickname[SAVE_POKEMON_NICKNAME_SIZE_UNPACKED] = {'\0'};
     save_pokemon_nickname_get(pokemon, nickname);
 
-    char ot_name[SAVE_TRAINER_NAME_SIZE];
+    char ot_name[SAVE_TRAINER_NAME_SIZE_UNPACKED] = {'\0'};
     save_pokemon_ot_name_get(pokemon, ot_name);
 
     snprintf(file_name, file_name_size, "%s/%s-%s-%s-%#08x.g3pkm",

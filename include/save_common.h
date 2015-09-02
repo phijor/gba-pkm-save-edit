@@ -4,6 +4,7 @@
 #include <inttypes.h>
 
 #define SAVE_TRAINER_NAME_SIZE 8
+#define SAVE_TRAINER_NAME_SIZE_UNPACKED (SAVE_TRAINER_NAME_SIZE + 1)
 
 typedef unsigned char save_char_t;
 
@@ -25,7 +26,7 @@ struct save_time_played_t {
 };
 
 struct save_trainer_info_t {
-    save_char_t name[8];
+    save_char_t name[SAVE_TRAINER_NAME_SIZE];
     uint8_t gender;
     uint8_t _0[1];
     struct save_trainer_id_t id;
