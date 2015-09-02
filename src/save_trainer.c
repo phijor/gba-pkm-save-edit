@@ -75,7 +75,7 @@ void save_time_played_get(struct save_time_played_t* time,
 }
 
 int save_trainer_name_get(char name[SAVE_TRAINER_NAME_SIZE], union save_unpacked_t* save) {
-    uint8_t* name_encoded = NULL;
+    save_char_t* name_encoded = NULL;
     enum save_game_type_t game_type = save_gametype_get(save);
     switch (game_type) {
         case RUBY_SAPPHIRE:

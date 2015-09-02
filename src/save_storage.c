@@ -42,7 +42,7 @@ int save_storage_box_get(union save_unpacked_t* save, size_t index,
         message("E", "Cannot access box %ld: Out of range.\n", index);
         return EXIT_FAILURE;
     }
-    uint8_t* name_ptr;
+    save_char_t* name_ptr;
     struct save_pokemon_boxed_t* pkm_ptr;
 
     enum save_game_type_t game_type = save_gametype_get(save);

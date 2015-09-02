@@ -35,7 +35,7 @@ unsigned char save_char_table[] =
     "lmnopqrstuvwxyz>"
     ":AOUaou?\?<?????\0";
 
-size_t save_string_decode(char* dest, unsigned char* source, size_t length) {
+size_t save_string_decode(char* dest, save_char_t* source, size_t length) {
     size_t i = 0;
     for (; i < length; i++) {
         dest[i] = save_char_table[source[i]];

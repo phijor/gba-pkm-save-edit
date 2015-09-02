@@ -5,6 +5,8 @@
 
 #define SAVE_TRAINER_NAME_SIZE 8
 
+typedef unsigned char save_char_t;
+
 enum save_trainer_gender_t {
     MALE = 0,
     FEMALE = 1,
@@ -23,7 +25,7 @@ struct save_time_played_t {
 };
 
 struct save_trainer_info_t {
-    uint8_t name[8];
+    save_char_t name[8];
     uint8_t gender;
     uint8_t _0[1];
     struct save_trainer_id_t id;
