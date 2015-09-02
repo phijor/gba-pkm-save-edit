@@ -7,6 +7,7 @@
 #include "save_pokedex.h"
 #include "save_pokemon.h"
 #include "save_boxes.h"
+#include "save_storage.h"
 
 struct __attribute__((packed)) save_firered_leafgreen_items_t {
     struct save_item_t pc_storage[30];
@@ -38,11 +39,11 @@ struct save_firered_leafgreen_t {
     uint8_t _5[(0x0f60 - 0x0af8) - sizeof(uint32_t)];
 
     uint32_t party_size;
-    struct save_pokemon_t party[6];
+    struct save_pokemon_t party[SAVE_PARTY_SLOTS];
     uint32_t money;
     uint16_t coins;
-    uint8_t _6[(0x11c4 - 0x0f60) - 2 * sizeof(uint32_t) -
-               sizeof(uint16_t) - 6*sizeof(struct save_pokemon_t)];
+    uint8_t _6[(0x11c4 - 0x0f60) - 2 * sizeof(uint32_t) - sizeof(uint16_t) -
+               SAVE_PARTY_SLOTS * sizeof(struct save_pokemon_t)];
 
     struct save_firered_leafgreen_items_t items;
     uint8_t _7[(0x1524 - 0x11c4) - sizeof(struct save_firered_leafgreen_items_t)];
@@ -59,7 +60,7 @@ struct save_firered_leafgreen_t {
     struct save_pokedex_t pokedex_seen_c;
     uint8_t _11[(0x4978 - 0x4944) - sizeof(struct save_pokedex_t)];
 
-    uint8_t rival_name[8];
+    uint8_t rival_name[SAVE_TRAINER_NAME_SIZE];
     uint8_t _12[(0x4cb4 - 0x4978) - 8*sizeof(uint8_t)];
 
     struct save_box_data_t boxes;

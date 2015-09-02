@@ -9,7 +9,7 @@
 #define SAVE_POKEMON_NICKNAME_SIZE_UNPACKED (SAVE_POKEMON_NICKNAME_SIZE + 1)
 #define SAVE_POKEMON_OT_NAME_SIZE 7
 #define SAVE_POKEMON_OT_NAME_SIZE_UNPACKED (SAVE_POKEMON_OT_NAME_SIZE + 1)
-#define SAVE_POKEMON_ATTACKS 4
+#define SAVE_POKEMON_MOVES 4
 
 #define SAVE_POKEMON_MARK_CIRCLE (1 << 0)
 #define SAVE_POKEMON_MARK_SQUARE (1 << 1)
@@ -25,6 +25,9 @@
 #define SAVE_POKEMON_ORIG_GAME_SHIFT 7
 #define SAVE_POKEMON_BALL_SHIFT      11
 #define SAVE_POKEMON_OT_GENDER_SHIFT 15
+
+#define SAVE_DATA_BLOCKS 4
+#define SAVE_DATA_PERMUTATIONS 24 //== 4! == 4 * 3 * 2 * 1
 
 enum save_pokemon_language_t {
     SAVE_LANG_BASE = 0x200,
@@ -62,7 +65,7 @@ struct save_pokemon_data_permutation_t {
 };
 
 extern const struct save_pokemon_data_permutation_t
-    save_pokemon_data_permutations[24];
+    save_pokemon_data_permutations[SAVE_DATA_PERMUTATIONS];
 
 struct save_pokemon_data_growth_t {
     uint16_t species;
@@ -73,8 +76,8 @@ struct save_pokemon_data_growth_t {
 };
 
 struct save_pokemon_data_attacks_t {
-    uint16_t moves[4];
-    uint8_t pp_ups[4];
+    uint16_t moves[SAVE_POKEMON_MOVES];
+    uint8_t pp_ups[SAVE_POKEMON_MOVES];
 };
 
 struct save_pokemon_data_ev_t {
@@ -131,7 +134,7 @@ struct save_pokemon_boxed_t {
     uint8_t markings;
     uint16_t checksum;
     uint16_t _0[1];
-    union save_pokemon_data_t data[4];
+    union save_pokemon_data_t data[SAVE_DATA_BLOCKS];
 };
 
 struct save_pokemon_t {

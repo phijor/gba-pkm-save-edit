@@ -255,7 +255,7 @@ int editor_show_pokemon_info(struct save_pokemon_boxed_t* pokemon) {
     }
     {
         message("*+", "Moves:\n");
-        for (size_t i = 0; i < SAVE_POKEMON_ATTACKS; i++) {
+        for (size_t i = 0; i < SAVE_POKEMON_MOVES; i++) {
             message("*+", "#%lu: ID %3u\n", i + 1, pkm_data.attacks->moves[i]);
             message("*",  "PP:    %3u\n",
                     pkm_data.attacks->pp_ups[i]);

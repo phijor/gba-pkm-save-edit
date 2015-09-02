@@ -29,7 +29,7 @@ int save_storage_party_get(union save_unpacked_t* save,
     }
 
     assert(party != NULL);
-    for (size_t i = 0; i < 6; i++) {
+    for (size_t i = 0; i < SAVE_PARTY_SLOTS; i++) {
         memcpy(&party[i], &party_extended[i].boxed,
                sizeof(struct save_pokemon_boxed_t));
     }

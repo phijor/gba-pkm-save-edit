@@ -5,8 +5,6 @@
 #include "save_pokemon.h"
 #include "save_char_encoding.h"
 
-#define SAVE_DATA_PERMUTATIONS 24
-
 const struct save_pokemon_data_permutation_t save_pokemon_data_permutations[] = {
   // G  A  E  M
     {0, 1, 2, 3},
@@ -46,7 +44,7 @@ void save_pokemon_xor_crypt(struct save_pokemon_boxed_t* pokemon) {
     uint32_t key = save_pokemon_crypt_key_get(pokemon);
 
     assert(sizeof(union save_pokemon_data_t) % sizeof(uint32_t) == 0);
-    size_t raw_size = 4 * sizeof(union save_pokemon_data_t) / sizeof(uint32_t);
+    size_t raw_size = SAVE_DATA_BLOCKS * sizeof(union save_pokemon_data_t) / sizeof(uint32_t);
 
     uint32_t* raw_data = (uint32_t*)pokemon->data;
 

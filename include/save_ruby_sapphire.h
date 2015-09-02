@@ -7,6 +7,7 @@
 #include "save_pokedex.h"
 #include "save_pokemon.h"
 #include "save_boxes.h"
+#include "save_storage.h"
 
 struct __attribute__((packed)) save_ruby_sapphire_items_t {
     struct save_item_t pc_storage[50];
@@ -37,9 +38,10 @@ struct __attribute__((packed)) save_ruby_sapphire_t {
     uint8_t _4[(0x1160 - 0x00ac) - sizeof(uint32_t)];
 
     uint32_t party_size;
-    struct save_pokemon_t party[6];
+    struct save_pokemon_t party[SAVE_PARTY_SLOTS];
     uint32_t money;
-    uint8_t _5[(0x13c4 - 0x1160) - 2*sizeof(uint32_t) - 6*sizeof(struct save_pokemon_t)];
+    uint8_t _5[(0x13c4 - 0x1160) - 2 * sizeof(uint32_t) -
+               SAVE_PARTY_SLOTS * sizeof(struct save_pokemon_t)];
 
     struct save_ruby_sapphire_items_t items;
     uint8_t _6[(0x1864 - 0x13c4) - sizeof(struct save_ruby_sapphire_items_t)];

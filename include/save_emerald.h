@@ -7,6 +7,7 @@
 #include "save_pokedex.h"
 #include "save_pokemon.h"
 #include "save_boxes.h"
+#include "save_storage.h"
 
 struct save_emerald_items_t {
     struct save_item_t pc_storage[50];
@@ -34,11 +35,11 @@ struct save_emerald_t {
     uint8_t _4[(0x1160 - 0x00ac) - sizeof(uint32_t)];
 
     uint32_t party_size;
-    struct save_pokemon_t party[6];
+    struct save_pokemon_t party[SAVE_PARTY_SLOTS];
     uint32_t money;
     struct save_emerald_items_t items;
     uint8_t _7[(0x18b4 - 0x1160) - 2 * sizeof(uint32_t) -
-               6 * sizeof(struct save_pokemon_t) -
+               SAVE_PARTY_SLOTS * sizeof(struct save_pokemon_t) -
                sizeof(struct save_emerald_items_t)];
 
     struct save_pokedex_t pokedex_seen_b;
