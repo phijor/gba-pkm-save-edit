@@ -18,7 +18,6 @@ int editor_show(union save_unpacked_t* save, int argc, char* const* argv) {
         {.name = "pokedex", .exec = &editor_show_pokedex},
         {.name = "pokemon", .exec = &editor_show_pokemon},
         {.name = "trainer", .exec = &editor_show_trainer},
-        {.name = "money",   .exec = &editor_show_money},
         {.name = NULL, .exec = NULL},
     };
     return editor_call(save, commands, argc, argv);
@@ -76,12 +75,9 @@ int editor_show_trainer(union save_unpacked_t* save, int argc,
                 time.seconds,
                 time.frames);
     }
-    return EXIT_SUCCESS;
-}
-
-int editor_show_money(union save_unpacked_t* save, int argc,
-                      char* const* argv) {
-    message("*", "Money: %u\n", save_get_money(save));
+    {
+        message("*", "Money: %u\n", save_get_money(save));
+    }
     return EXIT_SUCCESS;
 }
 

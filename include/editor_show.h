@@ -9,8 +9,6 @@ int editor_show_pokedex(union save_unpacked_t* save, int argc,
                         char* const* argv);
 int editor_show_trainer(union save_unpacked_t* save, int argc,
                         char* const* argv);
-int editor_show_money(union save_unpacked_t* save, int argc, char* const* argv);
-
 int editor_show_pokemon(union save_unpacked_t* save, int argc,
                         char* const* argv);
 int editor_show_pokemon_party(union save_unpacked_t* save, int argc,
