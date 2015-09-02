@@ -4,14 +4,18 @@
 #include <sys/types.h>
 
 #include "message.h"
+
 #include "editor_show.h"
 #include "editor.h"
 #include "editor_parse.h"
+#include "editor_lut.h"
+
 #include "save_common.h"
 #include "save_pokedex.h"
 #include "save_trainer.h"
 #include "save_pokemon.h"
 #include "save_storage.h"
+#include "save_moves.h"
 
 int editor_show(union save_unpacked_t* save, int argc, char* const* argv) {
     const struct editor_call_t commands[] = {
@@ -256,10 +260,14 @@ int editor_show_pokemon_info(struct save_pokemon_boxed_t* pokemon) {
     {
         message("*+", "Moves:\n");
         for (size_t i = 0; i < SAVE_POKEMON_MOVES; i++) {
-            message("*+", "#%lu: ID %3u\n", i + 1, pkm_data.attacks->moves[i]);
-            message("*",  "PP:    %3u\n",
-                    pkm_data.attacks->pp_ups[i]);
-            message("*-", "PP Up: %u/3\n", save_pokemon_pp_bonuses_get(&pkm_data, i));
+            enum save_move_t move = pkm_data.attacks->moves[i];
+            message("*+", "#%lu: %s\n", i + 1, editor_move_names[move]);
+            if (move != SAVE_MOVE_NONE) {
+                message("*", "PP:    %3u\n", pkm_data.attacks->pp_ups[i]);
+                message("*", "PP Up: %u/3\n",
+                        save_pokemon_pp_bonuses_get(&pkm_data, i));
+            }
+            message_indent(-1);
         }
         message_indent(-1);
     }
