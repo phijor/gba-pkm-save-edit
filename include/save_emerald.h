@@ -32,7 +32,10 @@ struct save_emerald_t {
     uint8_t _3[(0x00ac - 0x005c) - sizeof(struct save_pokedex_t)];
 
     uint32_t security_key;
-    uint8_t _4[(0x1160 - 0x00ac) - sizeof(uint32_t)];
+    uint8_t _4[(0x0eb8 - 0x00ac) - sizeof(uint32_t)];
+
+    uint16_t battle_points;
+    uint8_t _5[(0x1160 - 0x0eb8) - sizeof(uint16_t)];
 
     uint32_t party_size;
     struct save_pokemon_t party[SAVE_PARTY_SLOTS];
