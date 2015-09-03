@@ -193,7 +193,8 @@ int editor_show_pokemon_info(struct save_pokemon_boxed_t* pokemon) {
         message("*-", "Secret ID (SID):  %05d\n", pokemon->OT_ID.SID);
     }
     {
-        message("*", "Held item: %#3x\n", pkm_data.growth->item_held);
+        message("*", "Held item: %s\n",
+                editor_item_names[pkm_data.growth->item_held]);
     }
     {
         message("*", "PID: %#08x\n", pokemon->PID);
