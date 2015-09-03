@@ -177,7 +177,8 @@ int editor_show_pokemon_info(struct save_pokemon_boxed_t* pokemon) {
     save_pokemon_order_data(pokemon, &pkm_data);
 
     {
-        message("*", "Species:  %3u\n", pkm_data.growth->species);
+        message("*", "Species: %s\n",
+                editor_species_names[pkm_data.growth->species]);
     }
     {
         char nickname[SAVE_POKEMON_NICKNAME_SIZE_UNPACKED] = {'\0'};
