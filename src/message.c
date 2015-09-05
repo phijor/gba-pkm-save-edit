@@ -97,7 +97,7 @@ int message(const char* const format_string, const char* const message, ...) {
             [MSG_WARNING] = MSG_COLOR_WARNING "[W]: " MSG_RESET,
             [MSG_ERROR]   = MSG_COLOR_ERROR   "[E]: " MSG_RESET,
             [MSG_PROMPT]  = MSG_COLOR_PROMPT  "[>]: " MSG_RESET,
-            [MSG_BULLET]  = MSG_COLOR_BULLET  "  *  " MSG_RESET,
+            [MSG_BULLET]  = MSG_COLOR_BULLET  "* " MSG_RESET,
     };
 
     FILE* current_output = NULL;
