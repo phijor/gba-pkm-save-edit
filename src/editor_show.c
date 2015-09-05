@@ -177,8 +177,12 @@ int editor_show_pokemon_info(struct save_pokemon_boxed_t* pokemon) {
     save_pokemon_order_data(pokemon, &pkm_data);
 
     {
+        enum save_species_t species = pkm_data.growth->species;
+        if (species >= SAVE_SPECIES) {
+            species = SAVE_SPECIES_NONE;
+        }
         message("*", "Species: %s\n",
-                editor_species_names[pkm_data.growth->species]);
+                editor_species_names[species]);
     }
     {
         char nickname[SAVE_POKEMON_NICKNAME_SIZE_UNPACKED] = {'\0'};
@@ -193,8 +197,11 @@ int editor_show_pokemon_info(struct save_pokemon_boxed_t* pokemon) {
         message("*-", "Secret ID (SID):  %05d\n", pokemon->OT_ID.SID);
     }
     {
-        message("*", "Held item: %s\n",
-                editor_item_names[pkm_data.growth->item_held]);
+        enum save_items_t item = pkm_data.growth->item_held;
+        if (item >= SAVE_ITEMS) {
+            item = SAVE_ITEM_NONE;
+        }
+        message("*", "Held item: %s\n", editor_item_names[item]);
     }
     {
         message("*", "PID: %#08x\n", pokemon->PID);
@@ -215,8 +222,12 @@ int editor_show_pokemon_info(struct save_pokemon_boxed_t* pokemon) {
             [SAVE_LANG_KOREAN   - SAVE_LANG_BASE] = "Korean",
             [SAVE_LANG_SPANISH  - SAVE_LANG_BASE] = "Spanish",
         };
+        enum save_pokemon_language_t language = pokemon->language;
+        if (language > SAVE_LANG_SPANISH) {
+            language = SAVE_LANG_BASE;
+        }
         message("*", "Language: %s (%#04x)\n",
-                languages[pokemon->language - SAVE_LANG_BASE], pokemon->language);
+                languages[language - SAVE_LANG_BASE], pokemon->language);
     }
     {
         struct save_pokemon_data_ev_t* EV = &pkm_data.condition->EV;
@@ -268,6 +279,9 @@ int editor_show_pokemon_info(struct save_pokemon_boxed_t* pokemon) {
         message("*+", "Moves:\n");
         for (size_t i = 0; i < SAVE_POKEMON_MOVES; i++) {
             enum save_move_t move = pkm_data.attacks->moves[i];
+            if (move >= SAVE_MOVES) {
+                move = SAVE_MOVE_NONE;
+            }
             message("*+", "#%lu: %s\n", i + 1, editor_move_names[move]);
             if (move != SAVE_MOVE_NONE) {
                 message("*", "PP:    %3u\n", pkm_data.attacks->pp_ups[i]);
