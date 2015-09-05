@@ -156,3 +156,8 @@ enum save_trainer_gender_t save_pokemon_ot_gender_get(
     return (pkm_data->misc->origin_info & SAVE_POKEMON_OT_GENDER) >>
            SAVE_POKEMON_OT_GENDER_SHIFT;
 }
+
+int save_pokemon_is_shiny(struct save_pokemon_boxed_t* pokemon) {
+    uint32_t pid_it_xor = pokemon->PID ^ *((uint32_t*)&pokemon->OT_ID);
+    return ((pid_it_xor & 0xffff) ^ (pid_it_xor >> 16)) < 8;
+}

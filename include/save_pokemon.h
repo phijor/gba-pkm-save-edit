@@ -189,4 +189,6 @@ uint8_t save_pokemon_ball_get(struct save_pokemon_data_ordered_t* pkm_data);
 enum save_trainer_gender_t save_pokemon_ot_gender_get(
     struct save_pokemon_data_ordered_t* pkm_data);
 
+int save_pokemon_is_shiny(struct save_pokemon_boxed_t* pokemon);
+
 #endif
