@@ -200,6 +200,11 @@ int editor_show_pokemon_info(struct save_pokemon_boxed_t* pokemon) {
         message("*", "PID: %#08x\n", pokemon->PID);
     }
     {
+        if (save_pokemon_is_shiny(pokemon)) {
+            message("*", ANSI_COLOR_YELLOW "Shiny\n" ANSI_COLOR_RESET);
+        }
+    }
+    {
         static const char* languages[] = {
             [SAVE_LANG_BASE - SAVE_LANG_BASE] = "Unknown",
             [SAVE_LANG_JAPANESE - SAVE_LANG_BASE] = "Japanese",
