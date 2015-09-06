@@ -31,6 +31,8 @@
 #define SAVE_POKEMON_BALL_SHIFT      11
 #define SAVE_POKEMON_OT_GENDER_SHIFT 15
 
+#define SAVE_POKEMON_ABILITY_MASK (0x1)
+
 #define SAVE_DATA_BLOCKS 4
 #define SAVE_DATA_PERMUTATIONS 24 //== 4! == 4 * 3 * 2 * 1
 
@@ -184,5 +186,7 @@ int save_pokemon_is_shiny(struct save_pokemon_boxed_t* pokemon);
 
 enum save_nature_t save_pokemon_nature_get(
     struct save_pokemon_boxed_t* pokemon);
+
+unsigned char save_pokemon_ability_get(struct save_pokemon_boxed_t* pokemon);
 
 #endif

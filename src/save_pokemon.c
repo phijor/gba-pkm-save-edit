@@ -167,3 +167,7 @@ enum save_nature_t save_pokemon_nature_get(
     struct save_pokemon_boxed_t* pokemon) {
     return pokemon->PID % SAVE_NATURES;
 }
+
+unsigned char save_pokemon_ability_get(struct save_pokemon_boxed_t* pokemon) {
+    return pokemon->PID & SAVE_POKEMON_ABILITY_MASK;
+}
