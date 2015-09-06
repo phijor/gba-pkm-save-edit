@@ -216,22 +216,13 @@ int editor_show_pokemon_info(struct save_pokemon_boxed_t* pokemon) {
                 editor_nature_names[save_pokemon_nature_get(pokemon)]);
     }
     {
-        static const char* languages[] = {
-            [SAVE_LANG_BASE - SAVE_LANG_BASE] = "Unknown",
-            [SAVE_LANG_JAPANESE - SAVE_LANG_BASE] = "Japanese",
-            [SAVE_LANG_ENGLISH  - SAVE_LANG_BASE] = "English",
-            [SAVE_LANG_FRENCH   - SAVE_LANG_BASE] = "French",
-            [SAVE_LANG_ITALIAN  - SAVE_LANG_BASE] = "Italian",
-            [SAVE_LANG_GERMAN   - SAVE_LANG_BASE] = "German",
-            [SAVE_LANG_KOREAN   - SAVE_LANG_BASE] = "Korean",
-            [SAVE_LANG_SPANISH  - SAVE_LANG_BASE] = "Spanish",
-        };
         enum save_pokemon_language_t language = pokemon->language;
         if (language > SAVE_LANG_SPANISH) {
             language = SAVE_LANG_BASE;
         }
         message("*", "Language: %s (%#04x)\n",
-                languages[language - SAVE_LANG_BASE], pokemon->language);
+                editor_language_names[language - SAVE_LANG_BASE],
+                pokemon->language);
     }
     {
         struct save_pokemon_data_ev_t* EV = &pkm_data.condition->EV;

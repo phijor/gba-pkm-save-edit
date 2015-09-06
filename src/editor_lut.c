@@ -1208,3 +1208,14 @@ char* editor_nature_names[] = {
     "Careful",
     "Quirky",
 };
+
+char* editor_language_names[] = {
+        [SAVE_LANG_BASE - SAVE_LANG_BASE] = "Unknown",
+        [SAVE_LANG_JAPANESE - SAVE_LANG_BASE] = "Japanese",
+        [SAVE_LANG_ENGLISH - SAVE_LANG_BASE] = "English",
+        [SAVE_LANG_FRENCH - SAVE_LANG_BASE] = "French",
+        [SAVE_LANG_ITALIAN - SAVE_LANG_BASE] = "Italian",
+        [SAVE_LANG_GERMAN - SAVE_LANG_BASE] = "German",
+        [SAVE_LANG_KOREAN - SAVE_LANG_BASE] = "Korean",
+        [SAVE_LANG_SPANISH - SAVE_LANG_BASE] = "Spanish",
+};
