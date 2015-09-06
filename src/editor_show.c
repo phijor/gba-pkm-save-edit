@@ -204,15 +204,15 @@ int editor_show_pokemon_info(struct save_pokemon_boxed_t* pokemon) {
         message("*", "Held item: %s\n", editor_item_names[item]);
     }
     {
-        message("*", "PID: %#08x\n", pokemon->PID);
-    }
-    {
-        if (save_pokemon_is_shiny(pokemon)) {
-            message("*", ANSI_COLOR_YELLOW "Shiny\n" ANSI_COLOR_RESET);
-        }
-    }
-    {
-        message("*", "Nature: %s\n",
+        static const char* shininess[] = {
+            "not shiny",
+            ANSI_COLOR_YELLOW "shiny" ANSI_COLOR_RESET,
+        };
+
+        size_t is_shiny = save_pokemon_is_shiny(pokemon) ? 1 : 0;
+        message("*+", "PID: %#08x\n", pokemon->PID);
+        message("*",  "Shininess: %s\n", shininess[is_shiny]);
+        message("*-", "Nature:    %s\n",
                 editor_nature_names[save_pokemon_nature_get(pokemon)]);
     }
     {
