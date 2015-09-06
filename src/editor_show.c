@@ -212,6 +212,10 @@ int editor_show_pokemon_info(struct save_pokemon_boxed_t* pokemon) {
         }
     }
     {
+        message("*", "Nature: %s\n",
+                editor_nature_names[save_pokemon_nature_get(pokemon)]);
+    }
+    {
         static const char* languages[] = {
             [SAVE_LANG_BASE - SAVE_LANG_BASE] = "Unknown",
             [SAVE_LANG_JAPANESE - SAVE_LANG_BASE] = "Japanese",
