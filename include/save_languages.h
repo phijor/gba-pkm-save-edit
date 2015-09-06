@@ -1,0 +1,17 @@
+#ifndef SAVE_LANGUAGES_H
+#define SAVE_LANGUAGES_H
+
+#define SAVE_LANGUAGES 8
+
+enum save_pokemon_language_t {
+    SAVE_LANG_BASE = 0x200,
+    SAVE_LANG_JAPANESE,
+    SAVE_LANG_ENGLISH,
+    SAVE_LANG_FRENCH,
+    SAVE_LANG_ITALIAN,
+    SAVE_LANG_GERMAN,
+    SAVE_LANG_KOREAN,
+    SAVE_LANG_SPANISH,
+};
+
+#endif /* _____ #ifndef SAVE_LANGUAGES_H _____ */

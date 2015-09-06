@@ -34,17 +34,6 @@
 #define SAVE_DATA_BLOCKS 4
 #define SAVE_DATA_PERMUTATIONS 24 //== 4! == 4 * 3 * 2 * 1
 
-enum save_pokemon_language_t {
-    SAVE_LANG_BASE = 0x200,
-    SAVE_LANG_JAPANESE,
-    SAVE_LANG_ENGLISH,
-    SAVE_LANG_FRENCH,
-    SAVE_LANG_ITALIAN,
-    SAVE_LANG_GERMAN,
-    SAVE_LANG_KOREAN,
-    SAVE_LANG_SPANISH,
-};
-
 enum save_pokerus_status_t {
     SAVE_POKERUS_NONE,
     SAVE_POKERUS_INFECTED,
