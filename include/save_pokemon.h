@@ -3,7 +3,9 @@
 
 #include <stddef.h>
 #include <inttypes.h>
+
 #include "save_common.h"
+#include "save_natures.h"
 
 #define SAVE_POKEMON_NICKNAME_SIZE 10
 #define SAVE_POKEMON_NICKNAME_SIZE_UNPACKED (SAVE_POKEMON_NICKNAME_SIZE + 1)
@@ -190,5 +192,8 @@ enum save_trainer_gender_t save_pokemon_ot_gender_get(
     struct save_pokemon_data_ordered_t* pkm_data);
 
 int save_pokemon_is_shiny(struct save_pokemon_boxed_t* pokemon);
+
+enum save_nature_t save_pokemon_nature_get(
+    struct save_pokemon_boxed_t* pokemon);
 
 #endif

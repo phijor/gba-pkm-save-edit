@@ -4,6 +4,7 @@
 #include "message.h"
 #include "save_pokemon.h"
 #include "save_char_encoding.h"
+#include "save_natures.h"
 
 const struct save_pokemon_data_permutation_t save_pokemon_data_permutations[] = {
   // G  A  E  M
@@ -160,4 +161,9 @@ enum save_trainer_gender_t save_pokemon_ot_gender_get(
 int save_pokemon_is_shiny(struct save_pokemon_boxed_t* pokemon) {
     uint32_t pid_it_xor = pokemon->PID ^ *((uint32_t*)&pokemon->OT_ID);
     return ((pid_it_xor & 0xffff) ^ (pid_it_xor >> 16)) < 8;
+}
+
+enum save_nature_t save_pokemon_nature_get(
+    struct save_pokemon_boxed_t* pokemon) {
+    return pokemon->PID % SAVE_NATURES;
 }
