@@ -4,6 +4,7 @@
 #include <inttypes.h>
 
 #include "save_common.h"
+#include "save_link.h"
 #include "save_pokedex.h"
 #include "save_pokemon.h"
 #include "save_boxes.h"
@@ -35,7 +36,11 @@ struct __attribute__((packed)) save_ruby_sapphire_t {
         uint32_t game_code;
         uint32_t security_key;
     };
-    uint8_t _4[(0x1160 - 0x00ac) - sizeof(uint32_t)];
+    uint8_t _4[(0x014c - 0x00ac) - sizeof(uint32_t)];
+
+    struct save_link_opponent_battletower_t battletower[5];
+    uint8_t _11[(0x1160 - 0x014c) -
+                5 * sizeof(struct save_link_opponent_battletower_t)];
 
     uint32_t party_size;
     struct save_pokemon_t party[SAVE_PARTY_SLOTS];
