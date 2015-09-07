@@ -31,6 +31,7 @@
 #define SAVE_POKEMON_BALL_SHIFT      11
 #define SAVE_POKEMON_OT_GENDER_SHIFT 15
 
+#define SAVE_POKEMON_EGG_MASK     (0x1 << 30)
 #define SAVE_POKEMON_ABILITY_MASK (0x1)
 
 #define SAVE_DATA_BLOCKS 4
@@ -186,6 +187,8 @@ enum save_trainer_gender_t save_pokemon_ot_gender_get(
     struct save_pokemon_data_ordered_t* pkm_data);
 
 int save_pokemon_is_shiny(struct save_pokemon_boxed_t* pokemon);
+
+int save_pokemon_is_egg(struct save_pokemon_data_ordered_t* pkm_data);
 
 enum save_nature_t save_pokemon_nature_get(
     struct save_pokemon_boxed_t* pokemon);

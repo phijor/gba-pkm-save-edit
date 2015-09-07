@@ -163,6 +163,10 @@ int save_pokemon_is_shiny(struct save_pokemon_boxed_t* pokemon) {
     return ((pid_ot_xor & 0xffff) ^ (pid_ot_xor >> 16)) < 8;
 }
 
+int save_pokemon_is_egg(struct save_pokemon_data_ordered_t* pkm_data) {
+    return (pkm_data->misc->iv_egg_ability & SAVE_POKEMON_EGG_MASK);
+};
+
 enum save_nature_t save_pokemon_nature_get(
     struct save_pokemon_boxed_t* pokemon) {
     return pokemon->PID % SAVE_NATURES;
