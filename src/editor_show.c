@@ -228,7 +228,7 @@ int editor_show_pokemon_info(struct save_pokemon_boxed_t* pokemon) {
     }
     {
         enum save_pokemon_language_t language = pokemon->language;
-        if (language > SAVE_LANG_SPANISH) {
+        if (language < SAVE_LANG_BASE || language > SAVE_LANG_SPANISH) {
             language = SAVE_LANG_BASE;
         }
         message("*", "Language: %s (%#04x)\n",
