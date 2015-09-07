@@ -74,7 +74,8 @@ int message_parse_format(const char* const format_string, struct message_format_
     return EXIT_SUCCESS;
 }
 
-int message(const char* const format_string, const char* const message, ...) {
+int __attribute__((format(printf, 2, 3)))
+message(const char* const format_string, const char* const message, ...) {
     va_list args;
     va_start(args, message);
 
