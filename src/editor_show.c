@@ -178,11 +178,22 @@ int editor_show_pokemon_info(struct save_pokemon_boxed_t* pokemon) {
 
     {
         enum save_species_t species = pkm_data.growth->species;
+        enum save_species_t hatches_into = SAVE_SPECIES_NONE;
+
         if (species >= SAVE_SPECIES) {
             species = SAVE_SPECIES_NONE;
         }
-        message("*", "Species: %s\n",
+        if (save_pokemon_is_egg(&pkm_data)) {
+            hatches_into = species;
+            species = SAVE_SPECIES_POKEMON_EGG;
+        }
+        message("*+", "Species: %s\n",
                 editor_species_names[species]);
+        if (species == SAVE_SPECIES_POKEMON_EGG) {
+            message("*", "will hatch into a %s\n",
+                    editor_species_names[hatches_into]);
+        }
+        message_indent(-1);
     }
     {
         char nickname[SAVE_POKEMON_NICKNAME_SIZE_UNPACKED] = {'\0'};
