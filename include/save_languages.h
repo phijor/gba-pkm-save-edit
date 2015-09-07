@@ -4,7 +4,7 @@
 #define SAVE_LANGUAGES 8
 
 enum save_pokemon_language_t {
-    SAVE_LANG_BASE = 0x200,
+    SAVE_LANG_BASE,
     SAVE_LANG_JAPANESE,
     SAVE_LANG_ENGLISH,
     SAVE_LANG_FRENCH,
