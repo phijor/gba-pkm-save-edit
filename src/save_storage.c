@@ -90,5 +90,5 @@ uint32_t save_storage_party_size_get(union save_unpacked_t* save) {
 }
 
 int save_storage_slot_is_empty(struct save_pokemon_boxed_t* pokemon) {
-    return pokemon->nickname[0] == '\0' && pokemon->language == 0;
+    return pokemon->occupancy == SAVE_STORAGE_EMPTY;
 }

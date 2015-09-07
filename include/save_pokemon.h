@@ -130,7 +130,7 @@ struct save_pokemon_boxed_t {
     };
     save_char_t nickname[SAVE_POKEMON_NICKNAME_SIZE];
     uint8_t language;
-    uint8_t _1[1];
+    uint8_t occupancy;
     save_char_t OT_name[SAVE_POKEMON_OT_NAME_SIZE];
     uint8_t markings;
     uint16_t checksum;

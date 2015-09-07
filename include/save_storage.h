@@ -9,6 +9,12 @@
 union save_unpacked_t;
 struct save_box_unpacked_t;
 
+enum save_storage_occupancy_t {
+    SAVE_STORAGE_EMPTY,
+    SAVE_STORAGE_EGG,
+    SAVE_STORAGE_POKEMON,
+};
+
 int save_storage_party_get(union save_unpacked_t* save,
                           struct save_pokemon_boxed_t* party);
 
