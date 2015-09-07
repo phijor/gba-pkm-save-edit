@@ -802,7 +802,7 @@ char* editor_species_names[] = {
 };
 
 char* editor_item_names[] = {
-    "None"
+    "None",
     "Master Ball",
     "Ultra Ball",
     "Great Ball",
