@@ -38,7 +38,7 @@ uint32_t save_pokemon_crypt_key_get(struct save_pokemon_boxed_t* pokemon) {
     /* interpret OT's whole ID (public and secret) as one 32-bit number and XOR
      * it with the Pokémons PID to get the de-/encryption key needed to
      * read/edit critical data. */
-    return pokemon->PID ^ *((uint32_t*)&pokemon->OT_ID);
+    return pokemon->PID ^ pokemon->OT_ID_full;
 }
 
 void save_pokemon_xor_crypt(struct save_pokemon_boxed_t* pokemon) {
@@ -159,8 +159,8 @@ enum save_trainer_gender_t save_pokemon_ot_gender_get(
 }
 
 int save_pokemon_is_shiny(struct save_pokemon_boxed_t* pokemon) {
-    uint32_t pid_it_xor = pokemon->PID ^ *((uint32_t*)&pokemon->OT_ID);
-    return ((pid_it_xor & 0xffff) ^ (pid_it_xor >> 16)) < 8;
+    uint32_t pid_ot_xor = pokemon->PID ^ pokemon->OT_ID_full;
+    return ((pid_ot_xor & 0xffff) ^ (pid_ot_xor >> 16)) < 8;
 }
 
 enum save_nature_t save_pokemon_nature_get(

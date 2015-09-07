@@ -123,7 +123,10 @@ struct save_pokemon_data_ordered_t {
 
 struct save_pokemon_boxed_t {
     uint32_t PID;
-    struct save_trainer_id_t OT_ID;
+    union {
+        struct save_trainer_id_t OT_ID;
+        uint32_t OT_ID_full;
+    };
     save_char_t nickname[SAVE_POKEMON_NICKNAME_SIZE];
     uint16_t language;
     save_char_t OT_name[SAVE_POKEMON_OT_NAME_SIZE];
