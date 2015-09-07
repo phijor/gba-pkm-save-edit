@@ -55,8 +55,8 @@ a command should operate.
 
 Example: showing information about different Pokémon in the party.
 
-Typing `show pokemon party ...` | ...prints out...
---------------------------------|-----------------
+Typing `show pokemon party ...` | ...prints out Pokémon...
+--------------------------------|-------------------------
 `1`                             | 1
 `1-3`                           | 1, 2 & 3
 `1-`                            | 1 plus however many are in the party
@@ -66,4 +66,15 @@ Typing `show pokemon party ...` | ...prints out...
 TODO
 ----
 
-- [ ] move `enum`s related to Pokémon data to their own files
+###long-term
+- [ ] full savefile description
+- [ ] full savefile editability
+
+###short-term
+- [x] move `enum`s related to Pokémon data to their own files
+- [ ] add a convenience-functions to de-/encrypt a Pokémon
+- [ ] determine whether a Pokémon is an egg or not from occupancy-byte in
+    Pokémon-struct
+- [ ] add format options to `message(...)` which indent instantly
+- [ ] remove I/O from `save_` functions as much as possible and handle errors
+    via return-values etc.
