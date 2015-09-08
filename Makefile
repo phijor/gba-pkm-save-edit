@@ -38,7 +38,7 @@ SHELL = /bin/bash
 .SUFFIXES:
 # Programs for installation
 INSTALL = install
-INSTALL_PROGRAM = $(INSTALL)
+INSTALL_PROGRAM = $(INSTALL) -m 755
 INSTALL_DATA = $(INSTALL) -m 644
 
 # Append pkg-config specific libraries if need be
