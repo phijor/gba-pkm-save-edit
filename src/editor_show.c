@@ -172,9 +172,8 @@ int editor_show_pokemon_info(struct save_pokemon_boxed_t* pokemon) {
         return EXIT_FAILURE;
     }
 
-    save_pokemon_xor_crypt(pokemon);
-    struct save_pokemon_data_ordered_t pkm_data;
-    save_pokemon_order_data(pokemon, &pkm_data);
+    struct save_pokemon_data_ordered_t pkm_data = {NULL, NULL, NULL, NULL};
+    save_pokemon_decrypt(pokemon, &pkm_data);
 
     {
         enum save_species_t species = pkm_data.growth->species;
@@ -302,6 +301,6 @@ int editor_show_pokemon_info(struct save_pokemon_boxed_t* pokemon) {
         if (pokemon->markings & SAVE_POKEMON_MARK_HEART)  { markings[3] = 'h'; }
         message("*", "Markings: %s\n", markings);
     }
-    save_pokemon_xor_crypt(pokemon);
+    save_pokemon_encrypt(pokemon, &pkm_data);
     return EXIT_SUCCESS;
 }

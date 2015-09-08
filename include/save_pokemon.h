@@ -153,16 +153,28 @@ struct save_pokemon_t {
 };
 
 uint32_t save_pokemon_crypt_key_set(struct save_pokemon_boxed_t* pokemon);
+
 void save_pokemon_xor_crypt(struct save_pokemon_boxed_t* pokemon);
+
 void save_pokemon_order_data(struct save_pokemon_boxed_t* pokemon,
                              struct save_pokemon_data_ordered_t* ordered);
+
+int save_pokemon_decrypt(struct save_pokemon_boxed_t* pokemon,
+                         struct save_pokemon_data_ordered_t* pkm_data);
+
+int save_pokemon_encrypt(struct save_pokemon_boxed_t* pokemon,
+                         struct save_pokemon_data_ordered_t* pkm_data);
+
 int save_pokemon_data_integrity_check(struct save_pokemon_boxed_t* pokemon);
 
-size_t save_pokemon_nickname_get(struct save_pokemon_boxed_t* pokemon, char* nickname);
-size_t save_pokemon_ot_name_get(struct save_pokemon_boxed_t* pokemon, char* ot_name);
+size_t save_pokemon_nickname_get(struct save_pokemon_boxed_t* pokemon,
+                                 char* nickname);
 
-uint8_t save_pokemon_pp_bonuses_get(struct save_pokemon_data_ordered_t* pkm_data,
-                                    size_t move);
+size_t save_pokemon_ot_name_get(struct save_pokemon_boxed_t* pokemon,
+                                char* ot_name);
+
+uint8_t save_pokemon_pp_bonuses_get(
+    struct save_pokemon_data_ordered_t* pkm_data, size_t move);
 
 int save_pokemon_pokerus_remaining_get(
     struct save_pokemon_data_ordered_t* pkm_data);
