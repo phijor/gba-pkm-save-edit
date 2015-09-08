@@ -71,13 +71,15 @@ void save_pokemon_order_data(struct save_pokemon_boxed_t* pokemon,
 
 int save_pokemon_decrypt(struct save_pokemon_boxed_t* pokemon,
                          struct save_pokemon_data_ordered_t* pkm_data) {
-    if (pkm_data->growth != NULL ||
+    if (pkm_data->unencrypted != NULL ||
+        pkm_data->growth != NULL ||
         pkm_data->attacks != NULL ||
         pkm_data->condition != NULL ||
         pkm_data->misc != NULL) {
         //a Pokémon was already decrypted and stored in that data struct
         return EXIT_FAILURE;
     }
+    pkm_data->unencrypted = pokemon;
     save_pokemon_xor_crypt(pokemon);
     save_pokemon_order_data(pokemon, pkm_data);
     return EXIT_SUCCESS;
@@ -85,11 +87,16 @@ int save_pokemon_decrypt(struct save_pokemon_boxed_t* pokemon,
 
 int save_pokemon_encrypt(struct save_pokemon_boxed_t* pokemon,
                          struct save_pokemon_data_ordered_t* pkm_data) {
+    if (pkm_data->unencrypted != pokemon) {
+        //we're not encrypting the Pokémon associated with that data
+        EXIT_FAILURE;
+    }
     pkm_data->growth = NULL;
     pkm_data->attacks = NULL;
     pkm_data->condition = NULL;
     pkm_data->misc = NULL;
     save_pokemon_xor_crypt(pokemon);
+    pkm_data->unencrypted = NULL;
     return EXIT_SUCCESS;
 }
 

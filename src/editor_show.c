@@ -172,7 +172,8 @@ int editor_show_pokemon_info(struct save_pokemon_boxed_t* pokemon) {
         return EXIT_FAILURE;
     }
 
-    struct save_pokemon_data_ordered_t pkm_data = {NULL, NULL, NULL, NULL};
+    struct save_pokemon_data_ordered_t pkm_data = {NULL, NULL, NULL, NULL,
+                                                   NULL};
     save_pokemon_decrypt(pokemon, &pkm_data);
 
     {

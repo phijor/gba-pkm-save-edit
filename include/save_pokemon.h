@@ -116,6 +116,7 @@ union save_pokemon_data_t {
 };
 
 struct save_pokemon_data_ordered_t {
+    struct save_pokemon_boxed_t* unencrypted;
     struct save_pokemon_data_growth_t* growth;
     struct save_pokemon_data_attacks_t* attacks;
     struct save_pokemon_data_condition_t* condition;
