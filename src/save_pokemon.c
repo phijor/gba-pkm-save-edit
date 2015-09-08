@@ -55,7 +55,7 @@ void save_pokemon_xor_crypt(struct save_pokemon_boxed_t* pokemon) {
 }
 
 void save_pokemon_order_data(struct save_pokemon_boxed_t* pokemon,
-                             struct save_pokemon_data_ordered_t* ordered) {
+                             struct save_pokemon_decrypted_t* ordered) {
     union save_pokemon_data_t* data = pokemon->data;
 
     size_t permutation_index =
@@ -70,7 +70,7 @@ void save_pokemon_order_data(struct save_pokemon_boxed_t* pokemon,
 }
 
 int save_pokemon_decrypt(struct save_pokemon_boxed_t* pokemon,
-                         struct save_pokemon_data_ordered_t* pkm_data) {
+                         struct save_pokemon_decrypted_t* pkm_data) {
     if (pkm_data->unencrypted != NULL ||
         pkm_data->growth != NULL ||
         pkm_data->attacks != NULL ||
@@ -86,7 +86,7 @@ int save_pokemon_decrypt(struct save_pokemon_boxed_t* pokemon,
 }
 
 int save_pokemon_encrypt(struct save_pokemon_boxed_t* pokemon,
-                         struct save_pokemon_data_ordered_t* pkm_data) {
+                         struct save_pokemon_decrypted_t* pkm_data) {
     if (pkm_data->unencrypted != pokemon) {
         //we're not encrypting the Pokémon associated with that data
         EXIT_FAILURE;
@@ -132,27 +132,27 @@ size_t save_pokemon_ot_name_get(struct save_pokemon_boxed_t* pokemon, char* OT_n
 }
 
 uint8_t save_pokemon_pp_bonuses_get(
-    struct save_pokemon_data_ordered_t* pkm_data, size_t move) {
+    struct save_pokemon_decrypted_t* pkm_data, size_t move) {
     int shift = SAVE_POKEMON_PP_SHIFT * move;
     return (pkm_data->growth->pp_bonuses & (SAVE_POKEMON_PP_MASK << shift)) >>
            shift;
 }
 
-int save_pokemon_pokerus_remaining_get(struct save_pokemon_data_ordered_t* pkm_data) {
+int save_pokemon_pokerus_remaining_get(struct save_pokemon_decrypted_t* pkm_data) {
     return pkm_data->misc->pokerus & 0x0f;
 }
 
-uint8_t save_pokemon_pokerus_strain_get(struct save_pokemon_data_ordered_t* pkm_data) {
+uint8_t save_pokemon_pokerus_strain_get(struct save_pokemon_decrypted_t* pkm_data) {
     return (pkm_data->misc->pokerus >> 4) & 0x0f;
 }
 
 int save_pokemon_pokerus_max_days_get(
-    struct save_pokemon_data_ordered_t* pkm_data) {
+    struct save_pokemon_decrypted_t* pkm_data) {
     return save_pokemon_pokerus_strain_get(pkm_data) % 4 + 1;
 }
 
 enum save_pokerus_status_t save_pokemon_pokerus_status_get(
-    struct save_pokemon_data_ordered_t* pkm_data) {
+    struct save_pokemon_decrypted_t* pkm_data) {
     uint8_t strain = save_pokemon_pokerus_strain_get(pkm_data);
     uint8_t days = save_pokemon_pokerus_remaining_get(pkm_data);
     if (strain == 0) {
@@ -167,24 +167,24 @@ enum save_pokerus_status_t save_pokemon_pokerus_status_get(
     return SAVE_POKERUS_INVALID;
 }
 
-uint8_t save_pokemon_met_level_get(struct save_pokemon_data_ordered_t* pkm_data) {
+uint8_t save_pokemon_met_level_get(struct save_pokemon_decrypted_t* pkm_data) {
     return (pkm_data->misc->origin_info & SAVE_POKEMON_MET_LEVEL) >>
            SAVE_POKEMON_MET_LEVEL_SHIFT;
 }
 
 enum save_pokemon_game_of_origin_t save_pokemon_origin_get(
-    struct save_pokemon_data_ordered_t* pkm_data) {
+    struct save_pokemon_decrypted_t* pkm_data) {
     return (pkm_data->misc->origin_info & SAVE_POKEMON_ORIG_GAME) >>
            SAVE_POKEMON_ORIG_GAME_SHIFT;
 }
 
-uint8_t save_pokemon_ball_get(struct save_pokemon_data_ordered_t* pkm_data) {
+uint8_t save_pokemon_ball_get(struct save_pokemon_decrypted_t* pkm_data) {
     return (pkm_data->misc->origin_info & SAVE_POKEMON_BALL) >>
            SAVE_POKEMON_BALL_SHIFT;
 }
 
 enum save_trainer_gender_t save_pokemon_ot_gender_get(
-    struct save_pokemon_data_ordered_t* pkm_data) {
+    struct save_pokemon_decrypted_t* pkm_data) {
     return (pkm_data->misc->origin_info & SAVE_POKEMON_OT_GENDER) >>
            SAVE_POKEMON_OT_GENDER_SHIFT;
 }
@@ -194,7 +194,7 @@ int save_pokemon_is_shiny(struct save_pokemon_boxed_t* pokemon) {
     return ((pid_ot_xor & 0xffff) ^ (pid_ot_xor >> 16)) < 8;
 }
 
-int save_pokemon_is_egg(struct save_pokemon_data_ordered_t* pkm_data) {
+int save_pokemon_is_egg(struct save_pokemon_decrypted_t* pkm_data) {
     return (pkm_data->misc->iv_egg_ability & SAVE_POKEMON_EGG_MASK);
 };
 
