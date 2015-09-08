@@ -11,7 +11,7 @@
 
 int save_storage_party_get(union save_unpacked_t* save,
                            struct save_pokemon_boxed_t* party) {
-    struct save_pokemon_t* party_extended;
+    struct save_pokemon_extended_t* party_extended;
     enum save_game_type_t game_type = save_gametype_get(save);
     switch (game_type) {
         case RUBY_SAPPHIRE:

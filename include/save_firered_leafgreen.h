@@ -39,11 +39,11 @@ struct save_firered_leafgreen_t {
     uint8_t _5[(0x0f60 - 0x0af8) - sizeof(uint32_t)];
 
     uint32_t party_size;
-    struct save_pokemon_t party[SAVE_PARTY_SLOTS];
+    struct save_pokemon_extended_t party[SAVE_PARTY_SLOTS];
     uint32_t money;
     uint16_t coins;
     uint8_t _6[(0x11c4 - 0x0f60) - 2 * sizeof(uint32_t) - sizeof(uint16_t) -
-               SAVE_PARTY_SLOTS * sizeof(struct save_pokemon_t)];
+               SAVE_PARTY_SLOTS * sizeof(struct save_pokemon_extended_t)];
 
     struct save_firered_leafgreen_items_t items;
     uint8_t _7[(0x1524 - 0x11c4) - sizeof(struct save_firered_leafgreen_items_t)];

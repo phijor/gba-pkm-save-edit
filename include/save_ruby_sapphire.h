@@ -43,10 +43,10 @@ struct __attribute__((packed)) save_ruby_sapphire_t {
                 5 * sizeof(struct save_link_opponent_battletower_t)];
 
     uint32_t party_size;
-    struct save_pokemon_t party[SAVE_PARTY_SLOTS];
+    struct save_pokemon_extended_t party[SAVE_PARTY_SLOTS];
     uint32_t money;
     uint8_t _5[(0x13c4 - 0x1160) - 2 * sizeof(uint32_t) -
-               SAVE_PARTY_SLOTS * sizeof(struct save_pokemon_t)];
+               SAVE_PARTY_SLOTS * sizeof(struct save_pokemon_extended_t)];
 
     struct save_ruby_sapphire_items_t items;
     uint8_t _6[(0x1864 - 0x13c4) - sizeof(struct save_ruby_sapphire_items_t)];

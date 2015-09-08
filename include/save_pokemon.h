@@ -139,7 +139,7 @@ struct save_pokemon_boxed_t {
     union save_pokemon_data_t data[SAVE_DATA_BLOCKS];
 };
 
-struct save_pokemon_t {
+struct save_pokemon_extended_t {
     struct save_pokemon_boxed_t boxed;
     uint32_t status_condition;
     uint8_t level;
