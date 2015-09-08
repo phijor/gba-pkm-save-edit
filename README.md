@@ -14,6 +14,21 @@ If you wish to run a debug-build:
 
     $ make debug
 
+INSTALLING
+----------
+
+    $ make install
+
+If you wish to install to a different location (e.g. `foo/bar/`):
+
+    $ make DESTDIR="foo/bar/" install
+
+###using a package-manager
+
+If you are using Arch, you can install from the [AUR](https://aur.archlinux.org/packages/gba-pkm-save-edit-git/):
+
+    pacaur -S gba-pkm-save-edit-git
+
 RUNNING
 -------
 
