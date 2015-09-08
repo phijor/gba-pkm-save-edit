@@ -25,8 +25,8 @@ RLINK_FLAGS =
 DLINK_FLAGS = 
 # Destination directory, like a jail or mounted system
 DESTDIR = /
-# Install path (bin/ is appended automatically)
-INSTALL_PREFIX = usr/local
+# Install path
+INSTALL_PREFIX = usr/bin
 #### END PROJECT SETTINGS ####
 
 # Generally should not need to edit below this line
@@ -151,14 +151,14 @@ dirs:
 # Installs to the set path
 .PHONY: install
 install:
-	@echo "Installing to $(DESTDIR)$(INSTALL_PREFIX)/bin"
-	@$(INSTALL_PROGRAM) $(BIN_PATH)/$(BIN_NAME) $(DESTDIR)$(INSTALL_PREFIX)/bin
+	@echo "Installing to $(DESTDIR)$(INSTALL_PREFIX)"
+	@$(INSTALL_PROGRAM) $(BIN_PATH)/$(BIN_NAME) $(DESTDIR)$(INSTALL_PREFIX)
 
 # Uninstalls the program
 .PHONY: uninstall
 uninstall:
-	@echo "Removing $(DESTDIR)$(INSTALL_PREFIX)/bin/$(BIN_NAME)"
-	@$(RM) $(DESTDIR)$(INSTALL_PREFIX)/bin/$(BIN_NAME)
+	@echo "Removing $(DESTDIR)$(INSTALL_PREFIX)/$(BIN_NAME)"
+	@$(RM) $(DESTDIR)$(INSTALL_PREFIX)/$(BIN_NAME)
 
 # Removes all build files
 .PHONY: clean
