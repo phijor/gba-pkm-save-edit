@@ -152,6 +152,7 @@ dirs:
 .PHONY: install
 install:
 	@echo "Installing to $(DESTDIR)$(INSTALL_PREFIX)"
+	@mkdir -p $(DESTDIR)$(INSTALL_PREFIX)
 	@$(INSTALL_PROGRAM) $(BIN_PATH)/$(BIN_NAME) $(DESTDIR)$(INSTALL_PREFIX)
 
 # Uninstalls the program
