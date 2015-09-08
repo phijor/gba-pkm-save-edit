@@ -116,14 +116,14 @@ union save_pokemon_data_t {
 };
 
 struct save_pokemon_decrypted_t {
-    struct save_pokemon_boxed_t* unencrypted;
+    struct save_pokemon_t* unencrypted;
     struct save_pokemon_data_growth_t* growth;
     struct save_pokemon_data_attacks_t* attacks;
     struct save_pokemon_data_condition_t* condition;
     struct save_pokemon_data_misc_t* misc;
 };
 
-struct save_pokemon_boxed_t {
+struct save_pokemon_t {
     uint32_t PID;
     union {
         struct save_trainer_id_t OT_ID;
@@ -140,7 +140,7 @@ struct save_pokemon_boxed_t {
 };
 
 struct save_pokemon_extended_t {
-    struct save_pokemon_boxed_t boxed;
+    struct save_pokemon_t boxed;
     uint32_t status_condition;
     uint8_t level;
     uint8_t pokerus_remaining;
@@ -153,25 +153,25 @@ struct save_pokemon_extended_t {
     uint16_t special_defense;
 };
 
-uint32_t save_pokemon_crypt_key_set(struct save_pokemon_boxed_t* pokemon);
+uint32_t save_pokemon_crypt_key_set(struct save_pokemon_t* pokemon);
 
-void save_pokemon_xor_crypt(struct save_pokemon_boxed_t* pokemon);
+void save_pokemon_xor_crypt(struct save_pokemon_t* pokemon);
 
-void save_pokemon_order_data(struct save_pokemon_boxed_t* pokemon,
+void save_pokemon_order_data(struct save_pokemon_t* pokemon,
                              struct save_pokemon_decrypted_t* ordered);
 
-int save_pokemon_decrypt(struct save_pokemon_boxed_t* pokemon,
+int save_pokemon_decrypt(struct save_pokemon_t* pokemon,
                          struct save_pokemon_decrypted_t* pkm_data);
 
-int save_pokemon_encrypt(struct save_pokemon_boxed_t* pokemon,
+int save_pokemon_encrypt(struct save_pokemon_t* pokemon,
                          struct save_pokemon_decrypted_t* pkm_data);
 
-int save_pokemon_data_integrity_check(struct save_pokemon_boxed_t* pokemon);
+int save_pokemon_data_integrity_check(struct save_pokemon_t* pokemon);
 
-size_t save_pokemon_nickname_get(struct save_pokemon_boxed_t* pokemon,
+size_t save_pokemon_nickname_get(struct save_pokemon_t* pokemon,
                                  char* nickname);
 
-size_t save_pokemon_ot_name_get(struct save_pokemon_boxed_t* pokemon,
+size_t save_pokemon_ot_name_get(struct save_pokemon_t* pokemon,
                                 char* ot_name);
 
 uint8_t save_pokemon_pp_bonuses_get(
@@ -200,13 +200,13 @@ uint8_t save_pokemon_ball_get(struct save_pokemon_decrypted_t* pkm_data);
 enum save_trainer_gender_t save_pokemon_ot_gender_get(
     struct save_pokemon_decrypted_t* pkm_data);
 
-int save_pokemon_is_shiny(struct save_pokemon_boxed_t* pokemon);
+int save_pokemon_is_shiny(struct save_pokemon_t* pokemon);
 
 int save_pokemon_is_egg(struct save_pokemon_decrypted_t* pkm_data);
 
 enum save_nature_t save_pokemon_nature_get(
-    struct save_pokemon_boxed_t* pokemon);
+    struct save_pokemon_t* pokemon);
 
-unsigned char save_pokemon_ability_get(struct save_pokemon_boxed_t* pokemon);
+unsigned char save_pokemon_ability_get(struct save_pokemon_t* pokemon);
 
 #endif

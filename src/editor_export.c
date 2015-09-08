@@ -59,7 +59,7 @@ int editor_export_pokemon_party(union save_unpacked_t* save, int argc,
     message("I", "Exporting Pokemon from party slot(s) %d to %d.\n",
             range.lower, range.upper);
 
-    struct save_pokemon_boxed_t party[SAVE_PARTY_SLOTS];
+    struct save_pokemon_t party[SAVE_PARTY_SLOTS];
     save_storage_party_get(save, party);
 
     for (ssize_t i = range.lower; i <= range.upper; i++) {
@@ -117,7 +117,7 @@ int editor_export_pokemon_box(union save_unpacked_t* save, int argc,
     return EXIT_SUCCESS;
 }
 
-int editor_export_pokemon_write(struct save_pokemon_boxed_t* pokemon,
+int editor_export_pokemon_write(struct save_pokemon_t* pokemon,
                                 char* dir_path, char* prefix) {
     if (save_storage_slot_is_empty(pokemon)) {
         return EXIT_FAILURE;
@@ -138,7 +138,7 @@ int editor_export_pokemon_write(struct save_pokemon_boxed_t* pokemon,
 
     message("I", "Writing Pokemon to \'%s\'.\n", file_name);
     FILE* export_file = fopen(file_name, "w");
-    fwrite(pokemon, sizeof(struct save_pokemon_boxed_t), 1, export_file);
+    fwrite(pokemon, sizeof(struct save_pokemon_t), 1, export_file);
     fclose(export_file);
     free(file_name);
     return EXIT_SUCCESS;

@@ -2,7 +2,7 @@
 #define EDITOR_SHOW_H
 
 union save_unpacked_t;
-struct save_pokemon_boxed_t;
+struct save_pokemon_t;
 
 int editor_show(union save_unpacked_t* save, int argc, char* const* argv);
 int editor_show_pokedex(union save_unpacked_t* save, int argc,
@@ -15,7 +15,7 @@ int editor_show_pokemon_party(union save_unpacked_t* save, int argc,
                         char* const* argv);
 int editor_show_pokemon_box(union save_unpacked_t* save, int argc,
                         char* const* argv);
-int editor_show_pokemon_info(struct save_pokemon_boxed_t* pokemon);
+int editor_show_pokemon_info(struct save_pokemon_t* pokemon);
 
 
 #endif

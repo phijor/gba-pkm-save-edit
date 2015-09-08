@@ -116,7 +116,7 @@ int editor_show_pokemon_party(union save_unpacked_t* save, int argc,
         range.upper = party_size;
     }
 
-    struct save_pokemon_boxed_t party[SAVE_PARTY_SLOTS];
+    struct save_pokemon_t party[SAVE_PARTY_SLOTS];
     save_storage_party_get(save, party);
 
     for (ssize_t i = range.lower; i <= range.upper; i++) {
@@ -167,7 +167,7 @@ int editor_show_pokemon_box(union save_unpacked_t* save, int argc,
     return EXIT_SUCCESS;
 }
 
-int editor_show_pokemon_info(struct save_pokemon_boxed_t* pokemon) {
+int editor_show_pokemon_info(struct save_pokemon_t* pokemon) {
     if (save_storage_slot_is_empty(pokemon)) {
         return EXIT_FAILURE;
     }

@@ -34,14 +34,14 @@ const struct save_pokemon_data_permutation_t save_pokemon_data_permutations[] = 
     {3, 2, 1, 0},
 };
 
-uint32_t save_pokemon_crypt_key_get(struct save_pokemon_boxed_t* pokemon) {
+uint32_t save_pokemon_crypt_key_get(struct save_pokemon_t* pokemon) {
     /* interpret OT's whole ID (public and secret) as one 32-bit number and XOR
      * it with the Pokémons PID to get the de-/encryption key needed to
      * read/edit critical data. */
     return pokemon->PID ^ pokemon->OT_ID_full;
 }
 
-void save_pokemon_xor_crypt(struct save_pokemon_boxed_t* pokemon) {
+void save_pokemon_xor_crypt(struct save_pokemon_t* pokemon) {
     uint32_t key = save_pokemon_crypt_key_get(pokemon);
 
     assert(sizeof(union save_pokemon_data_t) % sizeof(uint32_t) == 0);
@@ -54,7 +54,7 @@ void save_pokemon_xor_crypt(struct save_pokemon_boxed_t* pokemon) {
     }
 }
 
-void save_pokemon_order_data(struct save_pokemon_boxed_t* pokemon,
+void save_pokemon_order_data(struct save_pokemon_t* pokemon,
                              struct save_pokemon_decrypted_t* ordered) {
     union save_pokemon_data_t* data = pokemon->data;
 
@@ -69,7 +69,7 @@ void save_pokemon_order_data(struct save_pokemon_boxed_t* pokemon,
     ordered->misc = &data[current_permutation->misc].misc;
 }
 
-int save_pokemon_decrypt(struct save_pokemon_boxed_t* pokemon,
+int save_pokemon_decrypt(struct save_pokemon_t* pokemon,
                          struct save_pokemon_decrypted_t* pkm_data) {
     if (pkm_data->unencrypted != NULL ||
         pkm_data->growth != NULL ||
@@ -85,7 +85,7 @@ int save_pokemon_decrypt(struct save_pokemon_boxed_t* pokemon,
     return EXIT_SUCCESS;
 }
 
-int save_pokemon_encrypt(struct save_pokemon_boxed_t* pokemon,
+int save_pokemon_encrypt(struct save_pokemon_t* pokemon,
                          struct save_pokemon_decrypted_t* pkm_data) {
     if (pkm_data->unencrypted != pokemon) {
         //we're not encrypting the Pokémon associated with that data
@@ -100,7 +100,7 @@ int save_pokemon_encrypt(struct save_pokemon_boxed_t* pokemon,
     return EXIT_SUCCESS;
 }
 
-int save_pokemon_data_integrity_check(struct save_pokemon_boxed_t* pokemon) {
+int save_pokemon_data_integrity_check(struct save_pokemon_t* pokemon) {
     uint16_t checksum = 0;
 
     assert(sizeof(union save_pokemon_data_t) % sizeof(uint16_t) == 0);
@@ -123,11 +123,11 @@ int save_pokemon_data_integrity_check(struct save_pokemon_boxed_t* pokemon) {
     return EXIT_SUCCESS;
 }
 
-size_t save_pokemon_nickname_get(struct save_pokemon_boxed_t* pokemon, char* nickname) {
+size_t save_pokemon_nickname_get(struct save_pokemon_t* pokemon, char* nickname) {
     return save_string_decode(nickname, pokemon->nickname, SAVE_POKEMON_NICKNAME_SIZE);
 }
 
-size_t save_pokemon_ot_name_get(struct save_pokemon_boxed_t* pokemon, char* OT_name) {
+size_t save_pokemon_ot_name_get(struct save_pokemon_t* pokemon, char* OT_name) {
     return save_string_decode(OT_name, pokemon->OT_name, SAVE_POKEMON_OT_NAME_SIZE);
 }
 
@@ -189,7 +189,7 @@ enum save_trainer_gender_t save_pokemon_ot_gender_get(
            SAVE_POKEMON_OT_GENDER_SHIFT;
 }
 
-int save_pokemon_is_shiny(struct save_pokemon_boxed_t* pokemon) {
+int save_pokemon_is_shiny(struct save_pokemon_t* pokemon) {
     uint32_t pid_ot_xor = pokemon->PID ^ pokemon->OT_ID_full;
     return ((pid_ot_xor & 0xffff) ^ (pid_ot_xor >> 16)) < 8;
 }
@@ -199,10 +199,10 @@ int save_pokemon_is_egg(struct save_pokemon_decrypted_t* pkm_data) {
 };
 
 enum save_nature_t save_pokemon_nature_get(
-    struct save_pokemon_boxed_t* pokemon) {
+    struct save_pokemon_t* pokemon) {
     return pokemon->PID % SAVE_NATURES;
 }
 
-unsigned char save_pokemon_ability_get(struct save_pokemon_boxed_t* pokemon) {
+unsigned char save_pokemon_ability_get(struct save_pokemon_t* pokemon) {
     return pokemon->PID & SAVE_POKEMON_ABILITY_MASK;
 }

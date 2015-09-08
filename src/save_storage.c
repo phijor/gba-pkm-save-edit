@@ -10,7 +10,7 @@
 #include "save_char_encoding.h"
 
 int save_storage_party_get(union save_unpacked_t* save,
-                           struct save_pokemon_boxed_t* party) {
+                           struct save_pokemon_t* party) {
     struct save_pokemon_extended_t* party_extended;
     enum save_game_type_t game_type = save_gametype_get(save);
     switch (game_type) {
@@ -31,7 +31,7 @@ int save_storage_party_get(union save_unpacked_t* save,
     assert(party != NULL);
     for (size_t i = 0; i < SAVE_PARTY_SLOTS; i++) {
         memcpy(&party[i], &party_extended[i].boxed,
-               sizeof(struct save_pokemon_boxed_t));
+               sizeof(struct save_pokemon_t));
     }
     return EXIT_SUCCESS;
 }
@@ -43,7 +43,7 @@ int save_storage_box_get(union save_unpacked_t* save, size_t index,
         return EXIT_FAILURE;
     }
     save_char_t* name_ptr;
-    struct save_pokemon_boxed_t* pkm_ptr;
+    struct save_pokemon_t* pkm_ptr;
 
     enum save_game_type_t game_type = save_gametype_get(save);
     switch (game_type) {
@@ -70,7 +70,7 @@ int save_storage_box_get(union save_unpacked_t* save, size_t index,
     assert(box != NULL);
     save_string_decode(box->name, name_ptr, SAVE_BOX_NAME_LENGTH);
     memcpy(&box->pokemon, pkm_ptr,
-           SAVE_BOX_SLOTS * sizeof(struct save_pokemon_boxed_t));
+           SAVE_BOX_SLOTS * sizeof(struct save_pokemon_t));
     return EXIT_SUCCESS;
 }
 
@@ -89,6 +89,6 @@ uint32_t save_storage_party_size_get(union save_unpacked_t* save) {
     }
 }
 
-int save_storage_slot_is_empty(struct save_pokemon_boxed_t* pokemon) {
+int save_storage_slot_is_empty(struct save_pokemon_t* pokemon) {
     return pokemon->occupancy == SAVE_STORAGE_EMPTY;
 }
