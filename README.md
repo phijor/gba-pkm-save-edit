@@ -6,7 +6,17 @@ gba-pkm-save-edit
 BUILDING
 --------
 
-Run `make`. For a debug-version run `make debug`.
+```
+$ git clone https://github.com/phijor/gba-pkm-save-edit
+$ cd gba-pkm-save-edit
+$ make
+```
+
+If you wish to run a debug-build:
+
+```
+$ make debug
+```
 
 RUNNING
 -------
