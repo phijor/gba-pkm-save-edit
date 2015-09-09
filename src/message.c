@@ -105,11 +105,11 @@ message(const char* const format_string, const char* const message, ...) {
     switch (format.type) {
         case MSG_NORMAL:
         case MSG_INFO:
-        case MSG_WARNING:
         case MSG_PROMPT:
         case MSG_BULLET:
             current_output = message_output;
             break;
+        case MSG_WARNING:
         case MSG_ERROR:
             current_output = message_error;
             break;
