@@ -19,25 +19,18 @@
 #define ARG_MAX_STR_LEN 80
 #define ARG_SEPERATOR " \t\n\r"
 
-int editor(int argc, char* const* argv) {
-    const struct editor_call_t calls[] = {
-        {.name = "show", .exec = &editor_show},
-        {.name = "dump", .exec = &editor_dump},
-        {.name = "export", .exec = &editor_export},
-        {.name = NULL, .exec = NULL},
-    };
-
-    char* save_file_name = NULL;
-    if (argc < 1 || argv[0] == NULL) {
-        message("E", "No input file specified.\n");
-        return EXIT_FAILURE;
+int editor(struct editor_options_t* options,int argc, char* const* argv) {
+    FILE* save_file;
+    if (options->i_input_file == NULL) {
+        message("W", "No input file specified.\n");
+        options->i_input_file = "stdin";
+        save_file = stdin;
+    } else {
+        save_file = fopen(options->i_input_file, "r");
     }
-    save_file_name = argv[0];
-    message("I", "Reading from \'%s\'.\n", save_file_name);
-
-    FILE* save_file = fopen(save_file_name, "r");
+    message("I", "Reading from \'%s\'.\n", options->i_input_file);
     if (save_file == NULL) {
-        message("E", "Unable to open '%s'.\n", save_file_name);
+        message("E", "Unable to open '%s'.\n", options->i_input_file);
         return EXIT_FAILURE;
     }
 
@@ -55,7 +48,13 @@ int editor(int argc, char* const* argv) {
     union save_unpacked_t unpacked;
     save_unpack(most_recent, &unpacked);
 
-    return editor_call(&unpacked, calls, argc - 1, &argv[1]);
+    const struct editor_call_t calls[] = {
+        {.name = "show", .exec = &editor_show},
+        {.name = "dump", .exec = &editor_dump},
+        {.name = "export", .exec = &editor_export},
+        {.name = NULL, .exec = NULL},
+    };
+    return editor_call(&unpacked, calls, argc, argv);
 }
 
 int editor_call(union save_unpacked_t* save,

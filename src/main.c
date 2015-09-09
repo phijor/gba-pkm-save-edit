@@ -20,20 +20,54 @@
 #pragma GCC diagnostic ignored "-Wunused-variable"
 
 #include <stdlib.h>
+#include <ctype.h>
 #include <getopt.h>
 
-#include "save_integrity.h"
-#include "save_unpacked.h"
 #include "editor.h"
 #include "message.h"
 
 int main(int argc, char* const* argv) {
+    struct editor_options_t options = {
+        .o_output_file = NULL,
+        .i_input_file = NULL,
+        .progname = argv[0],
+        .h_show_help = 0,
+    };
+
+    opterr = 0;
     char current_option;
-    while ((current_option = getopt(argc, argv, "h")) != -1) {
+    while ((current_option = getopt(argc, argv, "hi:o:")) != -1) {
+        switch (current_option) {
+            case 'h':
+                options.h_show_help = 1;
+                break;
+            case 'i':
+                options.i_input_file = optarg;
+                break;
+            case 'o':
+                options.o_output_file = optarg;
+                break;
+            case '?':
+                switch (optopt) {
+                    case 'i':
+                    case 'o':
+                        message("E", "Option '-%c' requires an argument.\n",
+                                optopt);
+                        break;
+                    default:
+                        if (isprint(optopt)) {
+                            message("E", "Unknown option '-%c'.\n", optopt);
+                        } else {
+                            message("E", "Unknown option character '\\x%x'.\n",
+                                    optopt);
+                        }
+                }
+                return EXIT_FAILURE;
+        }
     }
 
     int editor_argc = argc - optind;
     char* const* editor_argv = (editor_argc > 0) ? &argv[optind] : NULL;
 
-    return editor(editor_argc, editor_argv);
+    return editor(&options, editor_argc, editor_argv);
 }

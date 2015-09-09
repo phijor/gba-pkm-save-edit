@@ -14,7 +14,14 @@ struct editor_arguments_t {
         size_t input_length;
 };
 
-int editor(int argc, char* const* argv);
+struct editor_options_t {
+    char* o_output_file;
+    char* i_input_file;
+    char* progname;
+    int h_show_help;
+};
+
+int editor(struct editor_options_t* options, int argc, char* const* argv);
 
 int editor_call(union save_unpacked_t* save,
                 const struct editor_call_t commands[], int argc,
