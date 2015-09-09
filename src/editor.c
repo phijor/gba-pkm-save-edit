@@ -12,17 +12,50 @@
 #include "editor_dump.h"
 #include "editor_export.h"
 
+#include "save.h"
+#include "save_integrity.h"
+#include "save_unpacked.h"
+
 #define ARG_MAX_STR_LEN 80
 #define ARG_SEPERATOR " \t\n\r"
 
-int editor(union save_unpacked_t* save, int argc, char* const* argv) {
+int editor(int argc, char* const* argv) {
     const struct editor_call_t calls[] = {
         {.name = "show", .exec = &editor_show},
         {.name = "dump", .exec = &editor_dump},
         {.name = "export", .exec = &editor_export},
         {.name = NULL, .exec = NULL},
     };
-    return editor_call(save, calls, argc, argv);
+
+    char* save_file_name = NULL;
+    if (argc < 1 || argv[0] == NULL) {
+        message("E", "No input file specified.\n");
+        return EXIT_FAILURE;
+    }
+    save_file_name = argv[0];
+    message("I", "Reading from \'%s\'.\n", save_file_name);
+
+    FILE* save_file = fopen(save_file_name, "r");
+    if (save_file == NULL) {
+        message("E", "Unable to open '%s'.\n", save_file_name);
+        return EXIT_FAILURE;
+    }
+
+    struct save_file_t save;
+    fread(&save, sizeof(save), 1, save_file);
+    fclose(save_file);
+
+    if (save_file_integrity_check(&save) == EXIT_FAILURE) {
+        message("E", "Save file seems to be corrupt.\n");
+        return EXIT_FAILURE;
+    }
+    message("I", "Save file passed integrity-test.\n");
+
+    struct save_block_t* most_recent = save_most_recent_block_get(&save);
+    union save_unpacked_t unpacked;
+    save_unpack(most_recent, &unpacked);
+
+    return editor_call(&unpacked, calls, argc - 1, &argv[1]);
 }
 
 int editor_call(union save_unpacked_t* save,
