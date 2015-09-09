@@ -52,7 +52,13 @@ struct save_emerald_t {
     uint8_t _9[(0x2354 - 0x22ae) - sizeof(uint8_t)];
 
     uint16_t pokedex_national_unlocked_c;
-    uint8_t _10[(0x4a50 - 0x2354) - sizeof(uint16_t)];
+    uint8_t _10[(0x3f5c - 0x2354) - sizeof(uint16_t)];
+
+    struct save_pokemon_t daycare_0;
+    uint8_t _12[(0x3fe8 - 0x3f5c) - sizeof(struct save_pokemon_t)];
+
+    struct save_pokemon_t daycare_1;
+    uint8_t _13[(0x4a50 - 0x3fe8) - sizeof(struct save_pokemon_t)];
 
     struct save_pokedex_t pokedex_seen_c;
     uint8_t _11[(0x4cb4 - 0x4a50) - sizeof(struct save_pokedex_t)];
