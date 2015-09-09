@@ -15,6 +15,7 @@
 #include "save_trainer.h"
 #include "save_pokemon.h"
 #include "save_storage.h"
+#include "save_boxes.h"
 #include "save_moves.h"
 
 int editor_show(union save_unpacked_t* save, int argc, char* const* argv) {
@@ -178,20 +179,15 @@ int editor_show_pokemon_info(struct save_pokemon_t* pokemon) {
 
     {
         enum save_species_t species = pkm_data.growth->species;
-        enum save_species_t hatches_into = SAVE_SPECIES_NONE;
 
         if (species >= SAVE_SPECIES) {
             species = SAVE_SPECIES_NONE;
         }
-        if (save_pokemon_is_egg(&pkm_data)) {
-            hatches_into = species;
-            species = SAVE_SPECIES_POKEMON_EGG;
-        }
         message("*+", "Species: %s\n",
                 editor_species_names[species]);
-        if (species == SAVE_SPECIES_POKEMON_EGG) {
-            message("*", "will hatch into a %s\n",
-                    editor_species_names[hatches_into]);
+        if (save_storage_slot_is_egg(pokemon) ||
+            save_pokemon_is_egg(&pkm_data)) {
+            message("*", "Egg: yes (%#02x)\n", pokemon->occupancy);
         }
         message_indent(-1);
     }
