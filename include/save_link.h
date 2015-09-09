@@ -6,6 +6,7 @@
 #include "save_pokemon.h"
 
 #define SAVE_LINK_TEAM_SIZE 3
+#define SAVE_LINK_RESULTS 5
 
 struct save_pokemon_minimal_t {
     uint16_t species;
@@ -45,4 +46,14 @@ struct save_link_opponent_ecard_t {
     struct save_pokemon_minimal_t pokemon[SAVE_LINK_TEAM_SIZE];
     uint32_t checksum;
 };
+
+struct save_link_results_t {
+    save_char_t name[SAVE_TRAINER_NAME_SIZE];
+    uint8_t _0[1];
+    uint16_t TID;
+    uint16_t wins;
+    uint16_t losses;
+    uint16_t draws;
+};
+
 #endif /* _____ #ifndef SAVE_LINK_H _____ */
