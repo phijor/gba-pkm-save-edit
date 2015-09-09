@@ -23,6 +23,8 @@ struct editor_call_t {
 
 void editor_print_calls(const struct editor_call_t calls[]);
 
+void editor_print_usage(char* progname);
+
 void editor_error_unknown_call(const struct editor_call_t commands[],
                                   const char unknown[]);
 
