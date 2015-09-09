@@ -20,6 +20,11 @@
 #define ARG_SEPERATOR " \t\n\r"
 
 int editor(struct editor_options_t* options,int argc, char* const* argv) {
+    if (argc < 1 || options->h_show_help) {
+        editor_print_usage(options->progname);
+        return EXIT_SUCCESS;
+    }
+
     FILE* save_file;
     if (options->i_input_file == NULL) {
         message("W", "No input file specified.\n");
