@@ -96,6 +96,8 @@ TODO
 - [x] add a convenience-functions to de-/encrypt a Pokémon
 - [x] determine whether a Pokémon is an egg or not from occupancy-byte in
     Pokémon-struct
+- [ ] add some necessary flags
+- [ ] add setter-functions for each value in the savefile that has a getter
 - [ ] add format options to `message(...)` which indent instantly
 - [ ] remove I/O from `save_` functions as much as possible and handle errors
     via return-values etc.
