@@ -94,7 +94,7 @@ TODO
 ###short-term
 - [x] move `enum`s related to Pokémon data to their own files
 - [x] add a convenience-functions to de-/encrypt a Pokémon
-- [ ] determine whether a Pokémon is an egg or not from occupancy-byte in
+- [x] determine whether a Pokémon is an egg or not from occupancy-byte in
     Pokémon-struct
 - [ ] add format options to `message(...)` which indent instantly
 - [ ] remove I/O from `save_` functions as much as possible and handle errors

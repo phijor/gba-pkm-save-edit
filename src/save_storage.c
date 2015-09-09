@@ -92,3 +92,7 @@ uint32_t save_storage_party_size_get(union save_unpacked_t* save) {
 int save_storage_slot_is_empty(struct save_pokemon_t* pokemon) {
     return pokemon->occupancy == SAVE_STORAGE_EMPTY;
 }
+
+int save_storage_slot_is_egg(struct save_pokemon_t* pokemon) {
+    return pokemon->occupancy == SAVE_STORAGE_EGG;
+}
