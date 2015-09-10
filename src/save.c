@@ -79,13 +79,13 @@ int save_repack(struct save_block_t* destination,
     return EXIT_SUCCESS;
 }
 
-struct save_block_t* save_most_recent_block_get(struct save_file_t* file) {
-    struct save_block_t* most_recent =
+int save_block_recent_get(struct save_file_t* file, struct save_block_t* recent) {
+    recent =
         (file->save_blocks[0].sections[0].signature.save_index >
          file->save_blocks[1].sections[0].signature.save_index)
             ? &(file->save_blocks[0])
             : &(file->save_blocks[1]);
-    return most_recent;
+    return EXIT_SUCCESS;
 }
 
 enum save_game_type_t save_gametype_get(union save_unpacked_t* save) {
