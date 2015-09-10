@@ -49,7 +49,8 @@ int editor(struct editor_options_t* options,int argc, char* const* argv) {
     }
     message("I", "Save file passed integrity-test.\n");
 
-    struct save_block_t* most_recent = save_most_recent_block_get(&save);
+    struct save_block_t* most_recent;
+    save_block_recent_get(&save, &most_recent);
     union save_unpacked_t unpacked;
     save_unpack(most_recent, &unpacked);
 
