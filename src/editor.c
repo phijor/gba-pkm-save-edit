@@ -71,8 +71,10 @@ int editor(struct editor_options_t* options,int argc, char* const* argv) {
 int editor_call(union save_unpacked_t* save,
                 const struct editor_call_t commands[], int argc,
                 char* const* argv) {
-    const struct editor_call_t* matched_call;
-    struct editor_arguments_t arguments;
+    const struct editor_call_t* matched_call = NULL;
+    struct editor_arguments_t arguments = {
+        .input_line = NULL,
+    };
 
     int was_interactive = 0;
 
