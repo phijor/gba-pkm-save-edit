@@ -78,22 +78,27 @@ int editor_call(union save_unpacked_t* save,
 
     int was_interactive = 0;
 
-    if (argc > 0) {
-        //We're not going to modify argv or its contents, promised.
-        arguments.vector = (char**) argv;
-        arguments.count = argc;
-        arguments.input_line = NULL;
-    }
-    else {
-        was_interactive = 1;
-        arguments.input_length = ARG_MAX_STR_LEN;
-        editor_interactive(commands, &arguments);
-    }
+    do {
+        if (argc > 0) {
+            //We're not going to modify argv or its contents, promised.
+            arguments.vector = (char**) argv;
+            arguments.count = argc;
+        }
+        else {
+            was_interactive = 1;
+            arguments.input_length = ARG_MAX_STR_LEN;
+            editor_interactive(commands, &arguments);
+        }
 
-    matched_call = editor_parse_call(commands, arguments.vector[0]);
-    if (matched_call == NULL) {
-        return EXIT_FAILURE;
-    }
+        matched_call = editor_parse_call(commands, arguments.vector[0]);
+        if (matched_call != NULL) {
+            //matched_call contains a valid call
+            break;
+        } else if (!was_interactive) {
+            //not running interactive, exit editor on error
+            return EXIT_FAILURE;
+        }
+    } while (was_interactive);
 
     int exit_status =
         matched_call->exec(save, arguments.count - 1, &(arguments.vector[1]));
