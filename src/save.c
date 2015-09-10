@@ -88,6 +88,15 @@ int save_block_recent_get(struct save_file_t* file, struct save_block_t* recent)
     return EXIT_SUCCESS;
 }
 
+int save_block_old_get(struct save_file_t* file, struct save_block_t* recent) {
+    recent =
+        (file->save_blocks[0].sections[0].signature.save_index <
+         file->save_blocks[1].sections[0].signature.save_index)
+            ? &(file->save_blocks[0])
+            : &(file->save_blocks[1]);
+    return EXIT_SUCCESS;
+}
+
 enum save_game_type_t save_gametype_get(union save_unpacked_t* save) {
     /* Assume the game is Ruby/Sapphire. For Firered/Leafgreen the location is
      * the same; Emerald does not have a game_code, instead it's security key
