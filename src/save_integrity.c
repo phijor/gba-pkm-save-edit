@@ -78,8 +78,8 @@ int save_file_integrity_check(struct save_file_t* file) {
 }
 
 int save_section_resign(struct save_section_t* section) {
-    uint16_t checksum =
-        save_checksum_get(section->data, SAVE_DATA_BYTES_PER_SECTION);
+    uint16_t checksum = save_checksum_get(
+        section->data, save_section_size_by_id[section->signature.section_id]);
     section->signature.checksum = checksum;
     return EXIT_SUCCESS;
 }
