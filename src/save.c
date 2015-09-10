@@ -61,11 +61,11 @@ int save_repack(struct save_block_t* destination,
     uint8_t* unpacked_byte_array = (uint8_t*)unpacked;
     size_t byte_offset = 0;
 
-    for (size_t i = 0; i < SAVE_SECTIONS_PER_BLOCK; i++) {
-        size_t section_offset = (i + offset) % SAVE_SECTIONS_PER_BLOCK;
+    for (size_t section_id = 0; section_id < SAVE_SECTIONS_PER_BLOCK; section_id++) {
+        size_t section_offset = (section_id + offset) % SAVE_SECTIONS_PER_BLOCK;
         struct save_section_t* dest_section =
             &destination->sections[section_offset];
-        size_t section_size = save_section_size_by_id[section_offset];
+        size_t section_size = save_section_size_by_id[section_id];
 
         memcpy(dest_section->data, &unpacked_byte_array[byte_offset],
                section_size);
@@ -73,7 +73,7 @@ int save_repack(struct save_block_t* destination,
 
         dest_section->signature.save_index = save_index;
         dest_section->signature.validation_code = SAVE_SECTION_VALIDATION_CODE;
-        dest_section->signature.section_id = i;
+        dest_section->signature.section_id = section_id;
         save_section_resign(dest_section);
     }
     return EXIT_SUCCESS;
