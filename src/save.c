@@ -79,8 +79,8 @@ int save_repack(struct save_block_t* destination,
     return EXIT_SUCCESS;
 }
 
-int save_block_recent_get(struct save_file_t* file, struct save_block_t* recent) {
-    recent =
+int save_block_recent_get(struct save_file_t* file, struct save_block_t** recent) {
+    *recent =
         (file->save_blocks[0].sections[0].signature.save_index >
          file->save_blocks[1].sections[0].signature.save_index)
             ? &(file->save_blocks[0])
@@ -88,8 +88,8 @@ int save_block_recent_get(struct save_file_t* file, struct save_block_t* recent)
     return EXIT_SUCCESS;
 }
 
-int save_block_old_get(struct save_file_t* file, struct save_block_t* recent) {
-    recent =
+int save_block_old_get(struct save_file_t* file, struct save_block_t** recent) {
+    *recent =
         (file->save_blocks[0].sections[0].signature.save_index <
          file->save_blocks[1].sections[0].signature.save_index)
             ? &(file->save_blocks[0])

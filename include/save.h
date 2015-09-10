@@ -58,8 +58,8 @@ int save_repack(struct save_block_t* destination,
                 union save_unpacked_t* unpacked, uint32_t save_index,
                 size_t offset);
 
-int save_block_recent_get(struct save_file_t* file, struct save_block_t* recent);
-int save_block_old_get(struct save_file_t* file, struct save_block_t* recent);
+int save_block_recent_get(struct save_file_t* file, struct save_block_t** recent);
+int save_block_old_get(struct save_file_t* file, struct save_block_t** recent);
 
 enum save_game_type_t save_gametype_get(union save_unpacked_t* save);
 #endif
