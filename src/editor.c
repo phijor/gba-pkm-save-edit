@@ -60,7 +60,12 @@ int editor(struct editor_options_t* options,int argc, char* const* argv) {
         {.name = "export", .exec = &editor_export},
         {.name = NULL, .exec = NULL},
     };
-    return editor_call(&unpacked, calls, argc, argv);
+    int exit_status = editor_call(&unpacked, calls, argc, argv);
+
+    if (options->o_output_file != NULL) {
+        editor_write_to_file(&save, &unpacked, options->o_output_file);
+    }
+    return exit_status;
 }
 
 int editor_call(union save_unpacked_t* save,
@@ -110,6 +115,29 @@ int editor_interactive(const struct editor_call_t calls[],
     arguments->vector = malloc(arguments->count * sizeof(char*));
     editor_get_args(arguments);
     return arguments->count;
+}
+
+int editor_write_to_file(struct save_file_t* save,
+                         union save_unpacked_t* unpacked, char* file_name) {
+    message("I", "Repacking savefile.\n");
+    struct save_block_t* target_block;
+    save_block_old_get(save, &target_block);
+    int repack_status =
+        save_repack(target_block, unpacked,
+                    target_block->sections[0].signature.save_index + 1,
+                    save_section_offset_get(target_block));
+    if (repack_status == EXIT_FAILURE) {
+        message("E", "Could not repack savefile.\n");
+    }
+
+    FILE* edited_save_file = fopen(file_name, "w");
+    if (edited_save_file == NULL) {
+        message("E", "Unable to open '%s'\n", file_name);
+        return EXIT_FAILURE;
+    }
+    message("I", "Writing edited savefile to '%s'\n", file_name);
+    fwrite(&save, sizeof(save), 1, edited_save_file);
+    return EXIT_SUCCESS;
 }
 
 int editor_get_args(struct editor_arguments_t* args) {
