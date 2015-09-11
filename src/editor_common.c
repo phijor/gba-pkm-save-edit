@@ -16,6 +16,7 @@ void editor_print_usage(char* progname) {
             "Options:\n"
             "-h            --  This help text.\n"
             "-i <savefile> --  The savefile to read from. Default: stdin\n"
+            "-o <file>     --  The file an edited savestate is written to.\n"
     );
 }
 
