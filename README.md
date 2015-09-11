@@ -32,11 +32,17 @@ If you are using Arch, you can install from the [AUR](https://aur.archlinux.org/
 RUNNING
 -------
 
-    gba-pkm-save-edit [options] commands...
+    gba-pkm-save-edit [options] <savefile> commands...
+
+###savefile
+
+The savefile you want to edit. If ommitted, it defaults to `stdin`.
 
 ###options
 
-* `-i <savefile>`: The savefile to read from. Defaults to `stdin` if ommited.
+* `-i <savefile>`: The savefile to read from. Defaults to `stdin` if ommitted.
+* `-o <file>`: The file an edited savestate is written to.
+* `-h`: Show help.
 
 ###savefile
 
