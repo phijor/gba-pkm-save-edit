@@ -135,6 +135,7 @@ int editor_write_to_file(struct save_file_t* save,
                     save_section_offset_get(target_block));
     if (repack_status == EXIT_FAILURE) {
         message("E", "Could not repack savefile.\n");
+        return EXIT_FAILURE;
     }
 
     FILE* edited_save_file = fopen(file_name, "w");
