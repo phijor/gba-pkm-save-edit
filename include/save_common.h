@@ -8,6 +8,13 @@
 
 typedef unsigned char save_char_t;
 
+enum save_exit_code_t {
+    SAVE_EXIT_SUCCESS,
+    SAVE_EXIT_FAILURE,
+    SAVE_EXIT_NOT_IMPLEMENTED,
+    SAVE_EXIT_ILLEGAL_VALUE,
+};
+
 enum save_trainer_gender_t {
     MALE = 0,
     FEMALE = 1,
