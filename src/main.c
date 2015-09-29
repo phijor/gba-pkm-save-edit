@@ -36,12 +36,6 @@ int main(int argc, char* const* argv) {
     int editor_argc = argc;
     char* const* editor_argv = argv;
 
-    if (editor_argc > 1 && editor_argv[1][0] != '-') {
-        options.i_input_file = editor_argv[1];
-        editor_argv++;
-        editor_argc--;
-    }
-
     opterr = 0;
     char current_option;
     while ((current_option = getopt(editor_argc, editor_argv, "hi:o:")) != -1) {
