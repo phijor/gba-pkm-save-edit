@@ -61,18 +61,18 @@ int editor_show_trainer(union save_unpacked_t* save, int argc,
                         char* const* argv) {
     {
         char name[SAVE_TRAINER_NAME_SIZE_UNPACKED] = {'\0'};
-        save_trainer_name_get(name, save);
+        save_trainer_name_get(save, name);
         message("*", "Name: %s\n", name);
     }
     {
         struct save_trainer_id_t id;
-        save_trainer_id_get(&id, save);
+        save_trainer_id_get(save, &id);
         message("*", "Trainer ID (TID): %05u\n", id.TID);
         message("*", "Secret ID  (SID): %05u\n", id.SID);
     }
     {
         struct save_time_played_t time;
-        save_time_played_get(&time, save);
+        save_time_played_get(save, &time);
         message("*",
                 "Time played: %03u:%02u:%02u/%02u\n",
                 time.hours,
@@ -81,7 +81,9 @@ int editor_show_trainer(union save_unpacked_t* save, int argc,
                 time.frames);
     }
     {
-        message("*", "Money: %u\n", save_trainer_money_get(save));
+        uint32_t money;
+        save_trainer_money_get(save, &money);
+        message("*", "Money: %u\n", money);
     }
     return EXIT_SUCCESS;
 }
