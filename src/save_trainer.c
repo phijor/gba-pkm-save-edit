@@ -6,38 +6,40 @@
 #include "save_unpacked.h"
 #include "save_char_encoding.h"
 
-uint32_t save_trainer_money_get(union save_unpacked_t* save) {
+enum save_exit_code_t save_trainer_money_get(union save_unpacked_t* save,
+                                             uint32_t* money) {
     enum save_game_type_t game_type = save_gametype_get(save);
     switch (game_type) {
         case RUBY_SAPPHIRE:
-            return save->rusa.money ^ save->rusa.security_key;
+            *money = save->rusa.money ^ save->rusa.security_key;
         case FIRERED_LEAFGREEN:
-            return save->frlg.money ^ save->frlg.security_key;
+            *money = save->frlg.money ^ save->frlg.security_key;
         case EMERALD:
-            return save->emer.money ^ save->emer.security_key;
+            *money = save->emer.money ^ save->emer.security_key;
         default:
-            message("E", "Game type not implemented.\n");
-            exit(EXIT_FAILURE);
+            return SAVE_EXIT_NOT_IMPLEMENTED;
     }
+    return EXIT_SUCCESS;
 }
 
-enum save_trainer_gender_t save_trainer_gender_get(union save_unpacked_t* save) {
+enum save_exit_code_t save_trainer_gender_get(
+    union save_unpacked_t* save, enum save_trainer_gender_t* gender) {
     enum save_game_type_t game_type = save_gametype_get(save);
     switch (game_type) {
         case RUBY_SAPPHIRE:
-            return save->rusa.player.gender;
+            *gender = save->rusa.player.gender;
         case FIRERED_LEAFGREEN:
-            return save->frlg.player.gender;
+            *gender = save->frlg.player.gender;
         case EMERALD:
-            return save->emer.player.gender;
+            *gender = save->emer.player.gender;
         default:
-            message("E", "Game type not implemented.\n");
-            exit(EXIT_FAILURE);
+            return SAVE_EXIT_NOT_IMPLEMENTED;
     }
+    return EXIT_SUCCESS;
 }
 
-void save_trainer_id_get(struct save_trainer_id_t* id,
-                         union save_unpacked_t* save) {
+enum save_exit_code_t save_trainer_id_get(union save_unpacked_t* save,
+                                          struct save_trainer_id_t* id) {
     enum save_game_type_t game_type = save_gametype_get(save);
     switch (game_type) {
         case RUBY_SAPPHIRE:
@@ -50,13 +52,13 @@ void save_trainer_id_get(struct save_trainer_id_t* id,
             *id = save->emer.player.id;
             break;
         default:
-            message("E", "Game type not implemented.\n");
-            exit(EXIT_FAILURE);
+            return SAVE_EXIT_NOT_IMPLEMENTED;
     }
+    return EXIT_SUCCESS;
 }
 
-void save_time_played_get(struct save_time_played_t* time,
-                          union save_unpacked_t* save) {
+enum save_exit_code_t save_time_played_get(union save_unpacked_t* save,
+                                           struct save_time_played_t* time) {
     enum save_game_type_t game_type = save_gametype_get(save);
     switch (game_type) {
         case RUBY_SAPPHIRE:
@@ -69,12 +71,13 @@ void save_time_played_get(struct save_time_played_t* time,
             *time = save->emer.player.time_played;
             break;
         default:
-            message("E", "Game type not implemented.\n");
-            exit(EXIT_FAILURE);
+            return SAVE_EXIT_NOT_IMPLEMENTED;
     }
+    return EXIT_SUCCESS;
 }
 
-int save_trainer_name_get(char name[SAVE_TRAINER_NAME_SIZE], union save_unpacked_t* save) {
+enum save_exit_code_t save_trainer_name_get(union save_unpacked_t* save,
+                                            char name[SAVE_TRAINER_NAME_SIZE]) {
     save_char_t* name_encoded = NULL;
     enum save_game_type_t game_type = save_gametype_get(save);
     switch (game_type) {
@@ -88,9 +91,8 @@ int save_trainer_name_get(char name[SAVE_TRAINER_NAME_SIZE], union save_unpacked
             name_encoded = save->emer.player.name;
             break;
         default:
-            message("E", "Game type not implemented.\n");
-            exit(EXIT_FAILURE);
+            return SAVE_EXIT_NOT_IMPLEMENTED;
     }
     save_string_decode(name, name_encoded, SAVE_TRAINER_NAME_SIZE);
-    return EXIT_SUCCESS;
+    return SAVE_EXIT_SUCCESS;
 }
