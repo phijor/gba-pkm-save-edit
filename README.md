@@ -23,7 +23,7 @@ If you wish to install to a different location (e.g. `foo/bar/`):
 
     $ make DESTDIR="foo/bar/" install
 
-###using a package-manager
+### using a package-manager
 
 If you are using Arch, you can install from the [AUR](https://aur.archlinux.org/packages/gba-pkm-save-edit-git/):
 
@@ -34,17 +34,17 @@ RUNNING
 
     gba-pkm-save-edit [options] commands...
 
-###options
+### options
 
 * `-i <savefile>`: The savefile to read from. Defaults to `stdin` if ommitted.
 * `-o <file>`: The file an edited savestate is written to.
 * `-h`: Show help.
 
-###savefile
+### savefile
 
 The savefile to read from.
 
-###commands
+### commands
 
 * `show`:
     * `show pokedex [range: entries]`:
@@ -70,7 +70,7 @@ The savefile to read from.
             * export all Pokémon occupying `slots` in `boxes` to a file each in
                 `directory`
 
-###<a name="ranges">ranges</a>
+### <a name="ranges">ranges</a>
 A `range` has the form of `/[0-9]*-[0-9]*/` and describes on which indices
 a command should operate.
 
@@ -87,11 +87,11 @@ Typing `show pokemon party ...` | ...prints out Pokémon...
 TODO
 ----
 
-###long-term
+### long-term
 - [ ] full savefile description
 - [ ] full savefile editability
 
-###short-term
+### short-term
 - [x] move `enum`s related to Pokémon data to their own files
 - [x] add a convenience-functions to de-/encrypt a Pokémon
 - [x] determine whether a Pokémon is an egg or not from occupancy-byte in
