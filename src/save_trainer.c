@@ -30,8 +30,6 @@ enum save_exit_code_t save_trainer_gender_get(
             *gender = save->rusa.player.gender;
         case FIRERED_LEAFGREEN:
             *gender = save->frlg.player.gender;
-        case EMERALD:
-            *gender = save->emer.player.gender;
         default:
             return SAVE_EXIT_NOT_IMPLEMENTED;
     }

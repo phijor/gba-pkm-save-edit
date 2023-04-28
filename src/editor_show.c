@@ -10,6 +10,9 @@
 #include "editor_parse.h"
 #include "editor_lut.h"
 
+#include "save.h"
+#include "save_unpacked.h"
+
 #include "save_common.h"
 #include "save_pokedex.h"
 #include "save_trainer.h"
@@ -23,9 +26,22 @@ int editor_show(union save_unpacked_t* save, int argc, char* const* argv) {
         {.name = "pokedex", .exec = &editor_show_pokedex},
         {.name = "pokemon", .exec = &editor_show_pokemon},
         {.name = "trainer", .exec = &editor_show_trainer},
+        {.name = "map", .exec = &editor_show_map},
         {.name = NULL, .exec = NULL},
     };
     return editor_call(save, commands, argc, argv);
+}
+
+int editor_show_map(union save_unpacked_t* save, int argc, char* const* argv) {
+    if (save_gametype_get(save) != EMERALD) {
+        message("E", "Feature requires Emerald save.\n");
+        return -1;
+    }
+    message("I", "Map info:\n");
+    message("*", "x: %d\n", save->emer.map.x++);
+    message("*", "y: %d\n", save->emer.map.y++);
+
+    return 0;
 }
 
 int editor_show_pokedex(union save_unpacked_t* save, int argc,
@@ -73,12 +89,8 @@ int editor_show_trainer(union save_unpacked_t* save, int argc,
     {
         struct save_time_played_t time;
         save_time_played_get(save, &time);
-        message("*",
-                "Time played: %03u:%02u:%02u/%02u\n",
-                time.hours,
-                time.minutes,
-                time.seconds,
-                time.frames);
+        message("*", "Time played: %03u:%02u:%02u/%02u\n", time.hours,
+                time.minutes, time.seconds, time.frames);
     }
     {
         uint32_t money;
@@ -99,7 +111,7 @@ int editor_show_pokemon(union save_unpacked_t* save, int argc,
 }
 
 int editor_show_pokemon_party(union save_unpacked_t* save, int argc,
-                        char* const* argv) {
+                              char* const* argv) {
     int optind = 0;
     struct editor_range_t range = {
         .min = 1, .max = SAVE_PARTY_SLOTS,
@@ -175,8 +187,7 @@ int editor_show_pokemon_info(struct save_pokemon_t* pokemon) {
         return EXIT_FAILURE;
     }
 
-    struct save_pokemon_decrypted_t pkm_data = {NULL, NULL, NULL, NULL,
-                                                   NULL};
+    struct save_pokemon_decrypted_t pkm_data = {NULL, NULL, NULL, NULL, NULL};
     save_pokemon_decrypt(pokemon, &pkm_data);
 
     {
@@ -185,8 +196,7 @@ int editor_show_pokemon_info(struct save_pokemon_t* pokemon) {
         if (species >= SAVE_SPECIES) {
             species = SAVE_SPECIES_NONE;
         }
-        message("*+", "Species: %s\n",
-                editor_species_names[species]);
+        message("*+", "Species: %s\n", editor_species_names[species]);
         if (save_storage_slot_is_egg(pokemon) ||
             save_pokemon_is_egg(&pkm_data)) {
             message("*", "Egg: yes (%#02x)\n", pokemon->occupancy);
@@ -202,7 +212,7 @@ int editor_show_pokemon_info(struct save_pokemon_t* pokemon) {
         char ot_name[SAVE_TRAINER_NAME_SIZE_UNPACKED] = {'\0'};
         save_pokemon_ot_name_get(pokemon, ot_name);
         message("*+", "Original Trainer (OT): %s\n", ot_name);
-        message("*",  "Trainer ID (TID): %05d\n", pokemon->OT_ID.TID);
+        message("*", "Trainer ID (TID): %05d\n", pokemon->OT_ID.TID);
         message("*-", "Secret ID (SID):  %05d\n", pokemon->OT_ID.SID);
     }
     {
@@ -214,13 +224,12 @@ int editor_show_pokemon_info(struct save_pokemon_t* pokemon) {
     }
     {
         static const char* shininess[] = {
-            "not shiny",
-            ANSI_COLOR_YELLOW "shiny" ANSI_COLOR_RESET,
+            "not shiny", ANSI_COLOR_YELLOW "shiny" ANSI_COLOR_RESET,
         };
 
         size_t is_shiny = save_pokemon_is_shiny(pokemon) ? 1 : 0;
         message("*+", "PID: %#08x\n", pokemon->PID);
-        message("*",  "Shininess: %s\n", shininess[is_shiny]);
+        message("*", "Shininess: %s\n", shininess[is_shiny]);
         message("*-", "Nature:    %s\n",
                 editor_nature_names[save_pokemon_nature_get(pokemon)]);
     }
@@ -232,35 +241,37 @@ int editor_show_pokemon_info(struct save_pokemon_t* pokemon) {
     {
         struct save_pokemon_data_ev_t* EV = &pkm_data.condition->EV;
         message("*+", "Effort Values (EV):\n");
-        message("*",  "HP:          %3u\n", EV->HP);
-        message("*",  "Attack:      %3u\n", EV->ATK);
-        message("*",  "Defense:     %3u\n", EV->DEF);
-        message("*",  "Sp. Attack:  %3u\n", EV->SPA);
-        message("*",  "Sp. Defense: %3u\n", EV->SPD);
+        message("*", "HP:          %3u\n", EV->HP);
+        message("*", "Attack:      %3u\n", EV->ATK);
+        message("*", "Defense:     %3u\n", EV->DEF);
+        message("*", "Sp. Attack:  %3u\n", EV->SPA);
+        message("*", "Sp. Defense: %3u\n", EV->SPD);
         message("*-", "Speed:       %3u\n", EV->SPE);
     }
     {
         struct save_pokemon_data_contest_t* contest =
             &pkm_data.condition->contest;
         message("*+", "Contest stats:\n");
-        message("*",  "Coolness:  %3u\n", contest->coolness);
-        message("*",  "Beauty:    %3u\n", contest->beauty);
-        message("*",  "Cuteness:  %3u\n", contest->cuteness);
-        message("*",  "Smartness: %3u\n", contest->smartness);
-        message("*",  "Toughness: %3u\n", contest->toughness);
+        message("*", "Coolness:  %3u\n", contest->coolness);
+        message("*", "Beauty:    %3u\n", contest->beauty);
+        message("*", "Cuteness:  %3u\n", contest->cuteness);
+        message("*", "Smartness: %3u\n", contest->smartness);
+        message("*", "Toughness: %3u\n", contest->toughness);
         message("*-", "Feel:      %3u\n", contest->feel);
     }
     {
         message("*+", "Growth:\n");
-        message("*",  "Experience points (EP): %7u\n", pkm_data.growth->experience_points);
-        message("*-", "Friendship:             %7u\n", pkm_data.growth->friendship);
+        message("*", "Experience points (EP): %7u\n",
+                pkm_data.growth->experience_points);
+        message("*-", "Friendship:             %7u\n",
+                pkm_data.growth->friendship);
     }
     {
         const char* pkrs_status[] = {
-            [SAVE_POKERUS_NONE]     = "None",
-            [SAVE_POKERUS_INFECTED] = "Infected",
-            [SAVE_POKERUS_CURED]    = "Cured",
-            [SAVE_POKERUS_INVALID]  = "INVALID!",
+                [SAVE_POKERUS_NONE] = "None",
+                [SAVE_POKERUS_INFECTED] = "Infected",
+                [SAVE_POKERUS_CURED] = "Cured",
+                [SAVE_POKERUS_INVALID] = "INVALID!",
         };
 
         message("*", "Pokerus: %s (%#03x)\n",
@@ -269,8 +280,7 @@ int editor_show_pokemon_info(struct save_pokemon_t* pokemon) {
         int remaining = save_pokemon_pokerus_remaining_get(&pkm_data);
         if (remaining) {
             message_indent(+1);
-            message("*", "Day(s) remaining: %u/%u\n",
-                    remaining,
+            message("*", "Day(s) remaining: %u/%u\n", remaining,
                     save_pokemon_pokerus_max_days_get(&pkm_data));
             message_indent(-1);
         }
@@ -294,10 +304,18 @@ int editor_show_pokemon_info(struct save_pokemon_t* pokemon) {
     }
     {
         char markings[] = {"----"};
-        if (pokemon->markings & SAVE_POKEMON_MARK_CIRCLE) { markings[0] = 'c'; }
-        if (pokemon->markings & SAVE_POKEMON_MARK_SQUARE) { markings[1] = 's'; }
-        if (pokemon->markings & SAVE_POKEMON_MARK_TRIANG) { markings[2] = 't'; }
-        if (pokemon->markings & SAVE_POKEMON_MARK_HEART)  { markings[3] = 'h'; }
+        if (pokemon->markings & SAVE_POKEMON_MARK_CIRCLE) {
+            markings[0] = 'c';
+        }
+        if (pokemon->markings & SAVE_POKEMON_MARK_SQUARE) {
+            markings[1] = 's';
+        }
+        if (pokemon->markings & SAVE_POKEMON_MARK_TRIANG) {
+            markings[2] = 't';
+        }
+        if (pokemon->markings & SAVE_POKEMON_MARK_HEART) {
+            markings[3] = 'h';
+        }
         message("*", "Markings: %s\n", markings);
     }
     save_pokemon_encrypt(pokemon, &pkm_data);

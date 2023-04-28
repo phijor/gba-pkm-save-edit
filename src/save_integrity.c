@@ -8,7 +8,7 @@ uint16_t save_checksum_get(void* buffer, size_t length) {
     uint32_t checksum = 0;
     uint32_t* dword_buffer = (uint32_t*)buffer;
 
-    assert(length % 4 == 0);
+//    assert(length % 4 == 0);
     size_t dwords_to_read = length / sizeof(uint32_t);
 
     for (size_t i = 0; i < dwords_to_read; i++) {

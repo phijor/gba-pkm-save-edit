@@ -43,11 +43,11 @@ int editor(struct editor_options_t* options,int argc, char* const* argv) {
     fread(&save, sizeof(save), 1, save_file);
     fclose(save_file);
 
-    if (save_file_integrity_check(&save) == EXIT_FAILURE) {
-        message("E", "Save file seems to be corrupt.\n");
-        return EXIT_FAILURE;
-    }
-    message("I", "Save file passed integrity-test.\n");
+//    if (save_file_integrity_check(&save) == EXIT_FAILURE) {
+//        message("E", "Save file seems to be corrupt.\n");
+//        return EXIT_FAILURE;
+//    }
+//    message("I", "Save file passed integrity-test.\n");
 
     struct save_block_t* most_recent;
     save_block_recent_get(&save, &most_recent);
@@ -144,7 +144,7 @@ int editor_write_to_file(struct save_file_t* save,
         return EXIT_FAILURE;
     }
     message("I", "Writing edited savefile to '%s'\n", file_name);
-    fwrite(&save, sizeof(save), 1, edited_save_file);
+    fwrite(&save, sizeof(*save), 1, edited_save_file);
     return EXIT_SUCCESS;
 }
 

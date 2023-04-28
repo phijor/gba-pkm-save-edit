@@ -40,6 +40,12 @@ struct save_trainer_info_t {
     struct save_time_played_t time_played;
 };
 
+struct save_map_t {
+    uint16_t y;
+    uint16_t x;
+    uint32_t index;
+};
+
 struct save_item_t {
     uint16_t index;
     uint16_t quantity;
